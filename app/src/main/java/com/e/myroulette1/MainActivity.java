@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                     if (rouletteViewInLayout.getItemProbabilities().isEmpty() || !CheatFlag) {
                         //普通の抽選
                         Log.d("aaaaaaaaaaaaaaaaaa", "通常");
-                        degree = 360f - RANDOM.nextInt(360);
+                        degree = 360f - (RANDOM.nextFloat() * 360f);
                         degreeOld = degree % 360;///////////////////////////////////////////////////////////////////
                         //sectorDegree = 360f / (rouletteView.sumOfItemRatio * rouletteView.splitCount);
                     /*
