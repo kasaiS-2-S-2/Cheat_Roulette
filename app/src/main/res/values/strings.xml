@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">My Roulette1</string>
+    <string name="button">buttom</string>
+    <string name="return_sub">RETURN</string>
+    <string name="main">Main Activity</string>
+    <string name="sub">Sub Activity</string>
+    <string name="hint1">Message to Sub</string>
+    <string name="hint2">Message to Main</string>
+    <string name="to_main">"  to Main"</string>
+    <string name="from_main">"from Main"</string>
+    <string name="to_sub">"  to Sub"</string>
+    <string name="from_sub">"from Sub"</string>
+    <string name="move">move</string>
+    <string name="back">back</string>
+    <string name="message">message</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="hint_word">Word…</string>
+    <string name="button_save">Save</string>
+    <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="add_word">Add word</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
