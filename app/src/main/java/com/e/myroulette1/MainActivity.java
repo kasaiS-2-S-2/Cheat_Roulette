@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         //super.onResume();
 
         super.onWindowFocusChanged(hasFocus);
+        Log.d("あああああああああああああああ", "iiiiiiiiiiiiiiiiiii");
 
         //rouletteView = new RouletteView(getApplicationContext());
 
@@ -330,28 +331,25 @@ public class MainActivity extends AppCompatActivity {
                     rouletteView.startAnimation(rotate);    // アニメーション開始
                     */
 
-            /*
-            animation = new ArcAnimation(rouletteView);
-            animation.setDuration(3600);
-            animation.setInterpolator(new DecelerateInterpolator()); //勢い良く回り、だんだんゆっくりになって止まるように
-            rouletteView.startAnimation(animation);
-            */
                     } else { //イカサマ抽選
                         Log.d("aaaaaaaaaaaaaaaaaa", "イカサマ");
                         //degree = 0;
-                        int randomNum = RANDOM.nextInt(100) + 1;//1 ~ 100
+                        float randomNum = RANDOM.nextFloat();//0.0 ~ 0.9999999
+                        //0なら絶対に当たらないので、ありえない数値を代入
+                        if (randomNum == 0) { randomNum = 42F; }
                         float sumOfProbability = rouletteViewInLayout.getItemProbabilities().get(0);
                         float sumOfDegree = sectorDegree * rouletteViewInLayout.getItemRatios().get(0);
 
                         if (randomNum <= sumOfProbability) {
-                            degree = RANDOM.nextInt((int) (sectorDegree * rouletteViewInLayout.getItemRatios().get(0)));
+                            //0度 ~ 最初の項目の度数未満の乱数生成（回転）
+                            degree = RANDOM.nextFloat() * sumOfDegree;
                         } else {
                             for (int i = 1; i < rouletteViewInLayout.getColors().size(); i++) {
                                 if (sumOfProbability < randomNum &&
                                         randomNum <= (sumOfProbability + rouletteViewInLayout.getItemProbabilities().get(i))) {
-
+                                    //前回までの項目の後ろの境界 ~ 今回の項目の度数未満の乱数生成（回転）
                                     degree = sumOfDegree +
-                                            RANDOM.nextInt((int) (sectorDegree * rouletteViewInLayout.getItemRatios().get(i)));
+                                            RANDOM.nextFloat() * (sectorDegree * rouletteViewInLayout.getItemRatios().get(i));
 
                                     break;
                                 }
@@ -361,8 +359,39 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 7200f, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
-                    rotate.setDuration(8500);       // アニメーションにかける時間(ミリ秒)
+
+                    /*
+                    animation = new ArcAnimation(rouletteViewInLayout);
+                    animation.setDuration(3600);
+                    animation.setInterpolator(new DecelerateInterpolator()); //勢い良く回り、だんだんゆっくりになって止まるように
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            // we empty the result text view when the animation start
+                            resultTextView.setText("");
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            // we display the correct sector pointed by the triangle at the end of the rotate animation
+                            //resultTextView.setText(getSector(360f - (degree % 360)));
+                            resultTextView.setText(getSector(degree, rouletteViewInLayout));
+                            //resultTv.setText(getSector(degree));
+                            //Log.d("getsector", String.valueOf(360 - (degree % 720)));
+                            Log.d("getsector", String.valueOf(degree));
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    rouletteViewInLayout.startAnimation(animation);
+
+                     */
+
+                    RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 1800f, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
+                    rotate.setDuration(500);       // アニメーションにかける時間(ミリ秒)
                     rotate.setFillAfter(true);          // アニメーション表示後の状態を保持
                     rotate.setInterpolator(new DecelerateInterpolator()); //勢い良く回り、だんだんゆっくりになって止まるように
                     rotate.setAnimationListener(new Animation.AnimationListener() {
@@ -388,6 +417,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     rouletteViewInLayout.startAnimation(rotate);    // アニメーション開始
+
+
                 } else {
                     if (mToast != null) mToast.cancel();
                     mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);

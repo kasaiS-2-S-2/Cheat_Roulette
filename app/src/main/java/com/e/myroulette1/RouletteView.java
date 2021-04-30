@@ -1,5 +1,11 @@
 package com.e.myroulette1;
 
+/* 課題　*/
+/*
+・ edittextのフォーカスのこと　→　フォーカス　→　edittextの場合だったら、入力線が点滅しているときや、文字キーが出ているときのこと。　→　onwindowforcuchangeにおいて、これが作用していそう。
+ */
+
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,44 +15,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
-/* 課題　*/
-/*
-・ ルーレットの項目を決めて、セットした時、ルーレットの一番初めの項目がちょうど０度に来るように初期化を毎回したい！ルーレットの回すに際にはうまくそれができるが、見た目の問題ではあるが、なんだか気持ち悪い
-・ edittextのフォーカスのこと　→　フォーカス　→　edittextの場合だったら、入力線が点滅しているときや、文字キーが出ているときのこと。　→　onwindowforcuchangeにおいて、これが作用していそう。
-・ colors, textStringは、staticでやっている → staticとは、インスタンスごとではなく、クラスで共通のarraylistのため、今のままだと一種類のルーレットしかつくれない
-対処法　→　roletteviewをインスタンス化できるように（newできるように）する　→　そのためには、今XMLで記述している部分をjavaで書くことができれば、動的にrouletteviewをnewすることができる。
- */
 
 public class RouletteView extends View {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean isAnimation;
 
-/*
-    public static int[] colors = {
-            Color.argb(255, 255, 255, 128),
-            Color.argb(255, 255, 128, 255),
-            Color.argb(255, 128, 255, 255),
-            Color.argb(255, 128, 128, 255),
-            Color.argb(255, 128, 255, 128),
-            Color.argb(255, 255, 128, 128),
-            Color.argb(255, 255, 128, 10),/////////////////////////////////////
-            Color.argb(10, 128, 128, 255),/////////////////////////////////////
-            Color.argb(255, 10, 128, 255),/////////////////////////////////////
-    };
-
-    public static String[] textStrings = {
-            "カレーライス",
-            "肉じゃが",
-            "オムレツ",
-            "マーボー豆腐",
-            "鳥のから揚げ",
-            "ビーフシチュー",
-            "寿司",///////////////////////////////////////////////////////////////////
-            "ハンバーグ",//////////////////////////////////////////////////////////////
-            "ドリア",//////////////////////////////////////////////////////////////
-    };
-
-*/
 
     //各ルーレット情報の主キー
     private int id;
@@ -101,70 +74,9 @@ public class RouletteView extends View {
 
     boolean isStateNoRoulette = true;
 
-        /*public void addPos(int move) {
-            pos += move;
-        }*/
-
-        /*
-    public RouletteView(Context context) { //Javaコードでnewした場合に呼ばれるコンストラクタ
-        super(context);
-
-        isStateNoRoulette = false; //コードからviewが作成された場合は、このコンストラクタを使い、かつルーレットが作成される。
-
-        //float strokeWidth = 400.0f;///////////////////////////////////////////
-        paint = new Paint();//////////////////////////////////////////////////
-        paint.setAntiAlias(true);/////////////////////////////////////////////
-        //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
-        //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
-
-//            paint = new Paint();
-        //          paint.setAntiAlias(true);
-
-        textPaint = new Paint();
-        textPaint.setColor(Color.DKGRAY);
-        //textPaint.setTextSize(45);
-        textPaint.setAntiAlias(true);
-
-        paint2 = new Paint();/////////////////////////////////////////////
-        paint2.setColor(Color.BLACK);///////////////////////////////////////
-        paint2.setAntiAlias(true);
-
-        paint3 = new Paint();
-        paint3.setColor(Color.RED);
-        paint3.setAntiAlias(true);
-
-        //this.num = colors.size();
-        //angle = (float) 360 / num;
-    }
-    */
 
     public RouletteView(Context context, AttributeSet attrs) { //クラスRouletteViewのコンストラクタ
         super(context, attrs);
-/*
-        colors.add(Color.argb(255, 255, 255, 128));
-        colors.add(Color.argb(255, 255, 128, 255));
-        colors.add(Color.argb(255, 128, 255, 255));
-        colors.add(Color.argb(255, 128, 128, 255));
-        colors.add(Color.argb(255, 128, 255, 128));
-        colors.add(Color.argb(255, 255, 128, 128));
-        colors.add(Color.argb(255, 255, 128, 10));/////////////////////////////////////
-        colors.add(Color.argb(10, 128, 128, 255));/////////////////////////////////////
-        colors.add(Color.argb(255, 10, 128, 255));/////////////////////////////////////
-        colors.add(Color.argb(255, 10, 10, 10));///////////////////////////////////////
-
-        textStrings.add("カレーライス");
-        textStrings.add("肉じゃが");
-        textStrings.add("オムレツ");
-        textStrings.add("マーボー豆腐");
-        textStrings.add("鳥のから揚げ");
-        textStrings.add("ビーフシチュー");
-        textStrings.add("寿司");
-        textStrings.add("ハンバーグ");
-        textStrings.add("ドリア");
-        textStrings.add("");
-
-
- */
 
         //float strokeWidth = 400.0f;///////////////////////////////////////////
         paint = new Paint();//////////////////////////////////////////////////
@@ -198,32 +110,7 @@ public class RouletteView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        /*
-        // 背景、半透明
-        canvas.drawColor(Color.argb(127, 0, 127, 63));
 
-        // 円
-        paint.setColor(Color.argb(255, 68, 255, 255));
-        paint.setStrokeWidth(30);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.STROKE);
-        // (x1,y1,r,paint) 中心x1座標, 中心y1座標, r半径
-        canvas.drawCircle(450, 450, 100, paint);
-
-        // 矩形
-        paint.setColor(Color.argb(255, 255, 190, 0));
-        paint.setStrokeWidth(10);
-        paint.setStyle(Paint.Style.STROKE);
-        // (x1,y1,x2,y2,paint) 左上の座標(x1,y1), 右下の座標(x2,y2)
-        canvas.drawRect(480, 480, 850, 880, paint);
-
-        // 線
-        paint.setStrokeWidth(15);
-        paint.setColor(Color.argb(255, 0, 255, 120));
-        // (x1,y1,x2,y2,paint) 始点の座標(x1,y1), 終点の座標(x2,y2)
-        canvas.drawLine(350, 850, 750, 630, paint);
-
-         */
         super.onDraw(canvas);///////////////////////////////////////////////
 
         if (isStateNoRoulette) {

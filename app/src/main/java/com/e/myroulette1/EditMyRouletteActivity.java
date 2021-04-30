@@ -262,13 +262,13 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                     LinearLayout childLayout = (LinearLayout) layout.getChildAt(i);
                     LinearLayout grandChildLayout2 = (LinearLayout) childLayout.getChildAt(1);
                     if (((Switch) grandChildLayout2.getChildAt(0)).isChecked() && switch100PositiveCount >= 1) {
-                        itemProbabilities.add(100f / switch100PositiveCount);
+                        itemProbabilities.add(1f / switch100PositiveCount);
                     } else if (switch100PositiveCount >= 1) {
                         itemProbabilities.add(0f);
                     } else if (((Switch) grandChildLayout2.getChildAt(1)).isChecked() && switch0PositiveCount >= 1) {
                         itemProbabilities.add(0f);
                     } else if (switch0PositiveCount >= 1) {
-                        itemProbabilities.add(100f / (colors.size() - switch0PositiveCount));
+                        itemProbabilities.add(1f / (colors.size() - switch0PositiveCount));
                     }
                 }
 

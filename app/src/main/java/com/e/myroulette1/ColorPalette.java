@@ -1,7 +1,6 @@
 package com.e.myroulette1;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -27,7 +26,6 @@ public class ColorPalette {
 
         do {
             chosenIndex = RANDOM.nextInt(colorStrings.length);
-            Log.d("ああああああああああああああああああああ", colorStrings[chosenIndex]);
             chosenColor = Color.parseColor(colorStrings[chosenIndex]);
         }while (chosenColor == previousColor);
 

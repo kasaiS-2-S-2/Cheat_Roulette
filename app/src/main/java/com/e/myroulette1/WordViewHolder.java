@@ -56,6 +56,7 @@ class WordViewHolder extends RecyclerView.ViewHolder {
         this.rouletteView = itemView.findViewById(R.id.myRoulette);
     }
 
+    //viewHolderとデータをつなぎ合わせる部分
     public void bind(int id,
                      String word,
                      String date,
@@ -75,6 +76,7 @@ class WordViewHolder extends RecyclerView.ViewHolder {
                 OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
     }
 
+    //viewHolderを作る部分
     static WordViewHolder create(ViewGroup parent) {
         //parent = recyclerView(親ビュー）
         View view = LayoutInflater.from(parent.getContext())
