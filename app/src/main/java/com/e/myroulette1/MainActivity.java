@@ -3,6 +3,8 @@ package com.e.myroulette1;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
     static Toast mToast= null;
     static boolean CheatFlag = true;
 
+    private SoundPool soundPool;
+    private int drumRollStart, drumRollLoop, finishSound;
+    private int drumRollLoopStreamID;
+
     //private float xc = 0.0f;
     //private float yc = 0.0f;
 
@@ -110,6 +116,40 @@ public class MainActivity extends AppCompatActivity {
             adapter.submitList(words);
         });
 
+        AudioAttributes audioAttributes = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            audioAttributes = new AudioAttributes.Builder()
+                    // USAGE_MEDIA
+                    // USAGE_GAME
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    // CONTENT_TYPE_MUSIC
+                    // CONTENT_TYPE_SPEECH, etc.
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            soundPool = new SoundPool.Builder()
+                    .setAudioAttributes(audioAttributes)
+                    // ストリーム数に応じて
+                    .setMaxStreams(2)
+                    .build();
+        }
+        // 予め使うサウンドをロードしておく
+        drumRollStart = soundPool.load(this, R.raw.drumrool_start, 1);
+        drumRollLoop = soundPool.load(this, R.raw.drumrool_roop, 1);
+        finishSound = soundPool.load(this, R.raw.finishsound, 1);
+
+
+        // load が終わったか確認する場合
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                Log.d("debug","sampleId="+sampleId);
+                Log.d("debug","status="+status);
+            }
+        });
+
         constraintLayout = findViewById(R.id.constraintLayout);
         pushButton = findViewById(R.id.pushButton);
 
@@ -117,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         Display disp = wm.getDefaultDisplay();
         Point displayAre = new Point();
         disp.getSize(displayAre);
+
 
         constraintLayout.getViewById(R.id.pushButton).getLayoutParams().width = displayAre.x / 3;
         constraintLayout.getViewById(R.id.pushButton).getLayoutParams().height = displayAre.x / 3;
@@ -287,13 +328,13 @@ public class MainActivity extends AppCompatActivity {
             // クリック時に呼ばれるメソッド
             @Override
             public void onClick(View view) {
-
                 if (rouletteExists) {
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     //degree = 0;
                     //float degree = 0;
                     //degreeOld = degree % 360;///////////////////////////////////////////////////////////////////
                     sectorDegree = 360f / (rouletteViewInLayout.sumOfItemRatio * rouletteViewInLayout.splitCount);
+
                     if (rouletteViewInLayout.getItemProbabilities().isEmpty() || !CheatFlag) {
                         //普通の抽選
                         Log.d("aaaaaaaaaaaaaaaaaa", "通常");
@@ -390,19 +431,41 @@ public class MainActivity extends AppCompatActivity {
 
                      */
 
-                    RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 1800f, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
-                    rotate.setDuration(500);       // アニメーションにかける時間(ミリ秒)
+                    //RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 1800f, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+
+                    RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 7200f, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
+                    rotate.setDuration(10000);       // アニメーションにかける時間(ミリ秒)
                     rotate.setFillAfter(true);          // アニメーション表示後の状態を保持
+                    rotate.setInterpolator(new DecelerateInterpolator(2.5f)); //勢い良く回り、だんだんゆっくりになって止まるように
+
+
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    /*
+                    ObjectAnimator rotate = ObjectAnimator.ofFloat(rouletteViewInLayout, View.ROTATION, 0f, (360f - degree) + 1800f);
+                    rotate.setDuration(3000);
                     rotate.setInterpolator(new DecelerateInterpolator()); //勢い良く回り、だんだんゆっくりになって止まるように
+                    rotate.start();
+                    */
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
                     rotate.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
+                            soundPool.play(drumRollStart, 1.0f, 1.0f, 1, 0, 1);
+                            drumRollLoopStreamID =
+                                    soundPool.play(drumRollLoop, 1.0f, 1.0f, 1, 5, 1);
                             // we empty the result text view when the animation start
                             resultTextView.setText("");
+
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
+                            soundPool.stop(drumRollLoopStreamID);
+                            soundPool.play(finishSound, 1.0f, 1.0f, 1, 0, 1);
                             // we display the correct sector pointed by the triangle at the end of the rotate animation
                             //resultTextView.setText(getSector(360f - (degree % 360)));
                             resultTextView.setText(getSector(degree, rouletteViewInLayout));
@@ -566,6 +629,7 @@ public class MainActivity extends AppCompatActivity {
 
         return text;
     }
+
 
     /*
    //このクラスは//タッチして座標取得に必要
