@@ -50,6 +50,8 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
         //削除項目をList<word>から削除
         MainActivity.mWordViewModel.getAllWords().getValue().remove(index);
         notifyItemRemoved(index);
+        //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
+        notifyItemRangeChanged(index, getItemCount() - index);
     }
 
     @Override

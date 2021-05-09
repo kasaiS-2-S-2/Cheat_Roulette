@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import static com.e.myroulette1.MainActivity.adapter;
-
 
 public class MyRouletteActivity extends AppCompatActivity {
 
@@ -25,7 +23,7 @@ public class MyRouletteActivity extends AppCompatActivity {
     //private WordViewModel mWordViewModel;
 
     //private ConstraintLayout constraintLayout;
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private Button returnButton;
 
     @Override
@@ -35,7 +33,7 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerview);
         //MainActivity mainActivity = new MainActivity();
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(MainActivity.adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -54,10 +52,13 @@ public class MyRouletteActivity extends AppCompatActivity {
                         .setMessage("Are you sure?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                int position = viewHolder.getAdapterPosition();
                                 //スワイプされたList<word>の項目をList<word>から削除
-                                MainActivity.mWordViewModel.getAllWords().getValue().remove(viewHolder.getAdapterPosition());
+                                MainActivity.mWordViewModel.getAllWords().getValue().remove(position);
                                 //List<word>から削除されたことを通知（viewHolderにそのことを反映している？）
-                                recyclerView.getAdapter().notifyItemRemoved(viewHolder.getAdapterPosition());
+                                recyclerView.getAdapter().notifyItemRemoved(position);
+                                //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
+                                recyclerView.getAdapter().notifyItemRangeChanged(position, recyclerView.getAdapter().getItemCount() - position);
                                 //スワイプされた箇所のデータベースのprimarykeyを取得
                                 int primaryKey = ((WordViewHolder)viewHolder).getRouletteView().getId();
                                 //取得したprimarykeyの所のデータを消去
@@ -210,12 +211,12 @@ public class MyRouletteActivity extends AppCompatActivity {
         //constrainLayoutの中のRouletteView
         RouletteView selectedRouletteView = viewGroup.findViewById(R.id.myRoulette);
 
-
         Intent fromMyRouletteToEditMyRoulette = new Intent(getApplicationContext(), EditMyRouletteActivity.class);
+        //fromMyRouletteToEditMyRoulette.putExtra("editItemPosition", recyclerView.getChildAdapterPosition((View)viewGroup.getParent()));
         fromMyRouletteToEditMyRoulette.putExtra("rouletteId", selectedRouletteView.getId());
         fromMyRouletteToEditMyRoulette.putExtra("rouletteName", selectedRouletteView.getRouletteName());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("colors", selectedRouletteView.getColors());
-        fromMyRouletteToEditMyRoulette.putStringArrayListExtra("textStrings", selectedRouletteView.getTextStrings());
+        fromMyRouletteToEditMyRoulette.putStringArrayListExtra("itemNames", selectedRouletteView.getTextStrings());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("itemRatios", selectedRouletteView.getItemRatios());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch100", selectedRouletteView.getOnOffInfoOfSwitch100());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch0", selectedRouletteView.getOnOffInfoOfSwitch0());

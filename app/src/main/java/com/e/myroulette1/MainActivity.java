@@ -6,7 +6,6 @@ import android.graphics.Point;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -19,13 +18,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+//import androidx.annotation.RequiresApi;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     //private float yc = 0.0f;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,24 +117,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
         AudioAttributes audioAttributes = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            audioAttributes = new AudioAttributes.Builder()
-                    // USAGE_MEDIA
-                    // USAGE_GAME
-                    .setUsage(AudioAttributes.USAGE_GAME)
-                    // CONTENT_TYPE_MUSIC
-                    // CONTENT_TYPE_SPEECH, etc.
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                    .build();
-        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            soundPool = new SoundPool.Builder()
-                    .setAudioAttributes(audioAttributes)
-                    // ストリーム数に応じて
-                    .setMaxStreams(2)
-                    .build();
-        }
+        audioAttributes = new AudioAttributes.Builder()
+                // USAGE_MEDIA
+                // USAGE_GAME
+                .setUsage(AudioAttributes.USAGE_GAME)
+                // CONTENT_TYPE_MUSIC
+                // CONTENT_TYPE_SPEECH, etc.
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build();
+
+
+
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                // ストリーム数に応じて
+                .setMaxStreams(2)
+                .build();
+
         // 予め使うサウンドをロードしておく
         drumRollStart = soundPool.load(this, R.raw.drumrool_start, 1);
         drumRollLoop = soundPool.load(this, R.raw.drumrool_roop, 1);
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 */
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
+    //@RequiresApi(api = Build.VERSION_CODES.Q)
     public void onWindowFocusChanged(boolean hasFocus) {
         //public void onResume() {
         //super.onRestart();
@@ -233,7 +233,6 @@ public class MainActivity extends AppCompatActivity {
         //super.onResume();
 
         super.onWindowFocusChanged(hasFocus);
-        Log.d("あああああああああああああああ", "iiiiiiiiiiiiiiiiiii");
 
         //rouletteView = new RouletteView(getApplicationContext());
 
@@ -307,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         resetButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.Q)
+            //@RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View view) {
                 if (rouletteExists) {
@@ -435,9 +434,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                     RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 7200f, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
-                    rotate.setDuration(10000);       // アニメーションにかける時間(ミリ秒)
+                    rotate.setDuration(300);       // アニメーションにかける時間(ミリ秒)
                     rotate.setFillAfter(true);          // アニメーション表示後の状態を保持
-                    rotate.setInterpolator(new DecelerateInterpolator(2.5f)); //勢い良く回り、だんだんゆっくりになって止まるように
+                    rotate.setInterpolator(new DecelerateInterpolator(2.0f)); //勢い良く回り、だんだんゆっくりになって止まるように
 
 
                     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
