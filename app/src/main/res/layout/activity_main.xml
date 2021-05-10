@@ -55,12 +55,12 @@
         app:layout_constraintEnd_toStartOf="@+id/resultTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.e.myroulette1.PushButton
+    <ImageButton
         android:id="@+id/pushButton"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:background="@drawable/shape"
-        android:text="@string/button"
+        app:srcCompat="@drawable/ic_baseline_refresh_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

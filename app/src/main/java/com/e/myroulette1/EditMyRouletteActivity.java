@@ -1,14 +1,12 @@
 package com.e.myroulette1;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -448,7 +445,7 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                         //色の変更
                         ((GradientDrawable)colorButton.getBackground()).setColor(picker.getColor());
                         //色の変更があった部分のadapterPositionを取得
-                        int position = rouletteItemList.getLayoutManager().getPosition((View)colorButton.getParent().getParent());
+                        int position = rouletteItemList.getLayoutManager().getPosition((View)colorButton.getParent().getParent().getParent());
                         //色の変更を適応
                         ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setColor(position, picker.getColor());
                         //colorButton.setBackgroundColor(picker.getColor());
@@ -538,9 +535,9 @@ public class EditMyRouletteActivity extends AppCompatActivity {
 
 
     public int generateColor() {
-        int red = ((int) (Math.random() * 200));
-        int green = ((int) (Math.random() * 200));
-        int blue = ((int) (Math.random() * 200));
+        int red = ((int) (Math.random() * 255));
+        int green = ((int) (Math.random() * 255));
+        int blue = ((int) (Math.random() * 255));
         return Color.rgb(red, green, blue);
     }
 

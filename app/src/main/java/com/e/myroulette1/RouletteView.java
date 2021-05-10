@@ -52,7 +52,7 @@ public class RouletteView extends View {
 
     private RectF rectF = null;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-    Paint paint, paint2, paint3, paint4;
+    Paint paint, paint2, paint3, paint4, edgePaint, shadowPaint;
 
     Paint textPaint;
 
@@ -104,6 +104,19 @@ public class RouletteView extends View {
         paint4.setColor(Color.LTGRAY);
         paint4.setAntiAlias(true);
 
+        //枠線の描画
+        edgePaint = new Paint();
+        edgePaint.setColor(Color.parseColor("#50FFFFFF"));
+        //edgePaint.setColor(Color.RED);
+        edgePaint.setAntiAlias(true);
+        edgePaint.setStyle(Paint.Style.STROKE);
+
+        shadowPaint = new Paint();
+        shadowPaint.setAntiAlias(true);
+        //shadowPaint.setColor(Color.parseColor("#00000000"));
+
+        //edgePaint.setStrokeWidth(48);
+
         //this.num = colors.size();
         //angle = (float) 360 / num;
     }
@@ -115,9 +128,18 @@ public class RouletteView extends View {
 
         if (isStateNoRoulette) {
 
-            canvas.drawCircle(getWidth()/2, getHeight()/2, getWidth()/2, paint4);
+            canvas.drawCircle(getWidth()/2f, getHeight()/2f, getWidth()/2f, paint4);
 
         } else {
+
+            if (xc == 0.0f) xc = getWidth() / 2f;
+            if (yc == 0.0f) yc = getHeight() / 2f;
+
+            float rouletteRadius = (getWidth()/2f) * (15f/16f);
+
+            //shadowPaint.setShadowLayer((getWidth()/2f)+(getWidth()/64f), 0,0, Color.BLACK);
+            shadowPaint.setShadowLayer((rouletteRadius/18f), 0,0, Color.BLACK);
+            canvas.drawCircle(xc, yc, rouletteRadius, shadowPaint);
 
             sumOfItemRatio = 0;
             for (int i = 0; i < colors.size(); i++) {
@@ -136,18 +158,18 @@ public class RouletteView extends View {
             //if(xc == 0.0f) xc = (float)canvas.getWidth() / 2;
             //if(yc == 0.0f) yc = (float)canvas.getHeight() / 2;
 
-            if (xc == 0.0f) xc = getWidth() / 2;
-            if (yc == 0.0f) yc = getHeight() / 2;
-
             // 画面の中心から横幅に合わせた正方形を作る
             //if(rectF == null) rectF = new RectF(xc - yc/2, yc - yc/2, xc + yc/2, yc + yc/2);//
-            if (rectF == null)
-                rectF = new RectF(0.0f, yc - xc, getWidth(), yc + xc);///////////////////////////////////////
 
+            //Log.d("ああああああああああああああああああああ", " " + 0.0f + " " + (yc - xc) + " " + getWidth() +  " " +(yc + xc));
+            //Log.d("ああああああああああああああああああああ", " " + (getWidth()/32f) + " " + (yc - rouletteRadius) + " " + (getWidth() - (getWidth()/32f)) + " " + (yc + rouletteRadius));
+            //rectF = new RectF(getWidth()/8f, yc - rouletteDiameter, getWidth() - (getWidth()/8f), yc + rouletteDiameter);///////////////////////////////////////
+            if (rectF == null) rectF = new RectF(getWidth()/32f, yc - rouletteRadius, getWidth() - getWidth()/32f, yc + rouletteRadius);///////////////////////////////////////
             //init = 1;
             //}
 
             canvas.rotate(270, xc, yc); //項目順になるようにルーレットの初期位置を設定
+
             sumOfAngle = 0;
             angleCount = 0;
             for (int k = 0; k < splitCount; k++) {
@@ -156,13 +178,15 @@ public class RouletteView extends View {
                     //paint.setColor(colors[i]);
                     paint.setColor(colors.get(i));//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった →　検証したら、多分.size()ってより剰余の計算量がでかいっぽい
                     canvas.drawArc(rectF, sumOfAngle + pos, angle * itemRatios.get(i), true, paint);
+                    //枠線描画
+                    //canvas.drawArc(rectF, sumOfAngle + pos, angle * itemRatios.get(i), true, edgePaint);
                     sumOfAngle += angle * itemRatios.get(i);
                     angleCount++;
                 }
             }
 
 
-            textPaint.setTextSize(getWidth() / 20); //動的に文字の大きさを決める
+            textPaint.setTextSize(getWidth() / 20f); //動的に文字の大きさを決める
             for (int k = 0; k < splitCount; k++) {
                 // テキストの描画
                 for (int j = 0; j < num; j++) {
@@ -177,9 +201,14 @@ public class RouletteView extends View {
                     }
                     canvas.rotate(textAngle, xc, yc);//rotateすると、canvasごと回る。
                     //canvas.drawText(textStrings[j], xc + 250, yc + 10 , textPaint);
-                    canvas.drawText(textStrings.get(j), xc + getWidth() / 4, yc + getWidth() / 68 , textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+                    canvas.drawText(textStrings.get(j), xc + getWidth() / 4f, yc + getWidth() / 68f , textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
                 }
             }
+
+            //枠線描画
+            float edgeWidth = getWidth()/32f;
+            edgePaint.setStrokeWidth(edgeWidth);
+            canvas.drawCircle(xc, yc, rouletteRadius - edgeWidth/2f , edgePaint);
             //中心の白い円の描画
             //canvas.drawCircle(xc, yc, 200, paint2);
 

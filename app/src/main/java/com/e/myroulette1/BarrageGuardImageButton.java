@@ -5,21 +5,22 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 /**
  * 連打防止Buttonクラス
  */
-public class BarrageGuardButton extends AppCompatButton {
-    public BarrageGuardButton(Context context) {
+public class BarrageGuardImageButton extends AppCompatImageButton {
+
+    public BarrageGuardImageButton(Context context) {
         super(context);
     }
 
-    public BarrageGuardButton(Context context, AttributeSet attrs) {
+    public BarrageGuardImageButton(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BarrageGuardButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BarrageGuardImageButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

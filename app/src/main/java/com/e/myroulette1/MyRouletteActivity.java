@@ -2,9 +2,12 @@ package com.e.myroulette1;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
@@ -23,7 +26,7 @@ public class MyRouletteActivity extends AppCompatActivity {
     //private WordViewModel mWordViewModel;
 
     //private ConstraintLayout constraintLayout;
-    public static RecyclerView recyclerView;
+    public RecyclerView myRouletteList;
     private Button returnButton;
 
     @Override
@@ -31,11 +34,21 @@ public class MyRouletteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_roulette);
 
-        recyclerView = findViewById(R.id.recyclerview);
+        myRouletteList = findViewById(R.id.recyclerview);
         //MainActivity mainActivity = new MainActivity();
-        recyclerView.setAdapter(MainActivity.adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        myRouletteList.setAdapter(MainActivity.adapter);
+        myRouletteList.setLayoutManager(new LinearLayoutManager(this));
 
+        //スクリーンサイズの取得
+        WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
+        Display disp = wm.getDefaultDisplay();
+        Point realSize = new Point();
+        disp.getRealSize(realSize);
+        int ScreenWidth = realSize.x;
+        int ScreenHeight = realSize.y;
+
+        //recyclerViewの真下に少しの空白を空ける（スクリーンサイズの1/8分空ける）
+        myRouletteList.setPadding(0, 0, 0, ScreenHeight/8);
 
         //スワイプ削除時にアラートダイアログを表示できるやつ
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -56,9 +69,9 @@ public class MyRouletteActivity extends AppCompatActivity {
                                 //スワイプされたList<word>の項目をList<word>から削除
                                 MainActivity.mWordViewModel.getAllWords().getValue().remove(position);
                                 //List<word>から削除されたことを通知（viewHolderにそのことを反映している？）
-                                recyclerView.getAdapter().notifyItemRemoved(position);
+                                myRouletteList.getAdapter().notifyItemRemoved(position);
                                 //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
-                                recyclerView.getAdapter().notifyItemRangeChanged(position, recyclerView.getAdapter().getItemCount() - position);
+                                myRouletteList.getAdapter().notifyItemRangeChanged(position, myRouletteList.getAdapter().getItemCount() - position);
                                 //スワイプされた箇所のデータベースのprimarykeyを取得
                                 int primaryKey = ((WordViewHolder)viewHolder).getRouletteView().getId();
                                 //取得したprimarykeyの所のデータを消去
@@ -69,20 +82,20 @@ public class MyRouletteActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // User cancelled the dialog,
                                     // so we will refresh the adapter to prevent hiding the item from UI
-                                    recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
+                                    myRouletteList.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
                                 }
                         })
                         .setOnCancelListener(new DialogInterface.OnCancelListener() {
                             @Override
                             public void onCancel(DialogInterface dialog) {
                                 // ダイアログがキャンセルされた際の処理
-                                recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
+                                myRouletteList.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
                             }
                         })
                         .create()
                         .show();
             }
-        }).attachToRecyclerView(recyclerView);
+        }).attachToRecyclerView(myRouletteList);
 
 
 

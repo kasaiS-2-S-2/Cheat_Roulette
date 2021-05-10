@@ -4,9 +4,9 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.View;
 
-public class EditMyRouletteAdapter extends RouletteItemListAdapter {
+public class EditRouletteAdapter extends RouletteItemListAdapter {
 
-    public EditMyRouletteAdapter(RouletteItemListInfo dataSet) {
+    public EditRouletteAdapter(RouletteItemListInfo dataSet) {
         super(dataSet);
     }
 
@@ -17,8 +17,8 @@ public class EditMyRouletteAdapter extends RouletteItemListAdapter {
         Log.d("ああああああああああああああああああ", "onBindViewHolder");
 
         //visibleFlagがfalseの時は、switch100, switch0 を非表示にする
-        //ここがEditMyRouletteActivityになっているのが、RouletteItemListAdapterとの違い
-        if (!EditMyRouletteActivity.visibleFlag) {
+        //ここがEditRouletteActivityになっているのが、RouletteItemListAdapterとの違い
+        if (!EditRouletteActivity.visibleFlag) {
             viewHolder.getLinearLayout2().setVisibility(View.GONE);
         } else {
             viewHolder.getLinearLayout2().setVisibility(View.VISIBLE);

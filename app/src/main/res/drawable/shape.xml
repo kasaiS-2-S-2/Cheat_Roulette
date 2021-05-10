@@ -4,8 +4,13 @@
         <!--<solid
             android:color="#d3d3d3"/>
             -->
+
+
     <gradient
         android:startColor="#4169e1"
         android:endColor="#ff1493"
         android:angle="45"/>
+
+
+
 </shape>

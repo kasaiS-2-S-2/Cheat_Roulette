@@ -1,6 +1,7 @@
 package com.e.myroulette1;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.media.AudioAttributes;
@@ -15,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
      */
 
     RouletteView rouletteViewInLayout;//onWindowFocusChange用の変数
-    private PushButton pushButton;
+    private ImageButton rouletteStartButton;
     private TextView resultTextView;
     private Button resetButton;
     private Button plusButton;
     private Button minusButton;
-    private Button sendButton;
+    private Button createButton;
     private Button checkButton;
     private Button editButton;
     private Button toMyRouletteButton;
@@ -79,12 +81,55 @@ public class MainActivity extends AppCompatActivity {
     //private float yc = 0.0f;
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("あああああああああああああああ", "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("あああああああああああああああ", "onResume");
+
+        //soundPool.stop(drumRollLoopStreamID);
+        soundPool.autoResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("あああああああああああああああ", "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("あああああああああああああああ", "onPause");
+
+        //soundPool.stop(drumRollLoopStreamID);
+        soundPool.autoPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("あああああああああああああああ", "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("あああああああああああああああ", "onDestroy");
+    }
+
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("あああああああああああああああ", "onCreate");
         //final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
 
         // Get a new or existing ViewModel from the ViewModelProvider.
@@ -132,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         soundPool = new SoundPool.Builder()
                 .setAudioAttributes(audioAttributes)
                 // ストリーム数に応じて
-                .setMaxStreams(2)
+                .setMaxStreams(3)
                 .build();
 
         // 予め使うサウンドをロードしておく
@@ -151,36 +196,39 @@ public class MainActivity extends AppCompatActivity {
         });
 
         constraintLayout = findViewById(R.id.constraintLayout);
-        pushButton = findViewById(R.id.pushButton);
+        rouletteStartButton = findViewById(R.id.pushButton);
 
         WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
         Display disp = wm.getDefaultDisplay();
         Point displayAre = new Point();
         disp.getSize(displayAre);
 
-
         constraintLayout.getViewById(R.id.pushButton).getLayoutParams().width = displayAre.x / 3;
         constraintLayout.getViewById(R.id.pushButton).getLayoutParams().height = displayAre.x / 3;
+        //Matrix matrix = new Matrix();
+        //matrix.setScale(displayAre.x * 2f / 9f, displayAre.x * 2f / 9f);
+        //matrix.setScale(3, 3);
+        //rouletteStartButton.setImageMatrix(matrix);
 
         //rouletteViewInLayout = new RouletteView(getApplicationContext());//初めはインスタンスの中身なし;
         //constraintLayout.addView(rouletteViewInLayout);
         setContentView(constraintLayout);
 
-        pushButton = (PushButton) findViewById(R.id.pushButton);
+        rouletteStartButton = (ImageButton) findViewById(R.id.pushButton);
         resultTextView = findViewById(R.id.resultTextView);
         resetButton = findViewById(R.id.reset_button);
         plusButton = findViewById(R.id.plus_button);
         minusButton = findViewById(R.id.minus_button);
-        sendButton = findViewById(R.id.send_button);
+        createButton = findViewById(R.id.send_button);
         checkButton = findViewById(R.id.check_button);
         editButton = findViewById(R.id.edit_button);
         toMyRouletteButton = findViewById(R.id.myRoulette_button);
 
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toRouletteCreateIntent = new Intent(getApplication(), RouletteCreateActivity.class);
+                Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
                 //Intent intent = new Intent(getApplication(), SubActivity.class);
                 startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATEACTIVITY);
             }
@@ -189,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         toMyRouletteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toMyRouletteIntent = new Intent(getApplication(), MyRouletteActivity.class);
+                Intent toMyRouletteIntent = new Intent(getApplicationContext(), MyRouletteActivity.class);
                 startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
                 //startActivity(toMyRouletteIntent);
             }
@@ -286,8 +334,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (rouletteExists) {
-                    Uri uri = null;
-                    Intent rouletteEditIntent = new Intent("EDIT_ROULETTE", uri, getApplication(), RouletteCreateActivity.class);
+                    Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
                     //Intent intent = new Intent(getApplication(), SubActivity.class);
                     rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
                     rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
@@ -323,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        pushButton.setOnClickListener(new View.OnClickListener() {
+        rouletteStartButton.setOnClickListener(new View.OnClickListener() {
             // クリック時に呼ばれるメソッド
             @Override
             public void onClick(View view) {
@@ -434,7 +481,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 7200f, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
-                    rotate.setDuration(300);       // アニメーションにかける時間(ミリ秒)
+                    rotate.setDuration(10000);       // アニメーションにかける時間(ミリ秒)
                     rotate.setFillAfter(true);          // アニメーション表示後の状態を保持
                     rotate.setInterpolator(new DecelerateInterpolator(2.0f)); //勢い良く回り、だんだんゆっくりになって止まるように
 
@@ -453,6 +500,17 @@ public class MainActivity extends AppCompatActivity {
                     rotate.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
+                            rouletteStartButton.setEnabled(false);
+                            createButton.setEnabled(false);
+                            toMyRouletteButton.setEnabled(false);
+                            editButton.setEnabled(false);
+                            plusButton.setEnabled(false);
+                            minusButton.setEnabled(false);
+
+                            //背景色、resultTextViewをそれぞれ初期化する
+                            constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                            resultTextView.setText("");
+
                             soundPool.play(drumRollStart, 1.0f, 1.0f, 1, 0, 1);
                             drumRollLoopStreamID =
                                     soundPool.play(drumRollLoop, 1.0f, 1.0f, 1, 5, 1);
@@ -467,9 +525,17 @@ public class MainActivity extends AppCompatActivity {
                             soundPool.play(finishSound, 1.0f, 1.0f, 1, 0, 1);
                             // we display the correct sector pointed by the triangle at the end of the rotate animation
                             //resultTextView.setText(getSector(360f - (degree % 360)));
-                            resultTextView.setText(getSector(degree, rouletteViewInLayout));
+                            //ルーレットが止まった位置の項目名と色をそれぞれ設定する
+                            constraintLayout.setBackgroundColor(rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout)));
+                            resultTextView.setText(rouletteViewInLayout.getTextStrings().get(getSector(degree, rouletteViewInLayout)));
                             //resultTv.setText(getSector(degree));
                             //Log.d("getsector", String.valueOf(360 - (degree % 720)));
+                            rouletteStartButton.setEnabled(true);
+                            createButton.setEnabled(true);
+                            toMyRouletteButton.setEnabled(true);
+                            editButton.setEnabled(true);
+                            plusButton.setEnabled(true);
+                            minusButton.setEnabled(true);
                             Log.d("getsector", String.valueOf(degree));
                         }
 
@@ -576,6 +642,11 @@ public class MainActivity extends AppCompatActivity {
 
                     rouletteView.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
                     setContentView(constraintLayout);
+
+                    //背景色、resultTextViewをそれぞれ初期化する
+                    constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    resultTextView.setText("");
+
                     rouletteExists = true;
                 }
                 break;
@@ -601,9 +672,10 @@ public class MainActivity extends AppCompatActivity {
 
          */
 
-    private String getSector(float degrees, RouletteView roulette) {
+    private Integer getSector(float degrees, RouletteView roulette) {
         int i = 0;
-        String text = null;
+        //String text = null;
+        Integer position = null;
         float start = 0;
         float end = 0;
 
@@ -620,13 +692,15 @@ public class MainActivity extends AppCompatActivity {
                 // degrees is in [start;end[
                 // so text is equals to sectors[i];
 
-                text = roulette.getTextStrings().get(i % roulette.getColors().size());//get(i)をget(iのcolorsサイズで割った剰余)に変更　→　スプリットしたときに存在しないtextStringを参照しないように対策 →　%の計算量でかいから注意
+                //text = roulette.getTextStrings().get(i % roulette.getColors().size());//get(i)をget(iのcolorsサイズで割った剰余)に変更　→　スプリットしたときに存在しないtextStringを参照しないように対策 →　%の計算量でかいから注意
+                //ルーレットの止まった項目のインデックスを決定
+                position = i % roulette.getColors().size();
             }
             i++;
 
-        } while (text == null && i < roulette.getColors().size() * roulette.splitCount);
+        } while (position == null && i < roulette.getColors().size() * roulette.splitCount);
 
-        return text;
+        return position;
     }
 
 

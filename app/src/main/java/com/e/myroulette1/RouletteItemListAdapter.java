@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -28,7 +29,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         private final Button colorButton;
         private final EditText itemName;
         private final EditText ratio;
-        private final Button deleteButton;
+        private final ImageButton deleteButton;
         private final SwitchCompat switch100;
         private final SwitchCompat switch0;
         private final LinearLayout linearLayout2;
@@ -84,7 +85,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
             return ratio;
         }
 
-        public Button getDeleteButton() {
+        public ImageButton getDeleteButton() {
             return deleteButton;
         }
 
@@ -146,7 +147,10 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         viewHolder.getDeleteButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteItem(viewHolder.getAdapterPosition());
+                //ルーレット項目が２つ未満になるのを防ぐ
+                if (getItemCount() > 2) {
+                    deleteItem(viewHolder.getAdapterPosition());
+                }
             }
         });
 
