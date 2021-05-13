@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -81,6 +82,7 @@ public class RouletteView extends View {
         //float strokeWidth = 400.0f;///////////////////////////////////////////
         paint = new Paint();//////////////////////////////////////////////////
         paint.setAntiAlias(true);/////////////////////////////////////////////
+        setLayerType(LAYER_TYPE_HARDWARE, paint);
         //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
         //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
 
@@ -88,21 +90,25 @@ public class RouletteView extends View {
         //          paint.setAntiAlias(true);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.DKGRAY);
+        textPaint.setColor(Color.WHITE);
         //textPaint.setTextSize(45);
         textPaint.setAntiAlias(true);
+        setLayerType(LAYER_TYPE_HARDWARE, textPaint);
 
         paint2 = new Paint();/////////////////////////////////////////////
         paint2.setColor(Color.BLACK);///////////////////////////////////////
         paint2.setAntiAlias(true);
+        setLayerType(LAYER_TYPE_HARDWARE, paint2);
 
         paint3 = new Paint();
         paint3.setColor(Color.RED);
         paint3.setAntiAlias(true);
+        setLayerType(LAYER_TYPE_HARDWARE, paint3);
 
         paint4 = new Paint();
         paint4.setColor(Color.LTGRAY);
         paint4.setAntiAlias(true);
+        setLayerType(LAYER_TYPE_HARDWARE, paint4);
 
         //枠線の描画
         edgePaint = new Paint();
@@ -110,9 +116,12 @@ public class RouletteView extends View {
         //edgePaint.setColor(Color.RED);
         edgePaint.setAntiAlias(true);
         edgePaint.setStyle(Paint.Style.STROKE);
+        setLayerType(LAYER_TYPE_HARDWARE, edgePaint);
 
         shadowPaint = new Paint();
         shadowPaint.setAntiAlias(true);
+        //ここだけはソフトウェアレイアーを使う　→　影をうまく表示できないため
+        setLayerType(LAYER_TYPE_SOFTWARE, shadowPaint);
         //shadowPaint.setColor(Color.parseColor("#00000000"));
 
         //edgePaint.setStrokeWidth(48);
@@ -123,11 +132,9 @@ public class RouletteView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
         super.onDraw(canvas);///////////////////////////////////////////////
 
         if (isStateNoRoulette) {
-
             canvas.drawCircle(getWidth()/2f, getHeight()/2f, getWidth()/2f, paint4);
 
         } else {
@@ -138,7 +145,10 @@ public class RouletteView extends View {
             float rouletteRadius = (getWidth()/2f) * (15f/16f);
 
             //shadowPaint.setShadowLayer((getWidth()/2f)+(getWidth()/64f), 0,0, Color.BLACK);
-            shadowPaint.setShadowLayer((rouletteRadius/18f), 0,0, Color.BLACK);
+            //shadowPaint.setShadowLayer((rouletteRadius/2f), 0,0, Color.BLACK);
+            shadowPaint.setShadowLayer(rouletteRadius/18f, 0, 0, Color.DKGRAY);
+            //setLayerType(LAYER_TYPE_SOFTWARE, shadowPaint);
+            //setLayerType(LAYER_TYPE_HARDWARE, shadowPaint);
             canvas.drawCircle(xc, yc, rouletteRadius, shadowPaint);
 
             sumOfItemRatio = 0;
@@ -186,7 +196,8 @@ public class RouletteView extends View {
             }
 
 
-            textPaint.setTextSize(getWidth() / 20f); //動的に文字の大きさを決める
+            textPaint.setTextSize(getWidth() / 25f); //動的に文字の大きさを決める
+
             for (int k = 0; k < splitCount; k++) {
                 // テキストの描画
                 for (int j = 0; j < num; j++) {
@@ -200,8 +211,38 @@ public class RouletteView extends View {
                         textAngle = ((angle * itemRatios.get(j - 1)) / 2) + ((angle * itemRatios.get(j)) / 2);
                     }
                     canvas.rotate(textAngle, xc, yc);//rotateすると、canvasごと回る。
-                    //canvas.drawText(textStrings[j], xc + 250, yc + 10 , textPaint);
-                    canvas.drawText(textStrings.get(j), xc + getWidth() / 4f, yc + getWidth() / 68f , textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+
+                    //色の明暗の判定
+                    if (isColorDark(colors.get(j))) {
+                        textPaint.setColor(Color.WHITE);
+                        //canvas.drawText(textStrings.get(j), xc + getWidth() / 5.5f, yc + getWidth() / 68f, textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+                    } else {
+                        textPaint.setColor(Color.BLACK);
+                        //canvas.drawText(textStrings.get(j), xc + getWidth() / 5.5f, yc + getWidth() / 68f, textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+                    }
+
+                    //描く文字列
+                    String willDrawText = textStrings.get(j);
+                    //文字列の最大右端位置
+                    float textEdgeRight = getWidth() - ((3 * getWidth())/32f);
+                    //文字列の左端位置
+                    float textEdgeLeft = xc + (getWidth()/5.5f);
+                    //文字列の最大幅
+                    //float maxTextWidth = (getWidth() - (getWidth()/16f)) - (xc + (getWidth()/6f));
+                    float maxTextWidth = textEdgeRight - textEdgeLeft;
+                    Log.d("ああああああああああああああああ", String.valueOf(maxTextWidth));
+                    //最大幅を文字列幅が超えていたら、省略して表示
+                    if (textPaint.measureText(willDrawText) >= maxTextWidth) {
+                        int countIndex = 1;
+                        while ((textPaint.measureText(willDrawText, 0,  countIndex) < maxTextWidth)) {
+                            countIndex++;
+                        }
+                        String omittedText = willDrawText.substring(0, countIndex) + "...";
+                        canvas.drawText(omittedText, textEdgeLeft, yc + getWidth() / 68f, textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+                    } else {
+                        //最大幅を超えていなければそのまま描画
+                        canvas.drawText(willDrawText, textEdgeLeft, yc + getWidth() / 68f, textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+                    }
                 }
             }
 
@@ -214,6 +255,45 @@ public class RouletteView extends View {
 
         }
     }
+
+    private boolean isColorDark(int color) {
+        //16進数に変換
+        String hexColor = Integer.toHexString(color);
+
+        Boolean isDarkFlag;
+
+        int r = 0;
+        int g = 0;
+        int b = 0;
+
+        if (hexColor.length() > 6) {
+            //ARGB値の場合は6桁のRGB値に直す
+            String hexColor6Digit = hexColor.substring(hexColor.length() - 6);
+
+            //16進数から10進数に変換（2桁ずつ分けて変換）
+            r = Integer.parseInt(hexColor6Digit.substring(0, 2), 16);
+            g = Integer.parseInt(hexColor6Digit.substring(2, 4), 16);
+            b = Integer.parseInt(hexColor6Digit.substring(4, 6), 16);
+
+        } else {
+            //16進数から10進数に変換（2桁ずつ分けて変換）
+            r = Integer.parseInt(hexColor.substring(0, 2), 16);
+            g = Integer.parseInt(hexColor.substring(2, 4), 16);
+            b = Integer.parseInt(hexColor.substring(4, 6), 16);
+        }
+
+        float valueOfLightOrDark = (r*299f + g*587f + b*114f) / 2550f;
+
+        //明暗を判定
+        if (valueOfLightOrDark < 51) {
+            isDarkFlag = true;
+        } else {
+            isDarkFlag = false;
+        }
+
+        return isDarkFlag;
+    }
+
 
     public void setId(int id) {
         //各ルーレット情報の主キー

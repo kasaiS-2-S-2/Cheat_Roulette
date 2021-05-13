@@ -44,6 +44,9 @@ public interface WordDao {
     @Query("SELECT * FROM word_table")
     LiveData<List<Word>> getAlphabetizedWords();
 
+    @Query("SELECT * FROM word_table WHERE ID = :id")
+    Word getWord(int id);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Word word);
 

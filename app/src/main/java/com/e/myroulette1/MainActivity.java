@@ -6,7 +6,6 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -16,12 +15,12 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
      */
 
     RouletteView rouletteViewInLayout;//onWindowFocusChange用の変数
-    private ImageButton rouletteStartButton;
+    private PushImageButton rouletteStartButton;
     private TextView resultTextView;
     private Button resetButton;
     private Button plusButton;
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private Button editButton;
     private Button toMyRouletteButton;
     private ConstraintLayout constraintLayout;
+    //private DrawerLayout drawerLayout;
     private ArcAnimation animation;
 
     private boolean rouletteExists = false;
@@ -195,16 +195,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //drawerLayout = findViewById(R.id.drawer_layout);
         constraintLayout = findViewById(R.id.constraintLayout);
-        rouletteStartButton = findViewById(R.id.pushButton);
+        //rouletteStartButton = findViewById(R.id.rouletteStartButton);
 
         WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
         Display disp = wm.getDefaultDisplay();
         Point displayAre = new Point();
         disp.getSize(displayAre);
 
-        constraintLayout.getViewById(R.id.pushButton).getLayoutParams().width = displayAre.x / 3;
-        constraintLayout.getViewById(R.id.pushButton).getLayoutParams().height = displayAre.x / 3;
+
+        constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().width = displayAre.x / 3;
+        constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().height = displayAre.x / 3;
         //Matrix matrix = new Matrix();
         //matrix.setScale(displayAre.x * 2f / 9f, displayAre.x * 2f / 9f);
         //matrix.setScale(3, 3);
@@ -213,8 +215,9 @@ public class MainActivity extends AppCompatActivity {
         //rouletteViewInLayout = new RouletteView(getApplicationContext());//初めはインスタンスの中身なし;
         //constraintLayout.addView(rouletteViewInLayout);
         setContentView(constraintLayout);
+        //setContentView(drawerLayout);
 
-        rouletteStartButton = (ImageButton) findViewById(R.id.pushButton);
+        rouletteStartButton = findViewById(R.id.rouletteStartButton);
         resultTextView = findViewById(R.id.resultTextView);
         resetButton = findViewById(R.id.reset_button);
         plusButton = findViewById(R.id.plus_button);
@@ -560,6 +563,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (rouletteExists) {
+                    //背景色、resultTextViewをそれぞれ初期化する
+                    constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    resultTextView.setText("");
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     (rouletteViewInLayout.splitCount)++;
                     rouletteViewInLayout.invalidate();
@@ -575,6 +581,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (rouletteExists) {
+                    //背景色、resultTextViewをそれぞれ初期化する
+                    constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    resultTextView.setText("");
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     if (rouletteViewInLayout.splitCount >= 2) {
                         (rouletteViewInLayout.splitCount)--;

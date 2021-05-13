@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,17 @@ public class EditMyRouletteActivity extends AppCompatActivity {
     public static boolean visibleFlag = false;
 
     private final ColorPalette colorPalette = new ColorPalette();
+
+    //編集前のルーレット情報
+    int rouletteIdFromMyRoulette;
+    String rouletteNameFromMyRoulette;
+    ArrayList<Integer> colorsFromMyRoulette;
+    ArrayList<String> itemNamesFromMyRoulette;
+    ArrayList<Integer> itemRatiosFromMyRoulette;
+    ArrayList<Integer> Switch100InfoFromMyRoulette;
+    ArrayList<Boolean> Switch100InfoFromMyRouletteBoolean;
+    ArrayList<Integer> Switch0InfoFromMyRoulette;
+    ArrayList<Boolean> Switch0InfoFromMyRouletteBoolean;
 
     //private int rouletteCount = 0;
 
@@ -128,16 +140,15 @@ public class EditMyRouletteActivity extends AppCompatActivity {
 
         Intent fromMyRouletteIntent = getIntent(); //Mainでedit_Buttonを押した時の遷移
 
-        int rouletteIdFromMyRoulette = fromMyRouletteIntent.getIntExtra("rouletteId", 0);
-        String rouletteNameFromMyRoulette = fromMyRouletteIntent.getStringExtra("rouletteName");
-
-        ArrayList<Integer> colorsFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("colors");
-        ArrayList<String> itemNamesFromMyRoulette = fromMyRouletteIntent.getStringArrayListExtra("itemNames");
-        ArrayList<Integer> itemRatiosFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("itemRatios");
-        ArrayList<Integer> Switch100InfoFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
-        ArrayList<Boolean> Switch100InfoFromMyRouletteBoolean = new ArrayList<Boolean>();
-        ArrayList<Integer> Switch0InfoFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
-        ArrayList<Boolean> Switch0InfoFromMyRouletteBoolean = new ArrayList<Boolean>();
+        rouletteIdFromMyRoulette = fromMyRouletteIntent.getIntExtra("rouletteId", 0);
+        rouletteNameFromMyRoulette = fromMyRouletteIntent.getStringExtra("rouletteName");
+        colorsFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("colors");
+        itemNamesFromMyRoulette = fromMyRouletteIntent.getStringArrayListExtra("itemNames");
+        itemRatiosFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("itemRatios");
+        Switch100InfoFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
+        Switch100InfoFromMyRouletteBoolean = new ArrayList<Boolean>();
+        Switch0InfoFromMyRoulette = fromMyRouletteIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
+        Switch0InfoFromMyRouletteBoolean = new ArrayList<Boolean>();
 
         for (int i=0; i<Switch100InfoFromMyRoulette.size(); i++) {
             if (Switch100InfoFromMyRoulette.get(i) == 1) {
@@ -153,7 +164,7 @@ public class EditMyRouletteActivity extends AppCompatActivity {
             }
         }
 
-        rouletteName.setText(rouletteNameFromMyRoulette);//ルーレット名の項目に設定
+        rouletteName.setText(rouletteNameFromMyRoulette);//ルーレット名を設定
 
         rouletteItemListInfo.setColors(colorsFromMyRoulette);
         rouletteItemListInfo.setItemNames(itemNamesFromMyRoulette);
@@ -419,6 +430,208 @@ public class EditMyRouletteActivity extends AppCompatActivity {
 
     }
 
+    /*
+    //バックキーを押すと、内容に変更があった場合にアラートダイアログを出す処理
+    //うまくいかない
+    @Override
+    public void onBackPressed() {
+
+        //メインスレッドで行う場合の処理
+
+        //RouletteItemListInfo rouletteItemDataSet = rouletteItemListAdapter.getRouletteItemDataSet();
+
+     */
+
+        /*
+        Log.d("あああああああああああああああああああ1", String.valueOf((rouletteName.getText().toString()).equals(rouletteNameFromMain)));
+        Log.d("あああああああああああああああああああ2", String.valueOf((rouletteItemDataSet.getColors()).equals(colorsFromMain)));
+        Log.d("あああああああああああああああああああ3", String.valueOf((rouletteItemDataSet.getItemNames()).equals(itemNamesFromMain)));
+        Log.d("あああああああああああああああああああ3", String.valueOf((rouletteItemDataSet.getItemNames())));
+        Log.d("あああああああああああああああああああ3", String.valueOf(itemNamesFromMain));
+
+        Log.d("あああああああああああああああああああ4", String.valueOf((rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMain)));
+        Log.d("あああああああああああああああああああ5", String.valueOf((rouletteItemDataSet.getOnOffInfoOfSwitch100()).equals(Switch100InfoFromMainBoolean)));
+        Log.d("あああああああああああああああああああ6", String.valueOf((rouletteItemDataSet.getOnOffInfoOfSwitch0().equals(Switch0InfoFromMainBoolean))));
+
+        Log.d("あああああああああああああああああああ7", String.valueOf(! (rouletteName.getText().toString()).equals(rouletteNameFromMain) &&
+                (rouletteItemDataSet.getColors()).equals(colorsFromMain) &&
+                (rouletteItemDataSet.getItemNames()).equals(itemNamesFromMain) &&
+                (rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMain) &&
+                (rouletteItemDataSet.getOnOffInfoOfSwitch100()).equals(Switch100InfoFromMainBoolean) &&
+                (rouletteItemDataSet.getOnOffInfoOfSwitch0().equals(Switch0InfoFromMainBoolean))));
+
+        Log.d("あああああああああああああああああああ8", String.valueOf(!( (rouletteName.getText().toString()).equals(rouletteNameFromMain) &&
+                (rouletteItemDataSet.getColors()).equals(colorsFromMain) &&
+                (rouletteItemDataSet.getItemNames()).equals(itemNamesFromMain) &&
+                (rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMain) &&
+                (rouletteItemDataSet.getOnOffInfoOfSwitch100()).equals(Switch100InfoFromMainBoolean) &&
+                (rouletteItemDataSet.getOnOffInfoOfSwitch0().equals(Switch0InfoFromMainBoolean)))));
+
+         */
+
+
+        //Word infoFromMyRoulette = MainActivity.mWordViewModel.getWord(rouletteIdFromMyRoulette);
+
+/*
+        ArrayList<Integer> Switch100InfoOfCurrent = new ArrayList<Integer>();
+        ArrayList<Integer> Switch0InfoOfCurrent = new ArrayList<Integer>();
+
+        ArrayList<Boolean> Switch100InfoOfCurrentBoolean = rouletteItemDataSet.getOnOffInfoOfSwitch100();
+        ArrayList<Boolean> Switch0InfoOfCurrentBoolean = rouletteItemDataSet.getOnOffInfoOfSwitch0();
+
+        for (int i=0; i<rouletteItemDataSet.getOnOffInfoOfSwitch100().size(); i++) {
+            if (Switch100InfoOfCurrentBoolean.get(i)) {
+                Switch100InfoOfCurrent.add(1);
+            } else {
+                Switch100InfoOfCurrent.add(0);
+            }
+
+            if (Switch0InfoOfCurrentBoolean.get(i)) {
+                Switch0InfoOfCurrent.add(1);
+            } else {
+                Switch0InfoOfCurrent.add(0);
+            }
+        }
+
+        Log.d("ああああああああああああああ1", String.valueOf((rouletteName.getText().toString()).equals(rouletteNameFromMyRoulette)));
+        Log.d("ああああああああああああああ2", String.valueOf((rouletteItemDataSet.getColors()).equals(colorsFromMyRoulette)));
+        Log.d("ああああああああああああああ3", String.valueOf((rouletteItemDataSet.getItemNames()).equals(itemNamesFromMyRoulette)));
+        Log.d("ああああああああああああああ4", String.valueOf((rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMyRoulette)));
+        Log.d("ああああああああああああああ5", String.valueOf(Switch100InfoOfCurrent.equals(Switch100InfoFromMyRoulette)));
+        Log.d("ああああああああああああああ6", String.valueOf(Switch0InfoOfCurrent.equals(Switch0InfoFromMyRoulette)));
+
+        //~FromMainが勝手に更新されるから、全部trueになって絶対if文通らない
+        if ( ! ( (rouletteName.getText().toString()).equals(rouletteNameFromMyRoulette) &&
+                (rouletteItemDataSet.getColors()).equals(colorsFromMyRoulette) &&
+                (rouletteItemDataSet.getItemNames()).equals(itemNamesFromMyRoulette) &&
+                (rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMyRoulette) &&
+                Switch100InfoOfCurrent.equals(Switch100InfoFromMyRoulette) &&
+                Switch0InfoOfCurrent.equals(Switch0InfoFromMyRoulette) ) ) {
+
+
+            // 内容更新が合った場合にそれを破棄するかどうかをアラートダイアログで確認
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditMyRouletteActivity.this);
+            builder.setMessage("編集内容を破棄しますか？")
+                    .setPositiveButton("破棄する", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            EditMyRouletteActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("編集を続行する", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            // ダイアログがキャンセルされた際の処理
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            EditMyRouletteActivity.this.finish();
+        }
+
+ */
+
+/*
+        //別スレッドで行う場合の処理
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //idに対応する文字列をデータベースから取得する処理
+                Word infoFromMyRoulette = MainActivity.mWordViewModel.getWord(rouletteIdFromMyRoulette);
+                actionOfInfoMyRoulette(infoFromMyRoulette);
+            }
+        }).start();
+
+    }
+
+ */
+
+/*
+    //別スレッドで行う場合の処理
+    private void actionOfInfoMyRoulette (Word infoFromMyRoulette) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                showUiDialog(infoFromMyRoulette);
+            }
+        });
+    }
+
+ */
+
+/*
+    //別スレッドで行った場合の処理
+    private void showUiDialog(Word infoFromMyRoulette) {
+
+        RouletteItemListInfo rouletteItemDataSet = rouletteItemListAdapter.getRouletteItemDataSet();
+
+        ArrayList<Integer> Switch100InfoOfCurrent = new ArrayList<Integer>();
+        ArrayList<Integer> Switch0InfoOfCurrent = new ArrayList<Integer>();
+
+        ArrayList<Boolean> Switch100InfoOfCurrentBoolean = rouletteItemDataSet.getOnOffInfoOfSwitch100();
+        ArrayList<Boolean> Switch0InfoOfCurrentBoolean = rouletteItemDataSet.getOnOffInfoOfSwitch0();
+
+        for (int i=0; i<rouletteItemDataSet.getOnOffInfoOfSwitch100().size(); i++) {
+            if (Switch100InfoOfCurrentBoolean.get(i)) {
+                Switch100InfoOfCurrent.add(1);
+            } else {
+                Switch100InfoOfCurrent.add(0);
+            }
+
+            if (Switch0InfoOfCurrentBoolean.get(i)) {
+                Switch0InfoOfCurrent.add(1);
+            } else {
+                Switch0InfoOfCurrent.add(0);
+            }
+        }
+
+        Log.d("あああああああああああああああああああ1", String.valueOf((rouletteName.getText().toString()).equals(infoFromMyRoulette.getWord())));
+        Log.d("あああああああああああああああああああ2", String.valueOf((rouletteItemDataSet.getColors()).equals(infoFromMyRoulette.getColorsInfo())));
+        Log.d("あああああああああああああああああああ3", String.valueOf((rouletteItemDataSet.getItemNames()).equals(infoFromMyRoulette.getTextStringsInfo())));
+        Log.d("あああああああああああああああああああ4", String.valueOf((rouletteItemDataSet.getItemRatios()).equals(infoFromMyRoulette.getItemRatiosInfo())));
+        Log.d("あああああああああああああああああああ5", String.valueOf(Switch100InfoOfCurrent.equals(infoFromMyRoulette.getOnOffOfSwitch100Info())));
+        Log.d("あああああああああああああああああああ6", String.valueOf(Switch0InfoOfCurrent.equals(infoFromMyRoulette.getOnOffOfSwitch0Info())));
+
+
+        if ( ! ( (rouletteName.getText().toString()).equals(infoFromMyRoulette.getWord()) &&
+                (rouletteItemDataSet.getColors()).equals(infoFromMyRoulette.getColorsInfo()) &&
+                (rouletteItemDataSet.getItemNames()).equals(infoFromMyRoulette.getTextStringsInfo()) &&
+                (rouletteItemDataSet.getItemRatios()).equals(infoFromMyRoulette.getItemRatiosInfo()) &&
+                Switch100InfoOfCurrent.equals(infoFromMyRoulette.getOnOffOfSwitch100Info()) &&
+                Switch0InfoOfCurrent.equals(infoFromMyRoulette.getOnOffOfSwitch0Info()) ) ){
+
+
+            // 内容更新が合った場合にそれを破棄するかどうかをアラートダイアログで確認
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditMyRouletteActivity.this);
+            builder.setMessage("編集内容を破棄しますか？")
+                    .setPositiveButton("破棄する", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            EditMyRouletteActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("編集を続行する", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            // ダイアログがキャンセルされた際の処理
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            EditMyRouletteActivity.this.finish();
+        }
+    }
+
+ */
+
+
     //@RequiresApi(api = Build.VERSION_CODES.N)
     public void onClickColorButton(View colorButton) {
         //ColorPickDialogを開始する
@@ -437,7 +650,7 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                 picker.setColor(buttonColor);
  */
         SVBar svBar = (SVBar) dialoglayout.findViewById(R.id.svbar);
-        OpacityBar opacityBar = (OpacityBar) dialoglayout.findViewById(R.id.opacitybar);
+        //OpacityBar opacityBar = (OpacityBar) dialoglayout.findViewById(R.id.opacitybar);
         colorPickAlert.
                 setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -468,7 +681,7 @@ public class EditMyRouletteActivity extends AppCompatActivity {
         //final AlertDialog colorDialog = colorPickAlert.show();
 
         picker.addSVBar(svBar);
-        picker.addOpacityBar(opacityBar);
+        //picker.addOpacityBar(opacityBar);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener()
         {
             @Override

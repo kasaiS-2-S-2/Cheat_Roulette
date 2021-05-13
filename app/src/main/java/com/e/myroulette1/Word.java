@@ -40,6 +40,7 @@ public class Word {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    //ルーレット名
     @NonNull
     @ColumnInfo(name = "word")
     private String mWord;

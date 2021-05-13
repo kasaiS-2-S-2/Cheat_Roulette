@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -370,6 +371,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
                                         rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
                                         rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
                                 //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+
+
                                 MainActivity.mWordViewModel.insert(word);
 
                                 Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
@@ -441,7 +444,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                 picker.setColor(buttonColor);
  */
         SVBar svBar = (SVBar) dialoglayout.findViewById(R.id.svbar);
-        OpacityBar opacityBar = (OpacityBar) dialoglayout.findViewById(R.id.opacitybar);
+        //OpacityBar opacityBar = (OpacityBar) dialoglayout.findViewById(R.id.opacitybar);
         colorPickAlert.
                 setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -472,7 +475,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
         //final AlertDialog colorDialog = colorPickAlert.show();
 
         picker.addSVBar(svBar);
-        picker.addOpacityBar(opacityBar);
+        //picker.addOpacityBar(opacityBar);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener()
         {
             @Override

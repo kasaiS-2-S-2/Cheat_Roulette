@@ -51,6 +51,10 @@ public class WordViewModel extends AndroidViewModel {
         return mAllWords;
     }
 
+    Word getWord(int id) {
+        return mRepository.getWord(id);
+    }
+
     void insert(Word word) {
         mRepository.insert(word);
     }

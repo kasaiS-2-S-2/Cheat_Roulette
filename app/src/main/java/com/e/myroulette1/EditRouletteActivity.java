@@ -408,7 +408,9 @@ public class EditRouletteActivity extends AppCompatActivity {
 
     }
 
+    //バックキーを押すと、内容に変更があった場合にアラートダイアログを出す処理
     //うまくいかない
+    /*
     @Override
     public void onBackPressed() {
         Log.d("あああああああああああああああああああ3", String.valueOf(getIntent().getStringArrayListExtra("editInfoOfTextStrings")));
@@ -476,6 +478,8 @@ public class EditRouletteActivity extends AppCompatActivity {
 
     }
 
+     */
+
 
     //@RequiresApi(api = Build.VERSION_CODES.N)
     public void onClickColorButton(View colorButton) {
@@ -495,7 +499,7 @@ public class EditRouletteActivity extends AppCompatActivity {
                 picker.setColor(buttonColor);
  */
         SVBar svBar = (SVBar) dialoglayout.findViewById(R.id.svbar);
-        OpacityBar opacityBar = (OpacityBar) dialoglayout.findViewById(R.id.opacitybar);
+        //OpacityBar opacityBar = (OpacityBar) dialoglayout.findViewById(R.id.opacitybar);
         colorPickAlert.
                 setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -526,7 +530,7 @@ public class EditRouletteActivity extends AppCompatActivity {
         //final AlertDialog colorDialog = colorPickAlert.show();
 
         picker.addSVBar(svBar);
-        picker.addOpacityBar(opacityBar);
+        //picker.addOpacityBar(opacityBar);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener()
         {
             @Override

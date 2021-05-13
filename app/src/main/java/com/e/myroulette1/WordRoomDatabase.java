@@ -43,6 +43,7 @@ abstract class WordRoomDatabase extends RoomDatabase {
 
     // marking the instance as volatile to ensure atomic access to the variable
     private static volatile WordRoomDatabase INSTANCE;
+    //なんで４？
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
