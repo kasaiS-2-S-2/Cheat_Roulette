@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:title="設定">
+
+            <menu>
+
+                <item
+                    android:id="@+id/nav_sound_option"
+                    android:title="@string/sound_option"
+                    android:icon="@drawable/ic_baseline_music_note_24"
+                    app:actionLayout="@layout/switch_drawer_layout"/>
+
+                <item
+                    android:id="@+id/nav_roulette_time_option"
+                    android:title="@string/speed_option"
+                    android:icon="@drawable/ic_baseline_speed_24"
+                    android:checkable="false"/>
+
+                <item
+                    android:id="@+id/nav_roulette_time_bar"
+                    android:title=""
+                    app:actionLayout="@layout/roulette_time_radio_group"/>
+
+
+            </menu>
+
+        </item>
+    </group>
+
+    <group>
+        <item
+            android:title="アクティビティ">
+
+            <menu>
+
+                <item
+                    android:id="@+id/nav_roulette_create"
+                    android:title="@string/roulette_create"
+                    android:icon="@drawable/ic_baseline_build_24"/>
+                <item
+                    android:id="@+id/nav_edit_roulette"
+                    android:title="@string/edit_roulette"
+                    android:icon="@drawable/ic_baseline_edit_24"/>
+                <item
+                    android:id="@+id/nav_myRoulette"
+                    android:title="@string/myRoulette"
+                    android:icon="@drawable/ic_baseline_track_changes_24"/>
+
+            </menu>
+
+        </item>
+    </group>
+
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="profile">
+
+            <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:title="login"
+                android:icon="@drawable/ic_baseline_refresh_24"/>
+
+                <item
+                    android:id="@+id/nav_log"
+                    android:title="log1"
+                    android:icon="@drawable/ic_baseline_delete_forever_24"/>
+
+            </menu>
+        </item>
+    </group>
+
+    <item android:title="commute" >
+
+        <menu>
+
+            <item
+                android:id="@+id/nav_l"
+                android:title="log2"
+                android:icon="@drawable/ic_baseline_menu_24"/>
+
+            <item
+                android:id="@+id/nav_g"
+                android:title="log3"
+                android:icon="@drawable/ic_baseline_menu_24"/>
+
+        </menu>
+
+    </item>
+
+</menu>

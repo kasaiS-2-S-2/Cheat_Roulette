@@ -17,6 +17,7 @@ package com.e.myroulette1;
  */
 
 import android.content.Context;
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -84,9 +85,9 @@ abstract class WordRoomDatabase extends RoomDatabase {
                 words.add("ああああ");
                 words.add("qqqq");
                 ArrayList<Integer> colorsInfo = new ArrayList<Integer>();
-                colorsInfo.add(65522);
-                colorsInfo.add(32000);
-                colorsInfo.add(45000);
+                colorsInfo.add(Color.parseColor("#FFFF0000"));
+                colorsInfo.add(Color.parseColor("#FF80FF00"));
+                colorsInfo.add(Color.parseColor("#FF0000FF"));
                 ArrayList<String> textStringsInfo = new ArrayList<String>();
                 textStringsInfo.add("寿司");
                 textStringsInfo.add("天丼");

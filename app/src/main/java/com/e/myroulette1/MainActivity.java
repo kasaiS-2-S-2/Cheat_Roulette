@@ -9,22 +9,36 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.ArrayList;
 import java.util.Random;
+
+import jahirfiquitiva.libs.fabsmenu.FABsMenu;
+import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
 //import androidx.annotation.RequiresApi;
 
@@ -43,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private ArcAnimation animation;
      */
 
-    RouletteView rouletteViewInLayout;//onWindowFocusChange用の変数
+    private RotateAnimation rotate;
+    private RouletteView rouletteViewInLayout;//onWindowFocusChange用の変数
     private PushImageButton rouletteStartButton;
     private TextView resultTextView;
     private Button resetButton;
@@ -54,17 +69,26 @@ public class MainActivity extends AppCompatActivity {
     private Button editButton;
     private Button toMyRouletteButton;
     private ConstraintLayout constraintLayout;
-    //private DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ActionBar actionBar;
+    private RelativeLayout relativeLayout;
+    private Toolbar toolbar;
     private ArcAnimation animation;
+    private FABsMenu fabsMenu;
 
     private boolean rouletteExists = false;
-    static final int RESULT_ROULETTECREATEACTIVITY = 1;
+    static final int RESULT_ROULETTECREATE = 1;
     static final int RESULT_MYROULETTE = 2;
+    static final int RESULT_EDITROULETTE = 3;
 
     private static final Random RANDOM = new Random();
     private float degree = 0;
-    public static float degreeOld = 0;/////////////////////////////////////////////////////////////
+    private float degreeOld = 0;/////////////////////////////////////////////////////////////
     private float sectorDegree = 0;
+    private float toDegree = 5400f;
+    private long duration = 10000;
+    private float interpolatorFactor = 2.3f;
     final String notRouletteExistsMessage = "ルーレットが作成されていません";
 
     public static WordViewModel mWordViewModel;
@@ -93,13 +117,24 @@ public class MainActivity extends AppCompatActivity {
         Log.d("あああああああああああああああ", "onResume");
 
         //soundPool.stop(drumRollLoopStreamID);
-        soundPool.autoResume();
+
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("あああああああああああああああ", "onResume");
+        Log.d("あああああああああああああああ", "onRestart");
+
+        soundPool.autoResume();
+
+        if (fabsMenu.isExpanded()) {
+            fabsMenu.collapseImmediately();
+        }
+
+        if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+            //drawerLayout.closeDrawer(Gravity.RIGHT);
+            drawerLayout.closeDrawer(Gravity.RIGHT, false);
+        }
     }
 
     @Override
@@ -195,15 +230,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //drawerLayout = findViewById(R.id.drawer_layout);
+        //relativeLayout = findViewById(R.id.re);
+        drawerLayout = findViewById(R.id.drawer_layout_main);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.bringToFront();
+
+        //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, );
+
+        //relativeLayout = findViewById(R.id.relativeLayout_main);
+
+
         constraintLayout = findViewById(R.id.constraintLayout);
+        toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+
+        //navigationView.setNavigationItemSelectedListener(this);
+        //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //drawerLayout.addDrawerListener(toggle);
+        //toggle.syncState();
+        //setSupportActionBar(toolbar);
         //rouletteStartButton = findViewById(R.id.rouletteStartButton);
 
         WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
         Display disp = wm.getDefaultDisplay();
         Point displayAre = new Point();
         disp.getSize(displayAre);
-
 
         constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().width = displayAre.x / 3;
         constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().height = displayAre.x / 3;
@@ -214,9 +265,11 @@ public class MainActivity extends AppCompatActivity {
 
         //rouletteViewInLayout = new RouletteView(getApplicationContext());//初めはインスタンスの中身なし;
         //constraintLayout.addView(rouletteViewInLayout);
-        setContentView(constraintLayout);
-        //setContentView(drawerLayout);
+        //setContentView(constraintLayout);
+        setContentView(drawerLayout);
+        //setContentView(relativeLayout);
 
+        rouletteViewInLayout = findViewById(R.id.roulette);
         rouletteStartButton = findViewById(R.id.rouletteStartButton);
         resultTextView = findViewById(R.id.resultTextView);
         resetButton = findViewById(R.id.reset_button);
@@ -226,6 +279,93 @@ public class MainActivity extends AppCompatActivity {
         checkButton = findViewById(R.id.check_button);
         editButton = findViewById(R.id.edit_button);
         toMyRouletteButton = findViewById(R.id.myRoulette_button);
+        fabsMenu = findViewById(R.id.fabs_menu);
+
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_roulette_create:
+                        Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
+                        //Intent intent = new Intent(getApplication(), SubActivity.class);
+                        startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATE);
+                        break;
+                    case R.id.nav_edit_roulette:
+                        if (rouletteExists) {
+                            Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
+                            //Intent intent = new Intent(getApplication(), SubActivity.class);
+                            rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
+                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
+                            rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getTextStrings());
+                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
+                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
+                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
+
+                            startActivityForResult(rouletteEditIntent, RESULT_EDITROULETTE);
+                        } else {
+                            if (mToast != null) mToast.cancel();
+                            mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                            mToast.show();
+                        }
+                        break;
+                    case R.id.nav_myRoulette:
+                        Intent toMyRouletteIntent = new Intent(getApplicationContext(), MyRouletteActivity.class);
+                        startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
+                        //menu.collapseImmediately();
+                        //startActivity(toMyRouletteIntent);
+                        break;
+                }
+                return true;
+            }
+        });
+
+
+        final TitleFAB rouletteCreateFab = findViewById(R.id.fab_roulette_create);
+        rouletteCreateFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
+                //Intent intent = new Intent(getApplication(), SubActivity.class);
+                startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATE);
+            }
+        });
+
+        final TitleFAB editRouletteFab = findViewById(R.id.fab_edit_roulette);
+        editRouletteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rouletteExists) {
+                    Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
+                    //Intent intent = new Intent(getApplication(), SubActivity.class);
+                    rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
+                    rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getTextStrings());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
+
+                    startActivityForResult(rouletteEditIntent, RESULT_EDITROULETTE);
+                } else {
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                    mToast.show();
+                }
+            }
+        });
+
+        final TitleFAB myRouletteFab = findViewById(R.id.fab_myRoulette);
+        myRouletteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toMyRouletteIntent = new Intent(getApplicationContext(), MyRouletteActivity.class);
+                startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
+                //menu.collapseImmediately();
+                //startActivity(toMyRouletteIntent);
+            }
+        });
+
+
 
 
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
                 //Intent intent = new Intent(getApplication(), SubActivity.class);
-                startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATEACTIVITY);
+                startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATE);
             }
         });
 
@@ -276,6 +416,24 @@ public class MainActivity extends AppCompatActivity {
 */
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuButton:
+                // ボタンをタップした際の処理を記述
+                drawerLayout.openDrawer(Gravity.RIGHT);
+                break;
+        }
+        return true;
+    }
+
+
     //@RequiresApi(api = Build.VERSION_CODES.Q)
     public void onWindowFocusChanged(boolean hasFocus) {
         //public void onResume() {
@@ -294,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
         //constraintLayout.addView(new PointerView(getApplicationContext(), rouletteView.xc, rouletteView.yc));
         //if (constraintLayout.getChildAt(constraintLayout.getChildCount() - 2) instanceof RouletteView) {
         //rouletteViewInLayout = (RouletteView) constraintLayout.getChildAt(constraintLayout.getChildCount() - 2);
-        rouletteViewInLayout = findViewById(R.id.roulette);
+        //rouletteViewInLayout = findViewById(R.id.roulette);
         //}
         //setContentView(constraintLayout);
 
@@ -346,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
                     rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
                     rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
 
-                    startActivityForResult(rouletteEditIntent, RESULT_ROULETTECREATEACTIVITY);
+                    startActivityForResult(rouletteEditIntent, RESULT_EDITROULETTE);
                 } else {
                     if (mToast != null) mToast.cancel();
                     mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
@@ -388,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
                         //普通の抽選
                         Log.d("aaaaaaaaaaaaaaaaaa", "通常");
                         degree = 360f - (RANDOM.nextFloat() * 360f);
-                        degreeOld = degree % 360;///////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////
                         //sectorDegree = 360f / (rouletteView.sumOfItemRatio * rouletteView.splitCount);
                     /*
                     RotateAnimation rotate = new RotateAnimation(0, degree + 1080, xc, yc);
@@ -449,6 +607,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
+                    //degreeOld = degree;
 
                     /*
                     animation = new ArcAnimation(rouletteViewInLayout);
@@ -483,10 +642,11 @@ public class MainActivity extends AppCompatActivity {
                     //RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 1800f, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 
 
-                    RotateAnimation rotate = new RotateAnimation(0, (360f - degree) + 7200f, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
-                    rotate.setDuration(10000);       // アニメーションにかける時間(ミリ秒)
+                    //RotateAnimation rotate = new RotateAnimation(360f - degreeOld, (360f - degree) + 360f - degreeOld, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
+                    rotate = new RotateAnimation(0, (360f - degree) + toDegree, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
+                    rotate.setDuration(duration);       // アニメーションにかける時間(ミリ秒)
                     rotate.setFillAfter(true);          // アニメーション表示後の状態を保持
-                    rotate.setInterpolator(new DecelerateInterpolator(2.0f)); //勢い良く回り、だんだんゆっくりになって止まるように
+                    rotate.setInterpolator(new DecelerateInterpolator(interpolatorFactor)); //勢い良く回り、だんだんゆっくりになって止まるように
 
 
                     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -509,14 +669,19 @@ public class MainActivity extends AppCompatActivity {
                             editButton.setEnabled(false);
                             plusButton.setEnabled(false);
                             minusButton.setEnabled(false);
+                            fabsMenu.setEnabled(false);
+                            toolbar.findViewById(R.id.menuButton).setEnabled(false);
 
                             //背景色、resultTextViewをそれぞれ初期化する
                             constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                             resultTextView.setText("");
 
-                            soundPool.play(drumRollStart, 1.0f, 1.0f, 1, 0, 1);
-                            drumRollLoopStreamID =
-                                    soundPool.play(drumRollLoop, 1.0f, 1.0f, 1, 5, 1);
+                            SwitchCompat soundSwitch = findViewById(R.id.nav_sound_option).findViewById(R.id.switch_drawer_layout);
+                            if (soundSwitch.isChecked()) {
+                                soundPool.play(drumRollStart, 1.0f, 1.0f, 1, 0, 1);
+                                drumRollLoopStreamID =
+                                        soundPool.play(drumRollLoop, 1.0f, 1.0f, 1, 5, 1);
+                            }
                             // we empty the result text view when the animation start
                             resultTextView.setText("");
 
@@ -524,8 +689,11 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            soundPool.stop(drumRollLoopStreamID);
-                            soundPool.play(finishSound, 1.0f, 1.0f, 1, 0, 1);
+                            SwitchCompat soundSwitch = findViewById(R.id.nav_sound_option).findViewById(R.id.switch_drawer_layout);
+                            if (soundSwitch.isChecked()) {
+                                soundPool.stop(drumRollLoopStreamID);
+                                soundPool.play(finishSound, 1.0f, 1.0f, 1, 0, 1);
+                            }
                             // we display the correct sector pointed by the triangle at the end of the rotate animation
                             //resultTextView.setText(getSector(360f - (degree % 360)));
                             //ルーレットが止まった位置の項目名と色をそれぞれ設定する
@@ -539,7 +707,10 @@ public class MainActivity extends AppCompatActivity {
                             editButton.setEnabled(true);
                             plusButton.setEnabled(true);
                             minusButton.setEnabled(true);
+                            fabsMenu.setEnabled(true);
+                            toolbar.findViewById(R.id.menuButton).setEnabled(true);
                             Log.d("getsector", String.valueOf(degree));
+                            //degreeOld = degree;
                         }
 
                         @Override
@@ -623,8 +794,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         RouletteView rouletteView = findViewById(R.id.roulette);
         switch (requestCode) {
-            case RESULT_ROULETTECREATEACTIVITY:
+            case RESULT_ROULETTECREATE:
             case RESULT_MYROULETTE:
+            case RESULT_EDITROULETTE:
                 if (RESULT_OK == resultCode && intent != null) {
                     //rouletteView.splitCount = 1;
                     String rouletteNameInfo = intent.getStringExtra("rouletteName");
@@ -649,16 +821,115 @@ public class MainActivity extends AppCompatActivity {
                     //constraintLayout.addView(rouletteView);
                     //constraintLayout.addView(new PointerView(getApplicationContext()));
 
-                    rouletteView.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
-                    setContentView(constraintLayout);
+                    rouletteViewInLayout.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
+                    //setContentView(relativeLayout);
+                    rouletteViewInLayout.invalidate();
+                    //setContentView(drawerLayout);
+                    //rouletteViewInLayout.setRotation(- (360f - degreeOld));
 
                     //背景色、resultTextViewをそれぞれ初期化する
                     constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     resultTextView.setText("");
 
+                    if (rotate != null) {
+                        //ルーレットを変更した場合は,角度を初期値に戻す
+                        rotate.cancel();
+                    }
+
                     rouletteExists = true;
                 }
                 break;
+        }
+
+    }
+
+    /*
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.nav_roulette_create:
+                Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
+                //Intent intent = new Intent(getApplication(), SubActivity.class);
+                startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATE);
+                break;
+            case R.id.nav_edit_roulette:
+                if (rouletteExists) {
+                    Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
+                    //Intent intent = new Intent(getApplication(), SubActivity.class);
+                    rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
+                    rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getTextStrings());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
+                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
+
+                    startActivityForResult(rouletteEditIntent, RESULT_EDITROULETTE);
+                } else {
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                    mToast.show();
+                }
+                break;
+            case R.id.nav_myRoulette:
+                Intent toMyRouletteIntent = new Intent(getApplicationContext(), MyRouletteActivity.class);
+                startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
+                //menu.collapseImmediately();
+                //startActivity(toMyRouletteIntent);
+                break;
+        }
+
+        return true;
+    }
+
+     */
+
+    public void onSpeedRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.time_short:
+                if (checked) {
+                    toDegree = 1440f;
+                    duration = 5000;
+                    interpolatorFactor = 2.3f;
+                }
+                    break;
+            case R.id.time_normal:
+                if (checked) {
+                    toDegree = 5400f;
+                    duration = 10000;
+                    interpolatorFactor = 2.3f;
+                }
+                    break;
+            case R.id.time_long:
+                if (checked) {
+                    toDegree = 14400f;
+                    duration = 17000;
+                    interpolatorFactor = 2.0f;
+                }
+                    break;
+            default:
+                //例外が合った場合、デフォルトで抽選時間 普通の値を設定
+                toDegree = 5400f;
+                duration = 10000;
+                interpolatorFactor = 2.3f;
+                break;
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        if (drawerLayout.isDrawerOpen(Gravity.RIGHT) ) {
+            drawerLayout.closeDrawer(Gravity.RIGHT);
+        } else if (fabsMenu.isExpanded()) {
+            fabsMenu.collapse();
+        } else {
+            super.onBackPressed();
         }
 
     }

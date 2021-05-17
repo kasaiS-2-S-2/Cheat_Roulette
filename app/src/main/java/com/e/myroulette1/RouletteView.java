@@ -135,7 +135,7 @@ public class RouletteView extends View {
         super.onDraw(canvas);///////////////////////////////////////////////
 
         if (isStateNoRoulette) {
-            canvas.drawCircle(getWidth()/2f, getHeight()/2f, getWidth()/2f, paint4);
+            canvas.drawCircle(getWidth()/2f, getHeight()/2f, (getWidth()/2f) * (15f/16f), paint4);
 
         } else {
 
@@ -363,6 +363,10 @@ public class RouletteView extends View {
     }
     public ArrayList<Float> getItemProbabilities() {
         return itemProbabilities;
+    }
+
+    public void reDraw(float rotateDegree) {
+        invalidate();
     }
 
 }

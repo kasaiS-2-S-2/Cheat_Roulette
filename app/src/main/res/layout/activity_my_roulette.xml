@@ -39,16 +39,6 @@ So, we are leaving the template code in. -->
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/add_word"
-        android:src="@drawable/ic_add_black_24dp"/>
-
     <Button
         android:id="@+id/returnFromMyRoulette_button"
         android:layout_width="wrap_content"
@@ -56,8 +46,82 @@ So, we are leaving the template code in. -->
         android:layout_marginBottom="24dp"
         android:text="RETURN"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerview"
-        app:layout_constraintEnd_toStartOf="@+id/fab"
         app:layout_constraintHorizontal_bias="0.682"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_word"
+        app:srcCompat="@drawable/ic_add_black_24dp"/>-->
+
+    <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fabs_menu_overlayColor="#99000000"
+        app:fabs_menu_clickableOverlay="true"
+        tools:layout_behavior="@string/fabs_menu_layout_behavior">
+
+        <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
+        <jahirfiquitiva.libs.fabsmenu.FABsMenu
+            android:id="@+id/fabs_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:clipChildren="false"
+            app:fab_menuMargins="16dp"
+            app:fab_moreButtonPlusIcon="@drawable/ic_add_black_24dp"
+            app:fab_moreButtonBackgroundColor="#FFFF0040"
+            app:fab_moreButtonRippleColor="#FFFF0040"
+            app:fab_moreButtonSize="normal"
+            app:fab_labelsPosition="left"
+            app:fab_expandDirection="up">
+
+            <!-- This is the item that appears at the top of the menu -->
+            <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/to_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_baseline_build_24"
+                app:fabSize="mini"
+                app:backgroundTint="@color/colorAccent"
+                app:rippleColor="@color/colorAccent"
+                app:fab_title="ルーレット作成"
+                app:fab_title_backgroundColor="@color/colorAccent"
+                app:fab_title_textColor="@android:color/white"/>
+
+            <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/clickable_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_baseline_edit_24"
+                app:fab_title="ルーレット編集"
+                app:fab_enableTitleClick="true"
+                app:fab_title_textColor="@color/colorAccent"
+                app:fabSize="mini"
+                app:backgroundTint="@color/colorAccent"
+                app:rippleColor="@color/colorAccent"/>
+
+
+            <!-- This item will appear just above the menu FAB -->
+            <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                android:id="@+id/green_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_baseline_track_changes_24"
+                app:fab_title="Myルーレット"
+                app:fabSize="mini"
+                app:backgroundTint="#FF00FFBF"
+                app:rippleColor="#FF00FFBF"/>
+
+        </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+
+    </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

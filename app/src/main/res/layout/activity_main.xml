@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout_main"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".MainActivity"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="right">
+    
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/header_drawer_menu_main"
+        app:menu="@menu/drawer_menu_main"
+        android:layout_gravity="right"/>
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".MainActivity">
+    android:background="#FFFFFF">
 
 
     <!--<com.e.myroulette1.RouletteView
@@ -33,6 +56,15 @@
         tools:ignore="MissingClass" />
         -->
 
+
+
+    <include
+        android:id="@+id/toolbar_main"
+        layout="@layout/toolbar_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.e.myroulette1.RouletteView
         android:id="@+id/roulette"
         android:layout_width="match_parent"
@@ -54,12 +86,12 @@
         android:layout_marginRight="64dp"
         android:text="reset"
         app:layout_constraintEnd_toStartOf="@+id/resultTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/resultTextView" />
 
     <com.e.myroulette1.PushImageButton
         android:id="@+id/rouletteStartButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:background="@drawable/shape"
         android:elevation="20dp"
         app:srcCompat="@drawable/ic_baseline_refresh_24"
@@ -84,21 +116,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="check"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_main" />
 
     <TextView
         android:id="@+id/resultTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="216dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/pushButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_main" />
 
     <Button
         android:id="@+id/plus_button"
@@ -149,3 +183,73 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fabs_menu_clickableOverlay="true"
+            app:fabs_menu_overlayColor="#99000000"
+            tools:layout_behavior="@string/fabs_menu_layout_behavior">
+
+            <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
+            <jahirfiquitiva.libs.fabsmenu.FABsMenu
+                android:id="@+id/fabs_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:clipChildren="false"
+                app:fab_expandDirection="up"
+                app:fab_labelsPosition="left"
+                app:fab_menuMargins="16dp"
+                app:fab_menuTopMargin="32dp"
+                app:fab_moreButtonBackgroundColor="#FFFF0040"
+                app:fab_moreButtonPlusIcon="@drawable/ic_add_black_24dp"
+                app:fab_moreButtonRippleColor="#FFFF0040"
+                app:fab_moreButtonSize="normal">
+
+                <!-- This is the item that appears at the top of the menu -->
+                <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/fab_roulette_create"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@color/colorAccent"
+                    app:fabSize="normal"
+                    app:fab_enableTitleClick="true"
+                    app:fab_title="@string/roulette_create"
+                    app:fab_title_backgroundColor="@color/colorAccent"
+                    app:fab_title_textColor="@android:color/white"
+                    app:rippleColor="@color/colorAccent"
+                    app:srcCompat="@drawable/ic_baseline_build_24" />
+
+                <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/fab_edit_roulette"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@color/colorAccent"
+                    app:fabSize="normal"
+                    app:fab_enableTitleClick="true"
+                    app:fab_title="@string/edit_roulette"
+                    app:fab_title_textColor="@color/colorAccent"
+                    app:rippleColor="@color/colorAccent"
+                    app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+
+                <!-- This item will appear just above the menu FAB -->
+                <jahirfiquitiva.libs.fabsmenu.TitleFAB
+                    android:id="@+id/fab_myRoulette"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="#FF00FFBF"
+                    app:fabSize="normal"
+                    app:fab_enableTitleClick="true"
+                    app:fab_title="@string/myRoulette"
+                    app:rippleColor="#FF00FFBF"
+                    app:srcCompat="@drawable/ic_baseline_track_changes_24" />
+
+            </jahirfiquitiva.libs.fabsmenu.FABsMenu>
+
+        </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -23,4 +23,17 @@
     <string name="add_word">Add word</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="roulette_create">ルーレット作成</string>
+    <string name="edit_roulette">ルーレット編集</string>
+    <string name="myRoulette">Myルーレット</string>
+    <string name="sound_option">サウンド</string>
+    <string name="speed_option">抽選時間</string>
+    <string name="roulette_time_short">短め</string>
+    <string name="roulette_time_normal">普通</string>
+    <string name="roulette_time_long">長め</string>
+
 </resources>

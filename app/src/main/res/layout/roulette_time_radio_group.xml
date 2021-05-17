@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <!--<SeekBar
+        android:id="@+id/speed_seekbar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:max="4"
+        android:padding="8dp"
+        android:layout_weight="1"
+        android:progressTint="@android:color/holo_green_light"
+        android:thumbTint="@color/colorPrimary"
+        android:tickMark="@drawable/tickmark"
+        android:tickMarkTint="@color/colorAccent" />-->
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/time_short"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/roulette_time_short"
+            android:onClick="onSpeedRadioButtonClicked"/>
+        <RadioButton android:id="@+id/time_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/roulette_time_normal"
+            android:checked="true"
+            android:onClick="onSpeedRadioButtonClicked"/>
+        <RadioButton android:id="@+id/time_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/roulette_time_long"
+            android:onClick="onSpeedRadioButtonClicked"/>
+    </RadioGroup>
+
+
+</LinearLayout>
