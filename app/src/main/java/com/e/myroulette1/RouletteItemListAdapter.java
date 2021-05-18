@@ -135,6 +135,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
             viewHolder.getLinearLayout2().setVisibility(View.VISIBLE);
         }
         ((GradientDrawable)viewHolder.getColorButton().getBackground()).setColor(rouletteItemDataSet.getColors().get(viewHolder.getAdapterPosition()));
+        ((ColorButton) viewHolder.getColorButton()).setButtonColor(rouletteItemDataSet.getColors().get(viewHolder.getAdapterPosition()));
 
         //EditText（ルーレット名）監視リスナーに使うpositionを今のadapterPositionに設定
         viewHolder.editTextListenerForItemName.updatePosition(viewHolder.getAdapterPosition());

@@ -1,11 +1,15 @@
 package com.e.myroulette1;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -13,6 +17,9 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class PointerView extends View {
+
+    //通知オブジェクトの用意と初期化
+    Notification notification = null;
 
     Paint paint, paint2, paint3;
     Path path;
@@ -249,15 +256,79 @@ public class PointerView extends View {
         if (!MainActivity.CheatFlag) {
             MainActivity.CheatFlag = true;
             if (MainActivity.mToast != null) MainActivity.mToast.cancel();
+            cheatNotification(true);
             MainActivity.mToast = Toast.makeText(getContext(), "イカサマモードON", Toast.LENGTH_SHORT);
         } else {
             MainActivity.CheatFlag = false;
             if (MainActivity.mToast != null) MainActivity.mToast.cancel();
+            cheatNotification(false);
             MainActivity.mToast = Toast.makeText(getContext(), "イカサマモードOFF", Toast.LENGTH_SHORT);
         }
         MainActivity.mToast.show();
 
         return false;
+    }
+
+    private void cheatNotification(boolean OnOrOff) {
+        Context context = getContext();
+        String notificationContent;
+        if (OnOrOff) {
+            notificationContent = "イカサマON";
+        } else {
+            notificationContent = "イカサマOFF";
+        }
+        /*
+        Context context = MyApplication.getAppContext();
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "cheatOnNotification")
+                .setSmallIcon(R.drawable.ic_baseline_delete_forever_24)
+                .setContentTitle("ルーレット!")
+                .setContentText("イカサマON")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        //NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
+         */
+
+        //システムから通知マネージャー取得
+        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        //アプリ名をチャンネルIDとして利用
+        String chID = Integer.toString(R.string.app_name);
+
+        //アンドロイドのバージョンで振り分け
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {     //APIが「26」以上の場合
+            Log.d("あああああああああああああああああ", "upper26");
+
+            //通知チャンネルIDを生成してインスタンス化
+            //音とバイブレーションをデフォルトでOFF
+            NotificationChannel notificationChannel = new NotificationChannel(chID, chID, NotificationManager.IMPORTANCE_LOW);
+            //通知の説明のセット
+            notificationChannel.setDescription(chID);
+            //通知チャンネルの作成
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            //通知の生成と設定とビルド
+            notification = new Notification.Builder(context, chID)
+                    .setContentTitle("変更通知")  //通知タイトル
+                    .setContentText(notificationContent)        //通知内容
+                    .setSmallIcon(R.drawable.ic_baseline_notification_important_24)                  //通知用アイコン
+                    .build();                                       //通知のビルド
+        } else {
+            Log.d("あああああああああああああああああ", "under25");
+            //APIが「25」以下の場合
+            //通知の生成と設定とビルド
+            notification = new Notification.Builder(context)
+                    .setContentTitle("変更通知")
+                    .setContentText(notificationContent)
+                    //音とバイブレーションをデフォルトでOFF
+                    .setPriority(Notification.PRIORITY_LOW)
+                    .setSmallIcon(R.drawable.ic_baseline_notification_important_24)
+                    .build();
+        }
+
+        //通知の発行
+        notificationManager.notify(1, notification);
     }
 
     /*

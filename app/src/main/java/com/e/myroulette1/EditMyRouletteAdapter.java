@@ -24,6 +24,7 @@ public class EditMyRouletteAdapter extends RouletteItemListAdapter {
             viewHolder.getLinearLayout2().setVisibility(View.VISIBLE);
         }
         ((GradientDrawable)viewHolder.getColorButton().getBackground()).setColor(getRouletteItemDataSet().getColors().get(viewHolder.getAdapterPosition()));
+        ((ColorButton) viewHolder.getColorButton()).setButtonColor(getRouletteItemDataSet().getColors().get(viewHolder.getAdapterPosition()));
 
         //EditText（ルーレット名）監視リスナーに使うpositionを今のadapterPositionに設定
         viewHolder.editTextListenerForItemName.updatePosition(viewHolder.getAdapterPosition());

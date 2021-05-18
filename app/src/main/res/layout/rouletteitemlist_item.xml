@@ -32,7 +32,7 @@
         android:layout_margin="@dimen/small_margin"
         android:gravity="center_horizontal">
 
-        <com.e.myroulette1.SameWidthHeightButton
+        <com.e.myroulette1.ColorButton
             android:id="@+id/colorButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

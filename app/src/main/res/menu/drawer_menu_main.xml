@@ -18,7 +18,7 @@
                 <item
                     android:id="@+id/nav_roulette_time_option"
                     android:title="@string/speed_option"
-                    android:icon="@drawable/ic_baseline_speed_24"
+                    android:icon="@drawable/ic_baseline_timer_24"
                     android:checkable="false"/>
 
                 <item
@@ -49,7 +49,7 @@
                 <item
                     android:id="@+id/nav_myRoulette"
                     android:title="@string/myRoulette"
-                    android:icon="@drawable/ic_baseline_track_changes_24"/>
+                    android:icon="@drawable/ic_baseline_refresh_24"/>
 
             </menu>
 

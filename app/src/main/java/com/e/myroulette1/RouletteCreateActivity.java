@@ -27,9 +27,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.larswerkman.holocolorpicker.ColorPicker;
-import com.larswerkman.holocolorpicker.OpacityBar;
-import com.larswerkman.holocolorpicker.SVBar;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorChangedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -426,35 +427,83 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.N)
+    /*
     public void onClickColorButton(View colorButton) {
-        //ColorPickDialogを開始する
-        AlertDialog.Builder colorPickAlert = new AlertDialog.Builder(RouletteCreateActivity.this, R.style.ColorPickDialogStyle);
-        colorPickAlert.setTitle("choose color");
-        LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.color_pick_dialog, null);
-        colorPickAlert.setView(dialoglayout);
-        ColorPicker picker = (ColorPicker) dialoglayout.findViewById(R.id.picker);
-        picker.setShowOldCenterColor(false);
-/*
-                //変更前の色
-                int buttonColor;
-                buttonColor = ((GradientDrawable) button.getBackground()).getColor().getDefaultColor();
-                //変更前の色をpickerの初期色に設定
-                picker.setColor(buttonColor);
- */
-        SVBar svBar = (SVBar) dialoglayout.findViewById(R.id.svbar);
-        //OpacityBar opacityBar = (OpacityBar) dialoglayout.findViewById(R.id.opacitybar);
-        colorPickAlert.
-                setPositiveButton("ok", new DialogInterface.OnClickListener() {
+        ColorPickerDialogBuilder
+                .with(RouletteCreateActivity.this)
+                .setTitle("Choose color")
+                .initialColor(((ColorButton)colorButton).getButtonColor())
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .density(12)
+                .setOnColorChangedListener(new OnColorChangedListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id) {
+                    public void onColorChanged(int selectedColor) {
+                        // Handle on color change
+                        //Log.d("ColorPicker", "onColorChanged: 0x" + Integer.toHexString(selectedColor));
+                    }
+                })
+                .setPositiveButton("ok", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        //色情報の設定
+                        ((ColorButton)colorButton).setButtonColor(selectedColor);
                         //色の変更
-                        ((GradientDrawable)colorButton.getBackground()).setColor(picker.getColor());
+                        ((GradientDrawable)colorButton.getBackground()).setColor(selectedColor);
                         //色の変更があった部分のadapterPositionを取得
                         int position = rouletteItemList.getLayoutManager().getPosition((View)colorButton.getParent().getParent().getParent());
                         //色の変更を適応
-                        ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setColor(position, picker.getColor());
+                        ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setColor(position, selectedColor);
+                        //colorButton.setBackgroundColor(picker.getColor());
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .showAlphaSlider(false)
+                .showColorEdit(false)
+                .showColorPreview(true)
+                .build()
+                .show();
+    }
+
+     */
+
+    public void onClickColorButton(View colorButton) {
+        //ColorPickDialogを開始する
+        AlertDialog.Builder colorPickAlert = new AlertDialog.Builder(RouletteCreateActivity.this);
+
+        colorPickAlert.setTitle("色の選択");
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.color_pick_dialog, null);
+        //アラートダイアログの中にある色ボタン（選択色確認のview）
+        ColorButton dialogColorButton = dialoglayout.findViewById(R.id.color_preview);
+        colorPickAlert.setView(dialoglayout);
+
+        ColorPickerView colorPickerView = (ColorPickerView) dialoglayout.findViewById(R.id.color_picker_view);
+        colorPickerView.setInitialColor(((ColorButton)colorButton).getButtonColor(), false);
+        colorPickerView.setShowBorder(true);
+        colorPickerView.addOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int selectedColor) {
+                ((GradientDrawable) dialogColorButton.getBackground()).setColor(selectedColor);
+            }
+        });
+
+        colorPickAlert
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //色情報の設定
+                        ((ColorButton)colorButton).setButtonColor(colorPickerView.getSelectedColor());
+                        //色の変更
+                        ((GradientDrawable)colorButton.getBackground()).setColor(colorPickerView.getSelectedColor());
+                        //色の変更があった部分のadapterPositionを取得
+                        int position = rouletteItemList.getLayoutManager().getPosition((View)colorButton.getParent().getParent().getParent());
+                        //色の変更を適応
+                        ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setColor(position, colorPickerView.getSelectedColor());
                         //colorButton.setBackgroundColor(picker.getColor());
                     }
                 })
@@ -471,19 +520,6 @@ public class RouletteCreateActivity extends AppCompatActivity {
                 })
                 .create()
                 .show();
-
-        //final AlertDialog colorDialog = colorPickAlert.show();
-
-        picker.addSVBar(svBar);
-        //picker.addOpacityBar(opacityBar);
-        picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener()
-        {
-            @Override
-            public void onColorChanged(int color)
-            {
-                //text.setBackgroundColor(color);
-            }
-        });
     }
 
     public void onSwitch100Clicked(View view ) {

@@ -1,5 +1,7 @@
 package com.e.myroulette1;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
+import jahirfiquitiva.libs.fabsmenu.FABsMenuListener;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
 
 //import androidx.annotation.RequiresApi;
@@ -76,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ArcAnimation animation;
     private FABsMenu fabsMenu;
+    private TitleFAB rouletteCreateFab;
+    private TitleFAB editRouletteFab;
+    private TitleFAB myRouletteFab;
 
     private boolean rouletteExists = false;
     static final int RESULT_ROULETTECREATE = 1;
@@ -155,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //通知を削除
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(1);
         Log.d("あああああああああああああああ", "onDestroy");
     }
 
@@ -279,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         checkButton = findViewById(R.id.check_button);
         editButton = findViewById(R.id.edit_button);
         toMyRouletteButton = findViewById(R.id.myRoulette_button);
-        fabsMenu = findViewById(R.id.fabs_menu);
+        //fabsMenu = findViewById(R.id.fabs_menu);
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -321,21 +330,55 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        final TitleFAB rouletteCreateFab = findViewById(R.id.fab_roulette_create);
+        fabsMenu = findViewById(R.id.fabs_menu);
+        Log.d("ああああああああああああああああああああ", String.valueOf(fabsMenu.isExpanded()));
+        fabsMenu.setMenuUpdateListener(new FABsMenuListener() {
+            // You don't need to override all methods. Just the ones you want.
+
+            @Override
+            public void onMenuClicked(FABsMenu fabsMenu) {
+                Log.d("あああああああああああああああああ", "onMenuClicked");
+                super.onMenuClicked(fabsMenu);
+            }
+
+            @Override
+            public void onMenuCollapsed(FABsMenu fabsMenu) {
+                Log.d("あああああああああああああああああ", "onMenuCollapsed");
+                super.onMenuCollapsed(fabsMenu);
+                rouletteCreateFab.setEnabled(false);
+                editRouletteFab.setEnabled(false);
+                myRouletteFab.setEnabled(false);
+            }
+
+            @Override
+            public void onMenuExpanded(FABsMenu fabsMenu) {
+                Log.d("あああああああああああああああああ", "onMenuExpanded");
+                super.onMenuExpanded(fabsMenu);
+                rouletteCreateFab.setEnabled(true);
+                editRouletteFab.setEnabled(true);
+                myRouletteFab.setEnabled(true);
+            }
+        });
+
+
+        rouletteCreateFab = findViewById(R.id.fab_roulette_create);
         rouletteCreateFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("ああああああああああああああああ", "rouletteCreateFab");
                 Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
                 //Intent intent = new Intent(getApplication(), SubActivity.class);
                 startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATE);
             }
         });
+        //rouletteCreateFab.setEnabled(false);
 
-        final TitleFAB editRouletteFab = findViewById(R.id.fab_edit_roulette);
+        editRouletteFab = findViewById(R.id.fab_edit_roulette);
         editRouletteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (rouletteExists) {
+                    Log.d("ああああああああああああああああ", "editRouletteFab");
                     Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
                     //Intent intent = new Intent(getApplication(), SubActivity.class);
                     rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
@@ -353,19 +396,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        //editButton.setEnabled(false);
 
-        final TitleFAB myRouletteFab = findViewById(R.id.fab_myRoulette);
+        myRouletteFab = findViewById(R.id.fab_myRoulette);
         myRouletteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("ああああああああああああああああ", "myRouletteFab");
                 Intent toMyRouletteIntent = new Intent(getApplicationContext(), MyRouletteActivity.class);
                 startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
                 //menu.collapseImmediately();
                 //startActivity(toMyRouletteIntent);
             }
         });
-
-
+        //myRouletteFab.setEnabled(false);
 
 
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -663,6 +707,11 @@ public class MainActivity extends AppCompatActivity {
                     rotate.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
+                            //背景色、resultTextViewをそれぞれ初期化する
+                            constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                            resultTextView.setText("");
+
+                            //抽選中は各種ボタンを無効化する
                             rouletteStartButton.setEnabled(false);
                             createButton.setEnabled(false);
                             toMyRouletteButton.setEnabled(false);
@@ -670,11 +719,10 @@ public class MainActivity extends AppCompatActivity {
                             plusButton.setEnabled(false);
                             minusButton.setEnabled(false);
                             fabsMenu.setEnabled(false);
+                            //rouletteCreateFab.setEnabled(false);
+                            //editRouletteFab.setEnabled(false);
+                            //myRouletteFab.setEnabled(false);
                             toolbar.findViewById(R.id.menuButton).setEnabled(false);
-
-                            //背景色、resultTextViewをそれぞれ初期化する
-                            constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                            resultTextView.setText("");
 
                             SwitchCompat soundSwitch = findViewById(R.id.nav_sound_option).findViewById(R.id.switch_drawer_layout);
                             if (soundSwitch.isChecked()) {
@@ -701,6 +749,8 @@ public class MainActivity extends AppCompatActivity {
                             resultTextView.setText(rouletteViewInLayout.getTextStrings().get(getSector(degree, rouletteViewInLayout)));
                             //resultTv.setText(getSector(degree));
                             //Log.d("getsector", String.valueOf(360 - (degree % 720)));
+
+                            //抽選終了後に各種ボタンを有効化する
                             rouletteStartButton.setEnabled(true);
                             createButton.setEnabled(true);
                             toMyRouletteButton.setEnabled(true);
@@ -708,6 +758,9 @@ public class MainActivity extends AppCompatActivity {
                             plusButton.setEnabled(true);
                             minusButton.setEnabled(true);
                             fabsMenu.setEnabled(true);
+                            //rouletteCreateFab.setEnabled(true);
+                            //editRouletteFab.setEnabled(true);
+                            //myRouletteFab.setEnabled(true);
                             toolbar.findViewById(R.id.menuButton).setEnabled(true);
                             Log.d("getsector", String.valueOf(degree));
                             //degreeOld = degree;
@@ -835,6 +888,10 @@ public class MainActivity extends AppCompatActivity {
                         //ルーレットを変更した場合は,角度を初期値に戻す
                         rotate.cancel();
                     }
+
+                    //通知を削除
+                    NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.cancel(1);
 
                     rouletteExists = true;
                 }

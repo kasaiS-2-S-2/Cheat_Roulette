@@ -25,4 +25,5 @@ public class SameWidthHeightButton extends AppCompatButton {
         int height = getMeasuredHeight();
         setMeasuredDimension(height, height);
     }
+
 }
