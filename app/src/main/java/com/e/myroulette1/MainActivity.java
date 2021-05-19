@@ -251,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.constraintLayout);
         toolbar = findViewById(R.id.toolbar_main);
+        toolbar.setTitle("ルーレット");
         setSupportActionBar(toolbar);
 
         //navigationView.setNavigationItemSelectedListener(this);
@@ -462,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_main, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_main, menu);
         return true;
     }
 
@@ -472,9 +473,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menuButton:
                 // ボタンをタップした際の処理を記述
                 drawerLayout.openDrawer(Gravity.RIGHT);
-                break;
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -887,6 +888,12 @@ public class MainActivity extends AppCompatActivity {
                     if (rotate != null) {
                         //ルーレットを変更した場合は,角度を初期値に戻す
                         rotate.cancel();
+                    }
+
+                    if (rouletteNameInfo.isEmpty()) {
+                        toolbar.setTitle("ルーレット");
+                    } else {
+                        toolbar.setTitle(rouletteNameInfo);
                     }
 
                     //通知を削除

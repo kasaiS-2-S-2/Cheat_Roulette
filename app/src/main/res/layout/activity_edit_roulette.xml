@@ -8,7 +8,12 @@
     tools:context=".MainActivity"
     tools:ignore="MissingDefaultResource">
 
-    <!--listviewのほうがいいかも-->
+    <include
+        android:id="@+id/toolbar_edit_roulette"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button"
@@ -32,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_edit_roulette"
         app:layout_constraintVertical_bias="0.036" />
 
     <Button
@@ -76,7 +81,7 @@
         app:layout_constraintEnd_toStartOf="@+id/return_button"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_edit_roulette"
         app:layout_constraintVertical_bias="0.048" />
 
     <EditText
@@ -89,8 +94,8 @@
         app:layout_constraintEnd_toStartOf="@+id/checkBox"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_edit_roulette"
+        app:layout_constraintVertical_bias="0.037" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roulette_item_list"

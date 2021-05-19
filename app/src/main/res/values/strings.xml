@@ -30,10 +30,14 @@
     <string name="roulette_create">ルーレット作成</string>
     <string name="edit_roulette">ルーレット編集</string>
     <string name="myRoulette">Myルーレット</string>
+    <string name="edit_myRoulette">Myルーレット編集</string>
     <string name="sound_option">サウンド</string>
     <string name="speed_option">抽選時間</string>
     <string name="roulette_time_short">短め</string>
     <string name="roulette_time_normal">普通</string>
     <string name="roulette_time_long">長め</string>
+    <string name="more_action">moreAction</string>
+    <string name="page_explain">画面説明</string>
+    <string name="tutorial">チュートリアル</string>
 
 </resources>

@@ -13,7 +13,10 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,6 +26,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +52,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
     //public int rouletteCount;
     private CheckBox checkBox;
     private EditText rouletteName;
+    private Toolbar toolbar;
     //private EditText editText, editText2;
     //ルーレットの項目リストの情報を保持するもの
     private RouletteItemListInfo rouletteItemListInfo = new RouletteItemListInfo(
@@ -80,6 +85,11 @@ public class RouletteCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roulettecreate);
         visibleFlag = false;
+
+        toolbar = findViewById(R.id.toolbar_roulette_create);
+        toolbar.setTitle(R.string.roulette_create);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         rouletteItemList = findViewById(R.id.roulette_item_list);
         rouletteItemList.setAdapter(rouletteItemListAdapter);
@@ -425,6 +435,33 @@ public class RouletteCreateActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_roulette_create, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.page_explain:
+                // ボタンをタップした際の処理を記述
+                return true;
+            case R.id.tutorial:
+                // ボタンをタップした際の処理を記述
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //ツールバーの戻るボタンを押した時の処理
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+
+        return super.onSupportNavigateUp();
     }
 
     /*

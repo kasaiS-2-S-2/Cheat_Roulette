@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -12,6 +14,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,11 +31,17 @@ public class MyRouletteActivity extends AppCompatActivity {
     //private ConstraintLayout constraintLayout;
     public RecyclerView myRouletteList;
     private Button returnButton;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_roulette);
+
+        toolbar = findViewById(R.id.toolbar_myRoulette);
+        toolbar.setTitle(R.string.myRoulette);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myRouletteList = findViewById(R.id.recyclerview);
         //MainActivity mainActivity = new MainActivity();
@@ -183,6 +192,33 @@ public class MyRouletteActivity extends AppCompatActivity {
         });
         */
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_roulette_create, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.page_explain:
+                // ボタンをタップした際の処理を記述
+                return true;
+            case R.id.tutorial:
+                // ボタンをタップした際の処理を記述
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //ツールバーの戻るボタンを押した時の処理
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+
+        return super.onSupportNavigateUp();
     }
 
     public void onSelectedRoulette(View view) {
