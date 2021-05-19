@@ -1,11 +1,13 @@
 package com.e.myroulette1;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -282,13 +284,13 @@ public class MainActivity extends AppCompatActivity {
         rouletteViewInLayout = findViewById(R.id.roulette);
         rouletteStartButton = findViewById(R.id.rouletteStartButton);
         resultTextView = findViewById(R.id.resultTextView);
-        resetButton = findViewById(R.id.reset_button);
+        //resetButton = findViewById(R.id.reset_button);
         plusButton = findViewById(R.id.plus_button);
         minusButton = findViewById(R.id.minus_button);
-        createButton = findViewById(R.id.send_button);
-        checkButton = findViewById(R.id.check_button);
-        editButton = findViewById(R.id.edit_button);
-        toMyRouletteButton = findViewById(R.id.myRoulette_button);
+        //createButton = findViewById(R.id.send_button);
+        //checkButton = findViewById(R.id.check_button);
+        //editButton = findViewById(R.id.edit_button);
+        //toMyRouletteButton = findViewById(R.id.myRoulette_button);
         //fabsMenu = findViewById(R.id.fabs_menu);
 
 
@@ -411,170 +413,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //myRouletteFab.setEnabled(false);
-
-
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
-                //Intent intent = new Intent(getApplication(), SubActivity.class);
-                startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATE);
-            }
-        });
-
-        toMyRouletteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent toMyRouletteIntent = new Intent(getApplicationContext(), MyRouletteActivity.class);
-                startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
-                //startActivity(toMyRouletteIntent);
-            }
-        });
-
-/*
-        int roulette = getResources().getIdentifier("roulette","id","MainActivity");
-        RouletteView rouletteview = new RouletteView(this, (AttributeSet) this);
-        rouletteView = (com.e.myroulette1.RouletteView) findViewById(R.id.roulette);
-        constraintLayout = findViewById(R.id.constraintLayout);
-        constraintLayout.addView(rouletteview, new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT
-        ));
-
-
- */
-        //setContentView(new TouchView(this));//タッチして座標取得に必要
-
-/*
-        ObjectAnimator animation = ObjectAnimator.ofFloat(rouletteView, "rotation", 500f);
-        animation.setDuration(1000);
-        animation.start();
- */
-
-
-        //init();
-
-/*
-        animation = new ArcAnimation(rouletteView);
-        animation.setDuration(1000);
-        rouletteView.startAnimation(animation);
-*/
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuButton:
-                // ボタンをタップした際の処理を記述
-                drawerLayout.openDrawer(Gravity.RIGHT);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    //@RequiresApi(api = Build.VERSION_CODES.Q)
-    public void onWindowFocusChanged(boolean hasFocus) {
-        //public void onResume() {
-        //super.onRestart();
-        //super.onStart();
-        //super.onResume();
-
-        super.onWindowFocusChanged(hasFocus);
-
-        //rouletteView = new RouletteView(getApplicationContext());
-
-        //xc = rouletteView.getWidth() / 2;
-        //yc = rouletteView.getHeight() / 2;
-
-        ////////////////////////////////////////////////////////////////
-        //constraintLayout.addView(new PointerView(getApplicationContext(), rouletteView.xc, rouletteView.yc));
-        //if (constraintLayout.getChildAt(constraintLayout.getChildCount() - 2) instanceof RouletteView) {
-        //rouletteViewInLayout = (RouletteView) constraintLayout.getChildAt(constraintLayout.getChildCount() - 2);
-        //rouletteViewInLayout = findViewById(R.id.roulette);
-        //}
-        //setContentView(constraintLayout);
-
-        /*
-        //Myルーレットのルーレットをセットする場合の処理
-        Intent fromMainIntent = getIntent();
-        if (fromMainIntent.getAction() != null && fromMainIntent.getAction().equals("SET_MYROULETTE")) {
-            //RouletteView rouletteView = findViewById(R.id.roulette);
-            //rouletteView.splitCount = 1;
-            String rouletteNameInfo = fromMainIntent.getStringExtra("rouletteName");
-            ArrayList<Integer> colorsInfo = fromMainIntent.getIntegerArrayListExtra("colors");
-            ArrayList<String> textStringsInfo = fromMainIntent.getStringArrayListExtra("textStrings");
-            ArrayList<Integer> itemRatiosInfo = fromMainIntent.getIntegerArrayListExtra("itemRatios");
-            ArrayList<Integer> OnOffOfSwitch100Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
-            ArrayList<Integer> OnOffOfSwitch0Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
-            //rouletteView.itemProbabilities.clear();
-            ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
-            //int itemProbabilitySize = intent.getIntExtra("itemProbabilitySize", 0);
-            float itemProbabilityArray[] = fromMainIntent.getFloatArrayExtra("itemProbability");
-            for (int i = 0; i < itemProbabilityArray.length; i++) {
-                itemProbabilitiesInfo.add(itemProbabilityArray[i]);
-            }
-            if (!itemProbabilitiesInfo.isEmpty()) {
-                //イカサマ設定のルーレットセット時は、イカサマモードONで初期化
-                CheatFlag = true;
-            }
-            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
-            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
-            //constraintLayout.addView(rouletteView);
-            //constraintLayout.addView(new PointerView(getApplicationContext()));
-
-            rouletteViewInLayout.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
-            setContentView(constraintLayout);
-            rouletteExists = true;
-        }
-
-         */
-
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (rouletteExists) {
-                    Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
-                    //Intent intent = new Intent(getApplication(), SubActivity.class);
-                    rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
-                    rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getTextStrings());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
-
-                    startActivityForResult(rouletteEditIntent, RESULT_EDITROULETTE);
-                } else {
-                    if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
-                    mToast.show();
-                }
-            }
-        });
-
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            //@RequiresApi(api = Build.VERSION_CODES.Q)
-            @Override
-            public void onClick(View view) {
-                if (rouletteExists) {
-                    //RouletteView roulette = (RouletteView) rouletteViewInLayout;
-                    Matrix matrix = new Matrix();          //マトリックスを作成
-                    matrix.setRotate(0, rouletteViewInLayout.xc, rouletteViewInLayout.yc);  //新しいルーレットが作成れるごとにルーレットの初期位置を調整（最初の項目が0度の位置にくるようにする）→　初めだけだった。→　アクティビティ開始時に動作するように設定を試みよ
-                    //onwindowre~とmatrix０度にしたら、普通にはできるようになったけど、文字キーが写ってるとき、タスク消すボタン等、少し画面を離れるとやるとうまくいかない→それらの状態の時はon~のどの状態なのかを調べる。
-                    rouletteViewInLayout.setAnimationMatrix(matrix);//APIレベル高すぎて、みんな使えないかも
-                } else {
-                    if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
-                    mToast.show();
-                }
-            }
-        });
 
         rouletteStartButton.setOnClickListener(new View.OnClickListener() {
             // クリック時に呼ばれるメソッド
@@ -709,14 +547,16 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onAnimationStart(Animation animation) {
                             //背景色、resultTextViewをそれぞれ初期化する
-                            constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                            //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                            changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
+
                             resultTextView.setText("");
 
                             //抽選中は各種ボタンを無効化する
                             rouletteStartButton.setEnabled(false);
-                            createButton.setEnabled(false);
-                            toMyRouletteButton.setEnabled(false);
-                            editButton.setEnabled(false);
+                            //createButton.setEnabled(false);
+                            //toMyRouletteButton.setEnabled(false);
+                            //editButton.setEnabled(false);
                             plusButton.setEnabled(false);
                             minusButton.setEnabled(false);
                             fabsMenu.setEnabled(false);
@@ -747,15 +587,16 @@ public class MainActivity extends AppCompatActivity {
                             //resultTextView.setText(getSector(360f - (degree % 360)));
                             //ルーレットが止まった位置の項目名と色をそれぞれ設定する
                             constraintLayout.setBackgroundColor(rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout)));
+                            //changeBackgroundColorWithAnimation(rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout)));
                             resultTextView.setText(rouletteViewInLayout.getTextStrings().get(getSector(degree, rouletteViewInLayout)));
                             //resultTv.setText(getSector(degree));
                             //Log.d("getsector", String.valueOf(360 - (degree % 720)));
 
                             //抽選終了後に各種ボタンを有効化する
                             rouletteStartButton.setEnabled(true);
-                            createButton.setEnabled(true);
-                            toMyRouletteButton.setEnabled(true);
-                            editButton.setEnabled(true);
+                            //createButton.setEnabled(true);
+                            //toMyRouletteButton.setEnabled(true);
+                            //editButton.setEnabled(true);
                             plusButton.setEnabled(true);
                             minusButton.setEnabled(true);
                             fabsMenu.setEnabled(true);
@@ -822,24 +663,112 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        checkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (rouletteExists) {
-                    //RouletteView roulette = (RouletteView) rouletteViewInLayout;
-                    for (int i = 0; i < rouletteViewInLayout.getColors().size(); i++) {
-                        //Log.d("Roulette contents of color"+ i, String.valueOf(RouletteView.colors[i]));
-                        //Log.d("Rolettte contents of textString" + i, RouletteView.textStrings[i]);
-                        Log.d("Roulette contents of color" + i, String.valueOf(rouletteViewInLayout.getColors().get(i)));
-                        Log.d("Rolettte contents of textString" + i, rouletteViewInLayout.getTextStrings().get(i));
-                    }
-                } else {
-                    if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
-                    mToast.show();
-                }
+/*
+        int roulette = getResources().getIdentifier("roulette","id","MainActivity");
+        RouletteView rouletteview = new RouletteView(this, (AttributeSet) this);
+        rouletteView = (com.e.myroulette1.RouletteView) findViewById(R.id.roulette);
+        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout.addView(rouletteview, new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+        ));
+
+
+ */
+        //setContentView(new TouchView(this));//タッチして座標取得に必要
+
+/*
+        ObjectAnimator animation = ObjectAnimator.ofFloat(rouletteView, "rotation", 500f);
+        animation.setDuration(1000);
+        animation.start();
+ */
+
+
+        //init();
+
+/*
+        animation = new ArcAnimation(rouletteView);
+        animation.setDuration(1000);
+        rouletteView.startAnimation(animation);
+*/
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuButton:
+                // ボタンをタップした際の処理を記述
+                drawerLayout.openDrawer(Gravity.RIGHT);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    //@RequiresApi(api = Build.VERSION_CODES.Q)
+    public void onWindowFocusChanged(boolean hasFocus) {
+        //public void onResume() {
+        //super.onRestart();
+        //super.onStart();
+        //super.onResume();
+
+        super.onWindowFocusChanged(hasFocus);
+
+        //rouletteView = new RouletteView(getApplicationContext());
+
+        //xc = rouletteView.getWidth() / 2;
+        //yc = rouletteView.getHeight() / 2;
+
+        ////////////////////////////////////////////////////////////////
+        //constraintLayout.addView(new PointerView(getApplicationContext(), rouletteView.xc, rouletteView.yc));
+        //if (constraintLayout.getChildAt(constraintLayout.getChildCount() - 2) instanceof RouletteView) {
+        //rouletteViewInLayout = (RouletteView) constraintLayout.getChildAt(constraintLayout.getChildCount() - 2);
+        //rouletteViewInLayout = findViewById(R.id.roulette);
+        //}
+        //setContentView(constraintLayout);
+
+        /*
+        //Myルーレットのルーレットをセットする場合の処理
+        Intent fromMainIntent = getIntent();
+        if (fromMainIntent.getAction() != null && fromMainIntent.getAction().equals("SET_MYROULETTE")) {
+            //RouletteView rouletteView = findViewById(R.id.roulette);
+            //rouletteView.splitCount = 1;
+            String rouletteNameInfo = fromMainIntent.getStringExtra("rouletteName");
+            ArrayList<Integer> colorsInfo = fromMainIntent.getIntegerArrayListExtra("colors");
+            ArrayList<String> textStringsInfo = fromMainIntent.getStringArrayListExtra("textStrings");
+            ArrayList<Integer> itemRatiosInfo = fromMainIntent.getIntegerArrayListExtra("itemRatios");
+            ArrayList<Integer> OnOffOfSwitch100Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
+            ArrayList<Integer> OnOffOfSwitch0Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
+            //rouletteView.itemProbabilities.clear();
+            ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
+            //int itemProbabilitySize = intent.getIntExtra("itemProbabilitySize", 0);
+            float itemProbabilityArray[] = fromMainIntent.getFloatArrayExtra("itemProbability");
+            for (int i = 0; i < itemProbabilityArray.length; i++) {
+                itemProbabilitiesInfo.add(itemProbabilityArray[i]);
             }
-        });
+            if (!itemProbabilitiesInfo.isEmpty()) {
+                //イカサマ設定のルーレットセット時は、イカサマモードONで初期化
+                CheatFlag = true;
+            }
+            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
+            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
+            //constraintLayout.addView(rouletteView);
+            //constraintLayout.addView(new PointerView(getApplicationContext()));
+
+            rouletteViewInLayout.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
+            setContentView(constraintLayout);
+            rouletteExists = true;
+        }
+
+         */
+
+
         //////////////////////////////////////////////////////////////////////////
     }
 
@@ -1045,6 +974,23 @@ public class MainActivity extends AppCompatActivity {
         } while (position == null && i < roulette.getColors().size() * roulette.splitCount);
 
         return position;
+    }
+
+    private void changeBackgroundColorWithAnimation(int toColor) {
+
+        int colorFrom = ((ColorDrawable)constraintLayout.getBackground()).getColor();
+        int colorTo = toColor;
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(100);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                constraintLayout.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
     }
 
 

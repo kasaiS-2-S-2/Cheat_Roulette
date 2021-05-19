@@ -39,5 +39,6 @@
     <string name="more_action">moreAction</string>
     <string name="page_explain">画面説明</string>
     <string name="tutorial">チュートリアル</string>
+    <string name="roulette_split">分割</string>
 
 </resources>
