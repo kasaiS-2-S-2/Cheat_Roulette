@@ -68,13 +68,15 @@
     <com.e.myroulette1.RouletteView
         android:id="@+id/roulette"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_main"
         tools:ignore="MissingClass" />
 
     <com.e.myroulette1.PointerView
         android:id="@+id/pointerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_main"
         tools:ignore="MissingClass" />
 
     <com.e.myroulette1.PushImageButton
@@ -105,31 +107,58 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_main" />
 
     <LinearLayout
+        android:id="@+id/split_button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="130dp"
         android:orientation="horizontal"
+        android:background="@drawable/split_button_border"
+        android:elevation="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rouletteStartButton">
 
-        <Button
+        <ImageButton
             android:id="@+id/minus_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="−" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/split_minus_button_push_behavior"
+            android:tint="#FFFF0000"
+            app:srcCompat="@drawable/ic_baseline_remove_48"/>
+
+        <!--<Button
+            android:id="@+id/minus_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/split_button_design"
+            android:text="−"
+            android:textSize="48dp"/>-->
 
         <TextView
             android:id="@+id/roulette_split"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/roulette_split" />
+            android:layout_height="48dp"
+            android:text="@string/roulette_split"
+            android:textSize="24dp"
+            android:padding="6dp"
+            android:background="@drawable/split_textview_border"
+            android:gravity="center_vertical"/>
 
-        <Button
+        <!--<Button
             android:id="@+id/plus_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="＋" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/split_button_design"
+            android:text="＋"
+            android:textSize="48dp"/>-->
+
+        <ImageButton
+            android:id="@+id/plus_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:tint="#FFFF0000"
+            android:background="@drawable/split_plus_button_push_behavior"
+            app:srcCompat="@drawable/ic_baseline_add_48"/>
 
     </LinearLayout>
 

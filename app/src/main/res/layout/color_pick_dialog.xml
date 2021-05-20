@@ -10,6 +10,7 @@
         android:id="@+id/color_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:background="@drawable/colorbutton_drawable"
         android:layout_gravity="right" />
 

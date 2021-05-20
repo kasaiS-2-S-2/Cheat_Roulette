@@ -51,12 +51,21 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
             // Define click listener for the ViewHolder's View
 
             this.colorButton = itemView.findViewById(R.id.colorButton);
+
             this.itemName = itemView.findViewById(R.id.itemName);
+            this.itemName.setMaxWidth(itemName.getWidth());
+
             this.ratio = itemView.findViewById(R.id.ratio);
+            this.ratio.setMaxWidth(itemName.getWidth());
+
             this.deleteButton = itemView.findViewById(R.id.deleteButton);
+
             this.switch100 = itemView.findViewById(R.id.switch100);
+
             this.switch0 = itemView.findViewById(R.id.switch0);
+
             this.linearLayout2 = itemView.findViewById(R.id.LinearLayout2);
+
 
             this.editTextListenerForItemName = editTextListenerForItemName;
             //EditText(ルーレット名)の更新状況を監視するリスナーをセットする

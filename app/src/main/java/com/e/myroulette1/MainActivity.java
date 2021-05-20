@@ -17,11 +17,15 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -67,12 +71,15 @@ public class MainActivity extends AppCompatActivity {
     private PushImageButton rouletteStartButton;
     private TextView resultTextView;
     private Button resetButton;
-    private Button plusButton;
-    private Button minusButton;
+    //private Button plusButton;
+    //private Button minusButton;
+    private ImageButton plusButton;
+    private ImageButton minusButton;
     private Button createButton;
     private Button checkButton;
     private Button editButton;
     private Button toMyRouletteButton;
+    private LinearLayout splitButtonLayout;
     private ConstraintLayout constraintLayout;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -251,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
         //relativeLayout = findViewById(R.id.relativeLayout_main);
 
 
-        constraintLayout = findViewById(R.id.constraintLayout);
         toolbar = findViewById(R.id.toolbar_main);
         toolbar.setTitle("ルーレット");
         setSupportActionBar(toolbar);
@@ -268,8 +274,15 @@ public class MainActivity extends AppCompatActivity {
         Point displayAre = new Point();
         disp.getSize(displayAre);
 
+        constraintLayout = findViewById(R.id.constraintLayout);
         constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().width = displayAre.x / 3;
         constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().height = displayAre.x / 3;
+
+        splitButtonLayout = findViewById(R.id.split_button_layout);
+        ViewGroup.LayoutParams layoutParams = splitButtonLayout.getLayoutParams();
+        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) layoutParams;
+        marginLayoutParams.setMargins(0, displayAre.x / 3, 0, 0);
+        splitButtonLayout.setLayoutParams(marginLayoutParams);
         //Matrix matrix = new Matrix();
         //matrix.setScale(displayAre.x * 2f / 9f, displayAre.x * 2f / 9f);
         //matrix.setScale(3, 3);
@@ -630,7 +643,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (rouletteExists) {
                     //背景色、resultTextViewをそれぞれ初期化する
-                    constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
                     resultTextView.setText("");
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     (rouletteViewInLayout.splitCount)++;
@@ -648,7 +662,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (rouletteExists) {
                     //背景色、resultTextViewをそれぞれ初期化する
-                    constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
                     resultTextView.setText("");
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     if (rouletteViewInLayout.splitCount >= 2) {
@@ -981,7 +996,7 @@ public class MainActivity extends AppCompatActivity {
         int colorFrom = ((ColorDrawable)constraintLayout.getBackground()).getColor();
         int colorTo = toColor;
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(100);
+        colorAnimation.setDuration(200);
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override

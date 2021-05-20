@@ -21,4 +21,24 @@
         <item name="android:background">@color/colorPickerDialogColor</item>
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
+
+    <style name="Switch100Style" parent="Theme.AppCompat.Light">
+        <!--ボタンON時のボタンの通り道（透明度30%）・ボタンとタッチフィードバックカラー-->
+        <item name="colorControlActivated">#FFFF0040</item>
+        <!--ボタンOFF時のボタンの通り道（透明度30%）-->
+        <item name="android:colorForeground">#000000</item>
+        <!-- OFFボタンを押したときのタッチフィードバックカラー -->
+        <item name="colorControlHighlight">#c0c0c0</item>
+
+    </style>
+
+    <style name="Switch0Style" parent="Theme.AppCompat.Light">
+        <!--ボタンON時のボタンの通り道（透明度30%）・ボタンとタッチフィードバックカラー-->
+        <item name="colorControlActivated">#FF17A8FF</item>
+        <!--ボタンOFF時のボタンの通り道（透明度30%）-->
+        <item name="android:colorForeground">#000000</item>
+        <!-- OFFボタンを押したときのタッチフィードバックカラー -->
+        <item name="colorControlHighlight">#c0c0c0</item>
+    </style>
+
 </resources>

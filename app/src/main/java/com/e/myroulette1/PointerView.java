@@ -150,11 +150,11 @@ public class PointerView extends View {
 
         // 三角形を書く
         float tx1 = xc;
-        float ty1 = xc + xc/4 - xc/6;
-        float tx2 = xc - xc/24;
-        float ty2 = yc - xc - xc/6;
-        float tx3 = xc + xc/24;
-        float ty3 = yc - xc - xc/6;
+        float ty1 = yc - xc - (xc/12) + (xc/3);
+        float tx2 = xc - (xc/24);
+        float ty2 = yc - xc - (xc/12);
+        float tx3 = xc + (xc/24);
+        float ty3 = yc - xc - (xc/12);
 
         //paint.setStrokeWidth(10);
         path.moveTo(tx1, ty1);

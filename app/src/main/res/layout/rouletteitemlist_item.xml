@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#FFFFFF00"
+    android:background="#FFFFFFFF"
     android:padding="@dimen/small_margin"
     android:gravity="center_horizontal">
 
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#FF00FF00"
+        android:background="#FFFFFFFF"
         android:layout_margin="@dimen/small_margin"
         android:gravity="center_horizontal">
 
@@ -36,23 +36,35 @@
             android:id="@+id/colorButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/colorbutton_drawable"
             android:layout_margin="@dimen/small_margin"
-            android:text="color"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/colorbutton_drawable"
             android:onClick="onClickColorButton" />
 
         <EditText
             android:id="@+id/itemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:hint="@string/item_name_hint"
             android:inputType="textPersonName" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="#FF9D9D9D"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:text="面積比:" />
 
         <EditText
             android:id="@+id/ratio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
+            android:layout_weight="0.5"
+            android:layout_gravity="center_vertical"
             android:inputType="number"
             android:text="1" />
 
@@ -61,7 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
-            android:src="@drawable/ic_baseline_delete_forever_24"/>
+            android:layout_gravity="center_vertical"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/ic_baseline_delete_forever_48"/>
 
     </LinearLayout>
 
@@ -70,23 +84,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#FF00FF00"
+        android:background="#FFFFFFFF"
         android:padding="@dimen/small_padding"
         android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:textColor="#FF9D9D9D"
+            android:layout_margin="12dp"
+            android:text="必中\nスイッチ" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch100"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
+            android:layout_gravity="center_vertical"
+            android:theme="@style/Switch100Style"
             android:onClick="onSwitch100Clicked"
             android:checked="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:textColor="#FF9D9D9D"
+            android:layout_margin="12dp"
+            android:text="絶対ハズレ\nスイッチ" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
+            android:layout_gravity="center_vertical"
+            android:theme="@style/Switch0Style"
             android:onClick="onSwitch0Clicked"
             android:checked="false" />
 
