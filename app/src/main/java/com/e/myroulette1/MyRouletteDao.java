@@ -35,28 +35,28 @@ import java.util.List;
  */
 
 @Dao
-public interface WordDao {
+public interface MyRouletteDao {
 
     // LiveData is a data holder class that can be observed within a given lifecycle.
     // Always holds/caches latest version of data. Notifies its active observers when the
     // data has changed. Since we are getting all the contents of the database,
     // we are notified whenever any of the database contents have changed.
-    @Query("SELECT * FROM word_table")
-    LiveData<List<Word>> getAlphabetizedWords();
+    @Query("SELECT * FROM myRoulette_table")
+    LiveData<List<MyRoulette>> getAllMyRoulette();
 
-    @Query("SELECT * FROM word_table WHERE ID = :id")
-    Word getWord(int id);
+    @Query("SELECT * FROM myRoulette_table WHERE ID = :id")
+    MyRoulette getMyRoulette(int id);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Word word);
+    void insert(MyRoulette myRoulette);
 
     @Update
-    void update(Word word);
+    void update(MyRoulette myRoulette);
 
     //指定primaryKey(id)のデータを削除する
-    @Query("DELETE FROM word_table WHERE ID = :id")
+    @Query("DELETE FROM myRoulette_table WHERE ID = :id")
     void delete(int id);
 
-    @Query("DELETE FROM word_table")
+    @Query("DELETE FROM myRoulette_table")
     void deleteAll();
 }

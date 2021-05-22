@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -106,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
     private float interpolatorFactor = 2.3f;
     final String notRouletteExistsMessage = "ルーレットが作成されていません";
 
-    public static WordViewModel mWordViewModel;
-    public static final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
+    public static MyRouletteViewModel mMyRouletteViewModel;
+    public static final MyRouletteListAdapter adapter = new MyRouletteListAdapter(new MyRouletteListAdapter.MyRouletteDiff());
 
     static Toast mToast= null;
     static boolean CheatFlag = true;
@@ -186,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         //final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
 
         // Get a new or existing ViewModel from the ViewModelProvider.
-        mWordViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(WordViewModel.class);
+        mMyRouletteViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(MyRouletteViewModel.class);
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
@@ -194,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         // ここで、recyclerViewにDBのデータを表示する。無いと何も表示されない（recyclerViewがあり、DBも更新されているが、見た目のみ反映できない
 
         //MyRouletteActivity myRouletteActivity = new MyRouletteActivity();
-        mWordViewModel.getAllWords().observe(this, words -> {
+        mMyRouletteViewModel.getAllMyRoulette().observe(this, words -> {
 
             /*
             ラムダ式でなければ、

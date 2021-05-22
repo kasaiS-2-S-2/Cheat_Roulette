@@ -27,8 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorChangedListener;
-import com.flask.colorpicker.builder.ColorPickerClickListener;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -55,8 +53,6 @@ public class EditMyRouletteActivity extends AppCompatActivity {
     //private RouletteItemListInfo rouletteItemListInfo;
 
     public static boolean visibleFlag = false;
-
-    private final ColorPalette colorPalette = new ColorPalette();
 
     //編集前のルーレット情報
     int rouletteIdFromMyRoulette;
@@ -89,8 +85,8 @@ public class EditMyRouletteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_my_roulette);
 
-        MainActivity.mWordViewModel.getAllWords().observe(this, words -> {
-            MainActivity.adapter.submitList(words);
+        MainActivity.mMyRouletteViewModel.getAllMyRoulette().observe(this, myRoulettes -> {
+            MainActivity.adapter.submitList(myRoulettes);
         });
 
         visibleFlag = false;
@@ -329,11 +325,11 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                     itemProbabilityArray[i] = itemProbabilities.get(i);
                 }
 
-                Word word = new Word(rouletteName.getText().toString(), getNowDate(),
+                MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
                         rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
                         rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                word.setId(rouletteIdFromMyRoulette);
-                MainActivity.mWordViewModel.update(word);
+                myRoulette.setId(rouletteIdFromMyRoulette);
+                MainActivity.mMyRouletteViewModel.update(myRoulette);
                 //MainActivity.adapter.notifyItemChanged(editItemPosition);
                 //MyRouletteActivity.recyclerView.getAdapter().notifyItemChanged(editItemPosition);
 

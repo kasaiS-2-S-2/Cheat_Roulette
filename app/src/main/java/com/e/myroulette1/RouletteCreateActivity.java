@@ -11,9 +11,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorChangedListener;
-import com.flask.colorpicker.builder.ColorPickerClickListener;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -62,8 +58,6 @@ public class RouletteCreateActivity extends AppCompatActivity {
     //private RouletteItemListInfo rouletteItemListInfo;
 
     public static boolean visibleFlag = false;
-
-    private final ColorPalette colorPalette = new ColorPalette();
 
     //private int rouletteCount = 0;
 
@@ -378,13 +372,13 @@ public class RouletteCreateActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                Word word = new Word(rouletteName.getText().toString(), getNowDate(),
+                                MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
                                         rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
                                         rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
                                 //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
 
 
-                                MainActivity.mWordViewModel.insert(word);
+                                MainActivity.mMyRouletteViewModel.insert(myRoulette);
 
                                 Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
                                 fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());

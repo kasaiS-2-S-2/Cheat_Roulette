@@ -30,47 +30,46 @@ import java.util.List;
  * https://developer.android.com/topic/libraries/architecture/guide.html
  */
 
-class WordRepository {
+class MyRouletteRepository {
 
-    private WordDao mWordDao;
-    private LiveData<List<Word>> mAllWords;
+    private MyRouletteDao mMyRouletteDao;
+    private LiveData<List<MyRoulette>> mAllMyRoulette;
 
     // Note that in order to unit test the WordRepository, you have to remove the Application
     // dependency. This adds complexity and much more code, and this sample is not about testing.
     // See the BasicSample in the android-architecture-components repository at
     // https://github.com/googlesamples
-    WordRepository(Application application) {
-        WordRoomDatabase db = WordRoomDatabase.getDatabase(application);
-        mWordDao = db.wordDao();
-        mAllWords = mWordDao.getAlphabetizedWords();
+    MyRouletteRepository(Application application) {
+        MyRouletteRoomDatabase db = MyRouletteRoomDatabase.getDatabase(application);
+        mMyRouletteDao = db.myRouletteDao();
+        mAllMyRoulette = mMyRouletteDao.getAllMyRoulette();
     }
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    LiveData<List<Word>> getAllWords() {
-        return mAllWords;
+    LiveData<List<MyRoulette>> getAllMyRoulette() {
+        return mAllMyRoulette;
     }
 
-    Word getWord(int id) { return mWordDao.getWord(id); }
+    MyRoulette getMyRoulette(int id) { return mMyRouletteDao.getMyRoulette(id); }
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
-    void insert(Word word) {
-        WordRoomDatabase.databaseWriteExecutor.execute(() -> {
-            mWordDao.insert(word);
+    void insert(MyRoulette myRoulette) {
+        MyRouletteRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mMyRouletteDao.insert(myRoulette);
         });
     }
 
-    void update(Word word) {
-        WordRoomDatabase.databaseWriteExecutor.execute(() -> {
-            mWordDao.update(word);
+    void update(MyRoulette myRoulette) {
+        MyRouletteRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mMyRouletteDao.update(myRoulette);
         });
     }
-
 
     void delete(int id) {
-        WordRoomDatabase.databaseWriteExecutor.execute(() -> {
-            mWordDao.delete(id);
+        MyRouletteRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mMyRouletteDao.delete(id);
         });
     }
 }

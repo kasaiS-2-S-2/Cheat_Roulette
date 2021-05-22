@@ -22,8 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,18 +33,18 @@ import java.util.ArrayList;
 
 import static android.content.Context.WINDOW_SERVICE;
 
-class WordViewHolder extends RecyclerView.ViewHolder {
+class MyRouletteViewHolder extends RecyclerView.ViewHolder {
     //private final TextView wordItemView;
     //private final TextView wordItemView2;
     private final CardView cardView;/////////////////////////////////////
-    private final TextView titleView;
+    private final TextView rouletteNameView;
     private final TextView dateView;
     private final LinearLayout imageButtonLayout;
     private final ImageButton deleteMyRouletteButton;
     private final ImageButton editMyRouletteButton;
     private final RouletteView rouletteView;
 
-    private WordViewHolder(View itemView) {
+    private MyRouletteViewHolder(View itemView) {
         super(itemView);
         //wordItemView = itemView.findViewById(R.id.title);
         //wordItemView2 = itemView.findViewById(R.id.sub);
@@ -62,7 +60,7 @@ class WordViewHolder extends RecyclerView.ViewHolder {
          */
 
         this.cardView = itemView.findViewById(R.id.cardView);////////////////////////////////////////
-        this.titleView = itemView.findViewById(R.id.title);
+        this.rouletteNameView = itemView.findViewById(R.id.roulette_name);
         this.dateView = itemView.findViewById(R.id.date);
         this.imageButtonLayout = itemView.findViewById(R.id.image_button_layout);
         this.deleteMyRouletteButton = itemView.findViewById(R.id.delete_myRoulette);
@@ -82,7 +80,7 @@ class WordViewHolder extends RecyclerView.ViewHolder {
         this.rouletteView.setLayoutParams(marginLayoutParams);
         this.rouletteView.getLayoutParams().width = (displayAre.x) / 2;
 
-        this.titleView.setMaxWidth(displayAre.x/2);
+        this.rouletteNameView.setMaxWidth(displayAre.x/2);
 
         this.imageButtonLayout.getLayoutParams().width = displayAre.x / 2;
 
@@ -90,10 +88,10 @@ class WordViewHolder extends RecyclerView.ViewHolder {
 
     //viewHolderとデータをつなぎ合わせる部分
     public void bind(int id,
-                     String word,
+                     String rouletteName,
                      String date,
                      ArrayList<Integer> colorsInfo,
-                     ArrayList<String> textStringsInfo,
+                     ArrayList<String> itemNamesInfo,
                      ArrayList<Integer> itemRatiosInfo,
                      ArrayList<Integer> OnOffOfSwitch100Info,
                      ArrayList<Integer> OnOffOfSwitch0Info,
@@ -101,19 +99,19 @@ class WordViewHolder extends RecyclerView.ViewHolder {
 
         //wordItemView.setText(words.get(0));
         //wordItemView2.setText(words.get(1));
-        titleView.setText(word);
+        rouletteNameView.setText(rouletteName);
         dateView.setText(date);
         rouletteView.setId(id);
-        rouletteView.setRouletteContents(word, colorsInfo, textStringsInfo, itemRatiosInfo,
+        rouletteView.setRouletteContents(rouletteName, colorsInfo, itemNamesInfo, itemRatiosInfo,
                 OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
     }
 
     //viewHolderを作る部分
-    static WordViewHolder create(ViewGroup parent) {
+    static MyRouletteViewHolder create(ViewGroup parent) {
         //parent = recyclerView(親ビュー）
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_item, parent, false);
-        return new WordViewHolder(view);
+                .inflate(R.layout.my_roulette_list_item, parent, false);
+        return new MyRouletteViewHolder(view);
     }
 
     public RouletteView getRouletteView() { return rouletteView; }

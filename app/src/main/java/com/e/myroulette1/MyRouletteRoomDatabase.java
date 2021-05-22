@@ -36,25 +36,25 @@ import java.util.concurrent.Executors;
  * app, consider exporting the schema to help you with migrations.
  */
 
-@Database(entities = {Word.class}, version = 1, exportSchema = false)
+@Database(entities = {MyRoulette.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
-abstract class WordRoomDatabase extends RoomDatabase {
+abstract class MyRouletteRoomDatabase extends RoomDatabase {
 
-    abstract WordDao wordDao();
+    abstract MyRouletteDao myRouletteDao();
 
     // marking the instance as volatile to ensure atomic access to the variable
-    private static volatile WordRoomDatabase INSTANCE;
+    private static volatile MyRouletteRoomDatabase INSTANCE;
     //なんで４？
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    static WordRoomDatabase getDatabase(final Context context) {
+    static MyRouletteRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (WordRoomDatabase.class) {
+            synchronized (MyRouletteRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            WordRoomDatabase.class, "word_database")
+                            MyRouletteRoomDatabase.class, "myRoulette_database")
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
@@ -75,11 +75,11 @@ abstract class WordRoomDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(() -> {
                 // Populate the database in the background.
                 // If you want to start with more words, just add them.
-                WordDao dao = INSTANCE.wordDao();
+                MyRouletteDao dao = INSTANCE.myRouletteDao();
                 dao.deleteAll();
 
 
-                String string = "１";
+                String rouletteName = "１";
                 String date = "2000";
                 ArrayList<String> words = new ArrayList<String>();
                 words.add("ああああ");
@@ -88,21 +88,30 @@ abstract class WordRoomDatabase extends RoomDatabase {
                 colorsInfo.add(Color.parseColor("#FFFF0000"));
                 colorsInfo.add(Color.parseColor("#FF80FF00"));
                 colorsInfo.add(Color.parseColor("#FF0000FF"));
-                ArrayList<String> textStringsInfo = new ArrayList<String>();
-                textStringsInfo.add("寿司");
-                textStringsInfo.add("天丼");
-                textStringsInfo.add("焼き肉");
+                ArrayList<String> itemNamesInfo = new ArrayList<String>();
+                itemNamesInfo.add("寿司");
+                itemNamesInfo.add("天丼");
+                itemNamesInfo.add("焼き肉");
                 ArrayList<Integer> itemRatiosInfo = new ArrayList<Integer>();
                 itemRatiosInfo.add(1);
                 itemRatiosInfo.add(1);
                 itemRatiosInfo.add(1);
                 ArrayList<Integer> OnOffOfSwitch100Info = new ArrayList<Integer>();
+                OnOffOfSwitch100Info.add(0);
+                OnOffOfSwitch100Info.add(0);
+                OnOffOfSwitch100Info.add(0);
                 ArrayList<Integer> OnOffOfSwitch0Info = new ArrayList<Integer>();
+                OnOffOfSwitch0Info.add(0);
+                OnOffOfSwitch0Info.add(0);
+                OnOffOfSwitch0Info.add(0);
                 ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
+                itemProbabilitiesInfo.add(33.33f);
+                itemProbabilitiesInfo.add(33.33f);
+                itemProbabilitiesInfo.add(33.33f);
 
 
-                Word word = new Word(string, date, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
-                dao.insert(word);
+                MyRoulette myRoulette = new MyRoulette(rouletteName, date, colorsInfo, itemNamesInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
+                dao.insert(myRoulette);
 
 
             });

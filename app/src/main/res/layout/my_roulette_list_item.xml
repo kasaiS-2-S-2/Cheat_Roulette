@@ -76,7 +76,7 @@ limitations under the License. -->
 
         <TextView
             xmlns:text_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/title"
+            android:id="@+id/roulette_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

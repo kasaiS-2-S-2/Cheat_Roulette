@@ -32,32 +32,32 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 
-public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
+public class MyRouletteListAdapter extends ListAdapter<MyRoulette, MyRouletteViewHolder> {
 
     private Context context;
 
-    public WordListAdapter(@NonNull DiffUtil.ItemCallback<Word> diffCallback) {
+    public MyRouletteListAdapter(@NonNull DiffUtil.ItemCallback<MyRoulette> diffCallback) {
         super(diffCallback);
     }
 
     @Override
-    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyRouletteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //parent = recyclerView
-        return WordViewHolder.create(parent);
+        return MyRouletteViewHolder.create(parent);
     }
 
     public void deleteItem(int index) {
         //削除項目をList<word>から削除
-        MainActivity.mWordViewModel.getAllWords().getValue().remove(index);
+        MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().remove(index);
         notifyItemRemoved(index);
         //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
         notifyItemRangeChanged(index, getItemCount() - index);
     }
 
     @Override
-    public void onBindViewHolder(WordViewHolder holder, int position) {
-        Word current = getItem(position);
-        holder.bind(current.getId(), current.getWord(), current.getDate(), current.getColorsInfo(), current.getTextStringsInfo(),
+    public void onBindViewHolder(MyRouletteViewHolder holder, int position) {
+        MyRoulette current = getItem(position);
+        holder.bind(current.getId(), current.getRouletteName(), current.getDate(), current.getColorsInfo(), current.getItemNamesInfo(),
                 current.getItemRatiosInfo(), current.getOnOffOfSwitch100Info(), current.getOnOffOfSwitch0Info(), current.getItemProbabilitiesInfo());
         holder.getDeleteMyRouletteButton().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +71,7 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
                                 //スワイプされた箇所のデータベースのprimarykeyを取得
                                 int primaryKey = holder.getRouletteView().getId();
                                 //取得したprimarykeyの所のデータを消去
-                                MainActivity.mWordViewModel.delete(primaryKey);
+                                MainActivity.mMyRouletteViewModel.delete(primaryKey);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -101,16 +101,16 @@ public class WordListAdapter extends ListAdapter<Word, WordViewHolder> {
     }
 
 
-    static class WordDiff extends DiffUtil.ItemCallback<Word> {
+    static class MyRouletteDiff extends DiffUtil.ItemCallback<MyRoulette> {
 
         @Override
-        public boolean areItemsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
+        public boolean areItemsTheSame(@NonNull MyRoulette oldItem, @NonNull MyRoulette newItem) {
             return oldItem.getId() == newItem.getId();
         }
 
         @SuppressLint("DiffUtilEquals")
         @Override
-        public boolean areContentsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
+        public boolean areContentsTheSame(@NonNull MyRoulette oldItem, @NonNull MyRoulette newItem) {
             return oldItem == newItem;
         }
     }

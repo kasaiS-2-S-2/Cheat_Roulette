@@ -58,8 +58,6 @@ public class EditRouletteActivity extends AppCompatActivity {
 
     public static boolean visibleFlag = false;
 
-    private final ColorPalette colorPalette = new ColorPalette();
-
     //編集前のルーレット情報
     String rouletteNameFromMain;
     ArrayList<Integer> colorsFromMain;
@@ -357,11 +355,11 @@ public class EditRouletteActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                Word word = new Word(rouletteName.getText().toString(), getNowDate(),
+                                MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
                                         rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
                                         rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
                                 //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
-                                MainActivity.mWordViewModel.insert(word);
+                                MainActivity.mMyRouletteViewModel.insert(myRoulette);
 
                                 Intent fromEditRouletteIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
                                 fromEditRouletteIntent.putExtra("rouletteName", rouletteName.getText().toString());

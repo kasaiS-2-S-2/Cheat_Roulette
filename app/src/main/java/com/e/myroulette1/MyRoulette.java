@@ -34,16 +34,16 @@ import java.util.ArrayList;
  * https://developer.android.com/topic/libraries/architecture/room.html
  */
 
-@Entity(tableName = "word_table")
-public class Word {
+@Entity(tableName = "myRoulette_table")
+public class MyRoulette {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
     //ルーレット名
     @NonNull
-    @ColumnInfo(name = "word")
-    private String mWord;
+    @ColumnInfo(name = "rouletteName")
+    private String rouletteName;
 
     /*
     @NonNull
@@ -60,8 +60,8 @@ public class Word {
     private ArrayList<Integer> colorsInfo;
 
     @NonNull
-    @ColumnInfo(name = "textStringsInfo")
-    private ArrayList<String> textStringsInfo;
+    @ColumnInfo(name = "itemNamesInfo")
+    private ArrayList<String> itemNamesInfo;
 
     @NonNull
     @ColumnInfo(name = "itemRatiosInfo")
@@ -81,16 +81,16 @@ public class Word {
 
 
 //コンストラクタで貰う引数名は、対応するカラムの名前と同じにしなければならないっぽい
-    public Word(@NonNull String mWord,
+    public MyRoulette(@NonNull String rouletteName,
                 @NonNull String date,
                 @NonNull ArrayList<Integer> colorsInfo,
-                @NonNull ArrayList<String> textStringsInfo,
+                @NonNull ArrayList<String> itemNamesInfo,
                 @NonNull ArrayList<Integer> itemRatiosInfo,
                 @NonNull ArrayList<Integer> OnOffOfSwitch100Info,
                 @NonNull ArrayList<Integer> OnOffOfSwitch0Info,
                 @NonNull ArrayList<Float> itemProbabilitiesInfo) {
 
-        this.mWord = mWord;
+        this.rouletteName = rouletteName;
         //this.mWords = mWords;
 
         //ルーレットの作成日時
@@ -98,7 +98,7 @@ public class Word {
         //ルーレットの色のリスト
         this.colorsInfo = colorsInfo;
         //ルーレットの文字列のリスト
-        this.textStringsInfo = textStringsInfo;
+        this.itemNamesInfo = itemNamesInfo;
         //ルーレットの項目比率のリスト
         this.itemRatiosInfo = itemRatiosInfo;
         //必中スイッチのONOFF情報
@@ -120,8 +120,8 @@ public class Word {
     public int getId() { return this.id; }
 
     @NonNull
-    public String getWord() {
-        return this.mWord;
+    public String getRouletteName() {
+        return this.rouletteName;
     }
 
     /*
@@ -139,7 +139,7 @@ public class Word {
     public ArrayList<Integer> getColorsInfo() { return this.colorsInfo; }
 
     @NonNull
-    public ArrayList<String> getTextStringsInfo() { return this.textStringsInfo; }
+    public ArrayList<String> getItemNamesInfo() { return this.itemNamesInfo; }
 
     @NonNull
     public ArrayList<Integer> getItemRatiosInfo() { return this.itemRatiosInfo; }

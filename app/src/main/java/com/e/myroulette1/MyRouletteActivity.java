@@ -45,7 +45,7 @@ public class MyRouletteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        myRouletteList = findViewById(R.id.recyclerview);
+        myRouletteList = findViewById(R.id.myRoulette_list);
         //MainActivity mainActivity = new MainActivity();
         myRouletteList.setAdapter(MainActivity.adapter);
         myRouletteList.setLayoutManager(new LinearLayoutManager(this));
@@ -80,15 +80,15 @@ public class MyRouletteActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 int position = viewHolder.getAdapterPosition();
                                 //スワイプされたList<word>の項目をList<word>から削除
-                                MainActivity.mWordViewModel.getAllWords().getValue().remove(position);
+                                MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().remove(position);
                                 //List<word>から削除されたことを通知（viewHolderにそのことを反映している？）
                                 myRouletteList.getAdapter().notifyItemRemoved(position);
                                 //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
                                 myRouletteList.getAdapter().notifyItemRangeChanged(position, myRouletteList.getAdapter().getItemCount() - position);
                                 //スワイプされた箇所のデータベースのprimarykeyを取得
-                                int primaryKey = ((WordViewHolder)viewHolder).getRouletteView().getId();
+                                int primaryKey = ((MyRouletteViewHolder)viewHolder).getRouletteView().getId();
                                 //取得したprimarykeyの所のデータを消去
-                                MainActivity.mWordViewModel.delete(primaryKey);
+                                MainActivity.mMyRouletteViewModel.delete(primaryKey);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {

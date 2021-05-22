@@ -32,34 +32,34 @@ import java.util.List;
  * an up-to-date list of all words.
  */
 
-public class WordViewModel extends AndroidViewModel {
+public class MyRouletteViewModel extends AndroidViewModel {
 
-    private WordRepository mRepository;
+    private MyRouletteRepository mRepository;
     // Using LiveData and caching what getAlphabetizedWords returns has several benefits:
     // - We can put an observer on the data (instead of polling for changes) and only update the
     //   the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
-    private final LiveData<List<Word>> mAllWords;
+    private final LiveData<List<MyRoulette>> mAllMyRoulette;
 
-    public WordViewModel(Application application) {
+    public MyRouletteViewModel(Application application) {
         super(application);
-        mRepository = new WordRepository(application);
-        mAllWords = mRepository.getAllWords();
+        mRepository = new MyRouletteRepository(application);
+        mAllMyRoulette = mRepository.getAllMyRoulette();
     }
 
-    LiveData<List<Word>> getAllWords() {
-        return mAllWords;
+    LiveData<List<MyRoulette>> getAllMyRoulette() {
+        return mAllMyRoulette;
     }
 
-    Word getWord(int id) {
-        return mRepository.getWord(id);
+    MyRoulette getMyRoulette(int id) {
+        return mRepository.getMyRoulette(id);
     }
 
-    void insert(Word word) {
-        mRepository.insert(word);
+    void insert(MyRoulette myRoulette) {
+        mRepository.insert(myRoulette);
     }
 
-    void update(Word word) { mRepository.update(word); }
+    void update(MyRoulette myRoulette) { mRepository.update(myRoulette); }
 
     void delete(int id) { mRepository.delete(id); }
 }
