@@ -15,6 +15,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ public class MyRouletteActivity extends AppCompatActivity {
 
     //private ConstraintLayout constraintLayout;
     public RecyclerView myRouletteList;
+    private ConstraintLayout myRouletteConstrainLayout;
     private Button returnButton;
     private Toolbar toolbar;
 
@@ -47,6 +49,8 @@ public class MyRouletteActivity extends AppCompatActivity {
         //MainActivity mainActivity = new MainActivity();
         myRouletteList.setAdapter(MainActivity.adapter);
         myRouletteList.setLayoutManager(new LinearLayoutManager(this));
+
+        myRouletteConstrainLayout = findViewById(R.id.myRoulette_constraintLayout);
 
         //スクリーンサイズの取得
         WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
@@ -223,7 +227,7 @@ public class MyRouletteActivity extends AppCompatActivity {
 
     public void onSelectedRoulette(View view) {
         //recyclerViewの中身（cardView）の中のconstrainLayout
-        ViewGroup viewGroup = view.findViewById(R.id.constraintLayout);
+        ViewGroup viewGroup = view.findViewById(R.id.myRoulette_constraintLayout);
         //constrainLayoutの中のRouletteView
         RouletteView selectedRouletteView = viewGroup.findViewById(R.id.myRoulette);
 
@@ -256,9 +260,10 @@ public class MyRouletteActivity extends AppCompatActivity {
 
     public void onEditMyRoulette(View view) {
         //editボタンの親view(constrainLayout)
-        ViewGroup viewGroup = (ViewGroup)view.getParent();
+        ViewGroup viewGroup = (ViewGroup)view.getParent().getParent();
         //constrainLayoutの中のRouletteView
         RouletteView selectedRouletteView = viewGroup.findViewById(R.id.myRoulette);
+        //RouletteView selectedRouletteView = myRouletteConstrainLayout.findViewById(R.id.myRoulette);
 
         Intent fromMyRouletteToEditMyRoulette = new Intent(getApplicationContext(), EditMyRouletteActivity.class);
         //fromMyRouletteToEditMyRoulette.putExtra("editItemPosition", recyclerView.getChildAdapterPosition((View)viewGroup.getParent()));

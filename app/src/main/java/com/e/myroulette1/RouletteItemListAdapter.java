@@ -56,7 +56,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
             this.itemName.setMaxWidth(itemName.getWidth());
 
             this.ratio = itemView.findViewById(R.id.ratio);
-            this.ratio.setMaxWidth(itemName.getWidth());
+            this.ratio.setMaxWidth(ratio.getWidth());
 
             this.deleteButton = itemView.findViewById(R.id.deleteButton);
 

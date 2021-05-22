@@ -57,7 +57,7 @@
             android:textColor="#FF9D9D9D"
             android:layout_marginLeft="6dp"
             android:layout_marginStart="6dp"
-            android:text="面積比:" />
+            android:text="面積比：" />
 
         <EditText
             android:id="@+id/ratio"
@@ -66,6 +66,7 @@
             android:layout_weight="0.5"
             android:layout_gravity="center_vertical"
             android:inputType="number"
+            android:maxLength="2"
             android:text="1" />
 
         <com.e.myroulette1.BarrageGuardImageButton

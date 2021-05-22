@@ -621,7 +621,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
     }
 
     public static String getNowDate(){
-        @SuppressLint("SimpleDateFormat") final DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") final DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         final Date date = new Date(System.currentTimeMillis());
         return df.format(date);
     }
