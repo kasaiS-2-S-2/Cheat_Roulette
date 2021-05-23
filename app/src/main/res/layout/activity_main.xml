@@ -9,7 +9,7 @@
     tools:context=".MainActivity"
     android:fitsSystemWindows="true"
     tools:openDrawer="right">
-    
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -27,143 +27,149 @@
         android:layout_height="match_parent">
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/constraintLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF">
 
 
-    <!--<com.e.myroulette1.RouletteView
-        android:id="@+id/rouletteView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingClass" />-->
+            <!--<com.e.myroulette1.RouletteView
+                android:id="@+id/rouletteView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingClass" />-->
 
-    <!--
-    <com.e.myroulette1.RouletteView
-        android:id="@+id/roulette"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingClass" />
-        -->
-
-
-
-    <include
-        android:id="@+id/toolbar_main"
-        layout="@layout/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.e.myroulette1.RouletteView
-        android:id="@+id/roulette"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_main"
-        tools:ignore="MissingClass" />
-
-    <com.e.myroulette1.PointerView
-        android:id="@+id/pointerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_main"
-        tools:ignore="MissingClass" />
-
-    <com.e.myroulette1.PushImageButton
-        android:id="@+id/rouletteStartButton"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:background="@drawable/shape"
-        android:elevation="20dp"
-        app:srcCompat="@drawable/ic_baseline_refresh_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <!--
+            <com.e.myroulette1.RouletteView
+                android:id="@+id/roulette"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingClass" />
+                -->
 
 
-    <TextView
-        android:id="@+id/resultTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="150dp"
-        android:gravity="center_horizontal"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/rouletteStartButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_main" />
 
-    <LinearLayout
-        android:id="@+id/split_button_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
-        android:orientation="horizontal"
-        android:background="@drawable/split_button_border"
-        android:elevation="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rouletteStartButton">
+            <include
+                android:id="@+id/toolbar_main"
+                layout="@layout/toolbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/minus_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/split_minus_button_push_behavior"
-            android:tint="#FFFF0000"
-            app:srcCompat="@drawable/ic_baseline_remove_48"/>
+            <com.e.myroulette1.RouletteView
+                android:id="@+id/roulette"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_main"
+                tools:ignore="MissingClass" />
 
-        <!--<Button
-            android:id="@+id/minus_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/split_button_design"
-            android:text="−"
-            android:textSize="48dp"/>-->
+            <com.e.myroulette1.PointerView
+                android:id="@+id/pointerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_main"
+                tools:ignore="MissingClass" />
 
-        <TextView
-            android:id="@+id/roulette_split"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="@string/roulette_split"
-            android:textSize="24dp"
-            android:padding="6dp"
-            android:background="@drawable/split_textview_border"
-            android:gravity="center_vertical"/>
-
-        <!--<Button
-            android:id="@+id/plus_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/split_button_design"
-            android:text="＋"
-            android:textSize="48dp"/>-->
-
-        <ImageButton
-            android:id="@+id/plus_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:tint="#FFFF0000"
-            android:background="@drawable/split_plus_button_push_behavior"
-            app:srcCompat="@drawable/ic_baseline_add_48"/>
-
-    </LinearLayout>
+            <com.e.myroulette1.PushImageButton
+                android:id="@+id/rouletteStartButton"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:background="@drawable/roulette_start_button_drawable"
+                android:elevation="20dp"
+                app:srcCompat="@drawable/ic_baseline_refresh_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/resultTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="150dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/rouletteStartButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_main" />
+
+            <LinearLayout
+                android:id="@+id/split_button_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="130dp"
+                android:orientation="horizontal"
+                android:background="@drawable/split_button_border"
+                android:elevation="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rouletteStartButton">
+
+                <ImageButton
+                    android:id="@+id/minus_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/split_minus_button_push_behavior"
+                    android:tint="@color/appSubBrown"
+                    app:srcCompat="@drawable/ic_baseline_remove_48"/>
+
+                <!--<Button
+                    android:id="@+id/minus_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/split_button_design"
+                    android:text="−"
+                    android:textSize="48dp"/>-->
+
+                <TextView
+                    android:id="@+id/roulette_split"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="@string/roulette_split"
+                    android:textSize="24dp"
+                    android:padding="6dp"
+                    android:background="@drawable/split_textview_border"
+                    android:gravity="center_vertical"/>
+
+                <!--<Button
+                    android:id="@+id/plus_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/split_button_design"
+                    android:text="＋"
+                    android:textSize="48dp"/>-->
+
+                <ImageButton
+                    android:id="@+id/plus_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:tint="@color/appSubBrown"
+                    android:background="@drawable/split_plus_button_push_behavior"
+                    app:srcCompat="@drawable/ic_baseline_add_48"/>
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
             android:layout_width="match_parent"
@@ -183,9 +189,9 @@
                 app:fab_labelsPosition="left"
                 app:fab_menuMargins="16dp"
                 app:fab_menuTopMargin="32dp"
-                app:fab_moreButtonBackgroundColor="#FFFF0040"
-                app:fab_moreButtonPlusIcon="@drawable/ic_add_black_24dp"
-                app:fab_moreButtonRippleColor="#FFFF0040"
+                app:fab_moreButtonBackgroundColor="@color/appSubColor"
+                app:fab_moreButtonPlusIcon="@drawable/ic_baseline_add_yellow_24"
+                app:fab_moreButtonRippleColor="@color/appSubColor"
                 app:fab_moreButtonSize="normal">
 
                 <!-- This is the item that appears at the top of the menu -->
@@ -194,27 +200,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
-                    app:backgroundTint="@color/colorAccent"
+                    app:backgroundTint="@color/appPrimaryColor"
                     app:fabSize="normal"
                     app:fab_enableTitleClick="false"
                     app:fab_title="@string/roulette_create"
-                    app:fab_title_backgroundColor="@color/colorAccent"
-                    app:fab_title_textColor="@android:color/white"
-                    app:rippleColor="@color/colorAccent"
-                    app:srcCompat="@drawable/ic_baseline_build_24" />
+                    app:fab_title_backgroundColor="@color/appSubColor"
+                    app:fab_title_textColor="@color/appPrimaryColor"
+                    app:srcCompat="@drawable/ic_baseline_build_24"
+                    android:tint="@color/appSubColor"/>
 
                 <jahirfiquitiva.libs.fabsmenu.TitleFAB
                     android:id="@+id/fab_edit_roulette"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
-                    app:backgroundTint="@color/colorAccent"
+                    app:backgroundTint="@color/appPrimaryColor"
                     app:fabSize="normal"
                     app:fab_enableTitleClick="false"
                     app:fab_title="@string/edit_roulette"
-                    app:fab_title_textColor="@color/colorAccent"
-                    app:rippleColor="@color/colorAccent"
-                    app:srcCompat="@drawable/ic_baseline_edit_24" />
+                    app:fab_title_backgroundColor="@color/appSubColor"
+                    app:fab_title_textColor="@color/appPrimaryColor"
+                    app:srcCompat="@drawable/ic_baseline_edit_24"
+                    android:tint="@color/appSubColor"/>
 
 
                 <!-- This item will appear just above the menu FAB -->
@@ -223,12 +230,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
-                    app:backgroundTint="#FF00FFBF"
-                    app:fabSize="normal"
+                    app:backgroundTint="@color/appPrimaryColor"
                     app:fab_enableTitleClick="false"
+                    app:fabSize="normal"
                     app:fab_title="@string/myRoulette"
-                    app:rippleColor="#FF00FFBF"
-                    app:srcCompat="@drawable/ic_baseline_refresh_24" />
+                    app:fab_title_backgroundColor="@color/appSubColor"
+                    app:fab_title_textColor="@color/appPrimaryColor"
+                    app:srcCompat="@drawable/ic_baseline_refresh_24"
+                    android:tint="@color/appSubColor"/>
 
             </jahirfiquitiva.libs.fabsmenu.FABsMenu>
 

@@ -21,7 +21,7 @@ public class PointerView extends View {
     //通知オブジェクトの用意と初期化
     Notification notification = null;
 
-    Paint paint, paint2, paint3;
+    Paint paint, paint2, paint3, paint4;
     Path path;
 
     float xc = 0f;
@@ -63,7 +63,7 @@ public class PointerView extends View {
         path = new Path();
 
         paint = new Paint();//////////////////////////////////////////////////
-        paint.setColor(Color.RED);
+        paint.setColor(getResources().getColor(R.color.appSubBrown));
         paint.setAntiAlias(true);/////////////////////////////////////////////
         //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
         //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
@@ -77,6 +77,10 @@ public class PointerView extends View {
         paint3.setAntiAlias(true);
         paint3.setStyle(Paint.Style.STROKE);
         paint3.setStrokeWidth(8);
+
+        //paint4 = new Paint();
+       // paint4.setColor(getResources().getColor(R.color.appPrimaryColor));
+        //paint4.setAntiAlias(true);
 
         //this.num = colors.size();
         //angle = (float) 360 / num;
@@ -117,7 +121,7 @@ public class PointerView extends View {
         path = new Path();
 
         paint = new Paint();//////////////////////////////////////////////////
-        paint.setColor(Color.RED);
+        paint.setColor(getResources().getColor(R.color.appSubBrown));
         paint.setAntiAlias(true);/////////////////////////////////////////////
         //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
         //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
@@ -131,6 +135,10 @@ public class PointerView extends View {
         paint3.setAntiAlias(true);
         paint3.setStyle(Paint.Style.STROKE);
         paint3.setStrokeWidth(8);
+
+        //paint4 = new Paint();
+        //paint4.setColor(getResources().getColor(R.color.appPrimaryColor));
+        //paint4.setAntiAlias(true);
 
 
         //this.num = colors.size();

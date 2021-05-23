@@ -25,6 +25,7 @@ So, we are leaving the template code in. -->
     android:id="@+id/MyRouletteConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".MainActivity">
 
     <include
@@ -46,16 +47,6 @@ So, we are leaving the template code in. -->
         app:layout_constraintTop_toBottomOf="@+id/toolbar_myRoulette"
         tools:listitem="@layout/my_roulette_list_item" />
 
-    <Button
-        android:id="@+id/returnFromMyRoulette_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="RETURN"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerview"
-        app:layout_constraintHorizontal_bias="0.682"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,14 +57,14 @@ So, we are leaving the template code in. -->
         android:contentDescription="@string/add_word"
         app:srcCompat="@drawable/ic_add_black_24dp"/>-->
 
-    <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
+    <!--<jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:fabs_menu_overlayColor="#99000000"
         app:fabs_menu_clickableOverlay="true"
         tools:layout_behavior="@string/fabs_menu_layout_behavior">
 
-        <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
+
         <jahirfiquitiva.libs.fabsmenu.FABsMenu
             android:id="@+id/fabs_menu"
             android:layout_width="wrap_content"
@@ -88,7 +79,7 @@ So, we are leaving the template code in. -->
             app:fab_labelsPosition="left"
             app:fab_expandDirection="up">
 
-            <!-- This is the item that appears at the top of the menu -->
+
             <jahirfiquitiva.libs.fabsmenu.TitleFAB
                 android:id="@+id/to_remove"
                 android:layout_width="wrap_content"
@@ -114,7 +105,7 @@ So, we are leaving the template code in. -->
                 app:rippleColor="@color/colorAccent"/>
 
 
-            <!-- This item will appear just above the menu FAB -->
+
             <jahirfiquitiva.libs.fabsmenu.TitleFAB
                 android:id="@+id/green_fab"
                 android:layout_width="wrap_content"
@@ -128,6 +119,7 @@ So, we are leaving the template code in. -->
         </jahirfiquitiva.libs.fabsmenu.FABsMenu>
 
     </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
+    -->
 
 
 

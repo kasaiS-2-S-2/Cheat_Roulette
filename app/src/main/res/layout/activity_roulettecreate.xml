@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000"
-    tools:context=".MainActivity"
-    tools:ignore="MissingDefaultResource">
+    tools:context=".MainActivity">
 
     <include
         android:id="@+id/toolbar_roulette_create"
@@ -17,87 +16,54 @@
 
     <!--listviewのほうがいいかも-->
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="77dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="28dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/count_button"
-        app:layout_constraintHorizontal_bias="0.412"
-        app:layout_constraintStart_toEndOf="@+id/cheat_button"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox"
-        app:layout_constraintVertical_bias="0.004" />
-
-    <Button
-        android:id="@+id/return_button"
-        android:layout_width="77dp"
-        android:layout_height="38dp"
-        android:text="RETURN"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.904"
+    <EditText
+        android:id="@+id/rouletteName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/hint_roulette_name"
+        android:gravity="center_horizontal"
+        android:maxLines="3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_roulette_create"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.037" />
 
     <Button
-        android:id="@+id/count_button"
+        android:id="@+id/item_add_button"
+        android:layout_width="77dp"
+        android:layout_height="38dp"
+        android:layout_margin="28dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/add_item"
+        app:layout_constraintTop_toBottomOf="@id/rouletteName"
+        app:layout_constraintEnd_toStartOf="@+id/create_finish_button"
+        app:layout_constraintStart_toEndOf="@id/cheat_button"
+        app:layout_constraintBottom_toTopOf="@+id/roulette_item_list"/>
+
+    <Button
+        android:id="@+id/create_finish_button"
         android:layout_width="77dp"
         android:layout_height="38dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:text="COUNT"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/create_finish"
+        app:layout_constraintTop_toBottomOf="@+id/rouletteName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/cheat_button"
-        app:layout_constraintTop_toBottomOf="@+id/return_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toTopOf="@+id/roulette_item_list"/>
 
     <Button
         android:id="@+id/cheat_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_margin="28dp"
         android:background="#00000000"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rouletteName"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toTopOf="@+id/roulette_item_list"/>
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        android:checked="false"
-        android:text="保存する"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/return_button"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_roulette_create"
-        app:layout_constraintVertical_bias="0.048" />
-
-    <EditText
-        android:id="@+id/rouletteName"
-        android:layout_width="66dp"
-        android:layout_height="39dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
-        app:layout_constraintHorizontal_bias="0.522"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_roulette_create"
-        app:layout_constraintVertical_bias="0.037" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roulette_item_list"
@@ -111,7 +77,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/create_finish_button"
         tools:listitem="@layout/rouletteitemlist_item" />
     <!--
     <ScrollView

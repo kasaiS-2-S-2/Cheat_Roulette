@@ -149,14 +149,6 @@ public class MyRouletteActivity extends AppCompatActivity {
 
  */
 
-        returnButton = findViewById(R.id.returnFromMyRoulette_button);
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
         /*
         // Get a new or existing ViewModel from the ViewModelProvider.
         mWordViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(WordViewModel.class);

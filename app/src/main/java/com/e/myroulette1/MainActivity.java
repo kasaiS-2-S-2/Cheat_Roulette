@@ -636,11 +636,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (rouletteExists) {
+                int flag = 0;
+                if (!rouletteExists) {
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                    mToast.show();
+                } else if (rouletteViewInLayout.getColors().size() * (rouletteViewInLayout.splitCount + 1) > 300){
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(getApplicationContext(), R.string.notify_cannot_split, Toast.LENGTH_SHORT);
+                    mToast.show();
+                } else {
                     //背景色、resultTextViewをそれぞれ初期化する
                     //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
@@ -648,10 +656,6 @@ public class MainActivity extends AppCompatActivity {
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     (rouletteViewInLayout.splitCount)++;
                     rouletteViewInLayout.invalidate();
-                } else {
-                    if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
-                    mToast.show();
                 }
             }
         });

@@ -3,9 +3,24 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/appPrimaryColor</item>
+        <item name="colorAccent">@color/appSubBrown</item>
     </style>
+
+    <style name="BaseToolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:theme">@style/ToolbarTheme</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/appSubColor</item>
+        <item name="android:textColorSecondary">@color/appSubColor</item>
+        <item name="android:colorBackground">@color/appPrimaryColor</item>
+    </style>
+
+    <!--<style name="PopupMenuStyle" parent="android:Widget.Holo.Light.PopupMenu">
+        <item name="android:background">@color/appSubColor</item>
+        <item name="android:textColor">@color/appPrimaryColor</item>
+    </style>-->
 
     <!-- The default font for RecyclerView items is too small.
     The margin is a simple delimiter between the words. -->

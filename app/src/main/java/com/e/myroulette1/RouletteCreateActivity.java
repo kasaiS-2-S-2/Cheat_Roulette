@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +59,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
     //private RouletteItemListInfo rouletteItemListInfo;
 
     public static boolean visibleFlag = false;
+
+    private Toast mToast = null;
 
     //private int rouletteCount = 0;
 
@@ -129,7 +132,6 @@ public class RouletteCreateActivity extends AppCompatActivity {
         //RouletteItemListInfo rouletteItemListInfo;
         //RouletteItemListAdapter rouletteItemListAdapter;
 
-        checkBox = findViewById(R.id.checkBox);
         rouletteName = findViewById(R.id.rouletteName);
 
         //checkBox.setChecked(false);
@@ -198,36 +200,32 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
         
         //************* ボタンの設定 *************/
-        Button button = findViewById(R.id.button);
+        Button itemAddButton = findViewById(R.id.item_add_button);
 
         // リスナーをボタンに登録, lambda
-        button.setOnClickListener(new View.OnClickListener() {
+        itemAddButton.setOnClickListener(new View.OnClickListener() {
             //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                //addEditView(layout, scale, margins);
-                //rouletteItemListAdapter.addItem(generateColor(), "", 1, 0, 0);
+                if (rouletteItemList.getAdapter().getItemCount() >= 300) {
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(getApplicationContext(), R.string.notice_item_is_max, Toast.LENGTH_SHORT);
+                    mToast.show();
+                } else {
+                    //addEditView(layout, scale, margins);
+                    //rouletteItemListAdapter.addItem(generateColor(), "", 1, 0, 0);
 
-                //RouletteItemListAdapterのaddItemをルーレット項目追加に使用する
-                ((RouletteItemListAdapter)rouletteItemList.getAdapter()).addItem(generateColor(), "", 1, false ,false);
-                //新しいルーレット項目が追加された時、recyclerViewを一番下に自動スクロールする
-                rouletteItemList.smoothScrollToPosition(rouletteItemList.getAdapter().getItemCount() - 1);
+                    //RouletteItemListAdapterのaddItemをルーレット項目追加に使用する
+                    ((RouletteItemListAdapter) rouletteItemList.getAdapter()).addItem(generateColor(), "", 1, false, false);
+                    //新しいルーレット項目が追加された時、recyclerViewを一番下に自動スクロールする
+                    rouletteItemList.smoothScrollToPosition(rouletteItemList.getAdapter().getItemCount() - 1);
                 /*
                 hueLevel++;
                 if (hueLevel >= 12) { hueLevel = 0; }
 
                  */
+                }
             }
-        });
-
-        Button returnButton = findViewById(R.id.return_button);
-        //textView = findViewById(R.id.text_view);
-        //final EditText editText= findViewById(R.id.edit_text);
-        //Button button = findViewById(R.id.button);
-        // lambda式
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { RouletteCreateActivity.this.finish(); }
         });
 
 
@@ -261,14 +259,14 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
                     visibleFlag = true;
                     //cheatButton.setVisibility(View.VISIBLE);
-                    cheatButton.setText("HIDE");
+                    cheatButton.setText(R.string.hide_cheat);
                     cheatButton.setBackgroundColor(Color.RED);
                 }
             }
         });
 
-        Button countButton = findViewById(R.id.count_button);
-        countButton.setOnClickListener(new View.OnClickListener() {
+        Button createFinishButton = findViewById(R.id.create_finish_button);
+        createFinishButton.setOnClickListener(new View.OnClickListener() {
            // @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
