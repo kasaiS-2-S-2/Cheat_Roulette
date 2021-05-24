@@ -8,10 +8,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:layout_margin="10dp"
+    android:layout_margin="8dp"
 
     app:cardCornerRadius="10dp"
-    app:cardElevation="10dp"
+    app:cardElevation="4dp"
     android:gravity="center_horizontal">
 
 <LinearLayout
@@ -20,7 +20,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#FFFFFFFF"
-    android:padding="@dimen/small_margin"
     android:gravity="center_horizontal">
 
     <LinearLayout
@@ -29,13 +28,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#FFFFFFFF"
-        android:layout_margin="@dimen/small_margin"
         android:gravity="center_horizontal">
 
         <com.e.myroulette1.ColorButton
             android:id="@+id/colorButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_margin="@dimen/small_margin"
             android:layout_gravity="center_vertical"
             android:background="@drawable/colorbutton_drawable"
@@ -45,7 +43,8 @@
             android:id="@+id/itemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
+            android:textSize="14sp"
             android:layout_gravity="center_vertical"
             android:hint="@string/item_name_hint"
             android:inputType="textPersonName" />
@@ -55,9 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textColor="#FF9D9D9D"
-            android:layout_marginLeft="6dp"
-            android:layout_marginStart="6dp"
-            android:text="面積比：" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="面積比："
+            android:textSize="12sp"/>
 
         <EditText
             android:id="@+id/ratio"
@@ -67,7 +67,8 @@
             android:layout_gravity="center_vertical"
             android:inputType="number"
             android:maxLength="2"
-            android:text="1" />
+            android:text="1"
+            android:textSize="14sp"/>
 
         <com.e.myroulette1.BarrageGuardImageButton
             android:id="@+id/deleteButton"
@@ -75,8 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
             android:layout_gravity="center_vertical"
-            android:background="#00FFFFFF"
-            app:srcCompat="@drawable/ic_baseline_delete_forever_48"/>
+            android:background="@drawable/push_image_button_behavior"
+            app:srcCompat="@drawable/ic_baseline_delete_forever_36"
+            android:tint="@color/appSubColor"/>
 
     </LinearLayout>
 
@@ -86,7 +88,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#FFFFFFFF"
-        android:padding="@dimen/small_padding"
         android:gravity="center_horizontal">
 
         <TextView

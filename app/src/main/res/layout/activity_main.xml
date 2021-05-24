@@ -16,6 +16,7 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/header_drawer_menu_main"
         app:menu="@menu/drawer_menu_main"
+        app:itemIconTint="@color/appSubColor"
         android:layout_gravity="right"/>
 
     <!--<RelativeLayout
@@ -119,17 +120,17 @@
                 android:layout_marginTop="130dp"
                 android:orientation="horizontal"
                 android:background="@drawable/split_button_border"
-                android:elevation="12dp"
+                android:elevation="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rouletteStartButton">
 
                 <ImageButton
                     android:id="@+id/minus_button"
-                    android:layout_width="48dp"
+                    android:layout_width="72dp"
                     android:layout_height="48dp"
                     android:background="@drawable/split_minus_button_push_behavior"
-                    android:tint="@color/appSubBrown"
+                    android:tint="@color/appPink"
                     app:srcCompat="@drawable/ic_baseline_remove_48"/>
 
                 <!--<Button
@@ -140,7 +141,7 @@
                     android:text="−"
                     android:textSize="48dp"/>-->
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/roulette_split"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
@@ -148,7 +149,7 @@
                     android:textSize="24dp"
                     android:padding="6dp"
                     android:background="@drawable/split_textview_border"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"/>-->
 
                 <!--<Button
                     android:id="@+id/plus_button"
@@ -160,9 +161,9 @@
 
                 <ImageButton
                     android:id="@+id/plus_button"
-                    android:layout_width="48dp"
+                    android:layout_width="72dp"
                     android:layout_height="48dp"
-                    android:tint="@color/appSubBrown"
+                    android:tint="@color/appPink"
                     android:background="@drawable/split_plus_button_push_behavior"
                     app:srcCompat="@drawable/ic_baseline_add_48"/>
 
@@ -175,7 +176,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:fabs_menu_clickableOverlay="true"
-            app:fabs_menu_overlayColor="#99000000"
+            app:fabs_menu_overlayColor="#D0FFFFFF"
             tools:layout_behavior="@string/fabs_menu_layout_behavior">
 
             <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->
@@ -185,13 +186,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:clipChildren="false"
+                android:elevation="10dp"
                 app:fab_expandDirection="up"
                 app:fab_labelsPosition="left"
                 app:fab_menuMargins="16dp"
                 app:fab_menuTopMargin="32dp"
-                app:fab_moreButtonBackgroundColor="@color/appSubColor"
-                app:fab_moreButtonPlusIcon="@drawable/ic_baseline_add_yellow_24"
-                app:fab_moreButtonRippleColor="@color/appSubColor"
+                app:fab_moreButtonBackgroundColor="@color/appPink"
+                app:fab_moreButtonPlusIcon="@drawable/ic_baseline_add_white_24"
+                app:fab_moreButtonRippleColor="@color/appPrimaryColor"
                 app:fab_moreButtonSize="normal">
 
                 <!-- This is the item that appears at the top of the menu -->
@@ -200,6 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
+                    android:elevation="10dp"
                     app:backgroundTint="@color/appPrimaryColor"
                     app:fabSize="normal"
                     app:fab_enableTitleClick="false"
@@ -207,13 +210,14 @@
                     app:fab_title_backgroundColor="@color/appSubColor"
                     app:fab_title_textColor="@color/appPrimaryColor"
                     app:srcCompat="@drawable/ic_baseline_build_24"
-                    android:tint="@color/appSubColor"/>
+                    android:tint="@color/appPink"/>
 
                 <jahirfiquitiva.libs.fabsmenu.TitleFAB
                     android:id="@+id/fab_edit_roulette"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
+                    android:elevation="10dp"
                     app:backgroundTint="@color/appPrimaryColor"
                     app:fabSize="normal"
                     app:fab_enableTitleClick="false"
@@ -221,7 +225,7 @@
                     app:fab_title_backgroundColor="@color/appSubColor"
                     app:fab_title_textColor="@color/appPrimaryColor"
                     app:srcCompat="@drawable/ic_baseline_edit_24"
-                    android:tint="@color/appSubColor"/>
+                    android:tint="@color/appPink"/>
 
 
                 <!-- This item will appear just above the menu FAB -->
@@ -230,6 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
+                    android:elevation="10dp"
                     app:backgroundTint="@color/appPrimaryColor"
                     app:fab_enableTitleClick="false"
                     app:fabSize="normal"
@@ -237,7 +242,7 @@
                     app:fab_title_backgroundColor="@color/appSubColor"
                     app:fab_title_textColor="@color/appPrimaryColor"
                     app:srcCompat="@drawable/ic_baseline_refresh_24"
-                    android:tint="@color/appSubColor"/>
+                    android:tint="@color/appPink"/>
 
             </jahirfiquitiva.libs.fabsmenu.FABsMenu>
 

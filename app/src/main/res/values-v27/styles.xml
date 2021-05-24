@@ -3,8 +3,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimaryColor</item>
-        <item name="colorPrimaryDark">@android:color/darker_gray</item>
-        <item name="colorAccent">@color/appPink</item>
+        <item name="colorPrimaryDark">@color/appPrimaryColor</item>
+        <item name="colorAccent">@color/appSubBrown</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="BaseToolbar" parent="@style/Widget.AppCompat.Toolbar">
@@ -13,7 +14,7 @@
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/appSubColor</item>
-        <item name="android:textColorSecondary">@color/appPink</item>
+        <item name="android:textColorSecondary">@color/appSubColor</item>
         <item name="android:colorBackground">@color/appPrimaryColor</item>
     </style>
 

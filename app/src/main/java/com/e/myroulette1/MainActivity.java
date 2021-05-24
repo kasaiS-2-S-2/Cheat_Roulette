@@ -653,9 +653,15 @@ public class MainActivity extends AppCompatActivity {
                     //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
                     resultTextView.setText("");
+
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     (rouletteViewInLayout.splitCount)++;
                     rouletteViewInLayout.invalidate();
+
+                    if (rotate != null) {
+                        //ルーレットを変更した場合は,角度を初期値に戻す
+                        rotate.cancel();
+                    }
                 }
             }
         });
@@ -672,6 +678,12 @@ public class MainActivity extends AppCompatActivity {
                     if (rouletteViewInLayout.splitCount >= 2) {
                         (rouletteViewInLayout.splitCount)--;
                         rouletteViewInLayout.invalidate();
+
+                        if (rotate != null) {
+                            //ルーレットを変更した場合は,角度を初期値に戻す
+                            rotate.cancel();
+                        }
+
                     }
                 } else {
                     if (mToast != null) mToast.cancel();

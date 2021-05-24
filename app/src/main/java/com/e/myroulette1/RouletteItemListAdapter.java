@@ -33,11 +33,12 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         private final SwitchCompat switch100;
         private final SwitchCompat switch0;
         private final LinearLayout linearLayout2;
-        //EditTextの更新状況を監視するリスナー
-        public EditTextListenerForItemName editTextListenerForItemName;
-        public EditTextListenerForRatio editTextListenerForRatio;
-        public Switch100OnCheckedChangeListener switch100OnCheckedChangeListener;
-        public Switch0OnCheckedChangeListener switch0OnCheckedChangeListener;
+
+        protected final EditTextListenerForItemName editTextListenerForItemName;
+        protected final EditTextListenerForRatio editTextListenerForRatio;
+        protected final Switch100OnCheckedChangeListener switch100OnCheckedChangeListener;
+        protected final Switch0OnCheckedChangeListener switch0OnCheckedChangeListener;
+        protected final EditTextFocusChangeListener editTextFocusChangeListener;
 
         int holderIndex;
 
@@ -45,7 +46,8 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
                           EditTextListenerForItemName editTextListenerForItemName,
                           EditTextListenerForRatio editTextListenerForRatio,
                           Switch100OnCheckedChangeListener switch100OnCheckedChangeListener,
-                          Switch0OnCheckedChangeListener switch0OnCheckedChangeListener) {
+                          Switch0OnCheckedChangeListener switch0OnCheckedChangeListener,
+                          EditTextFocusChangeListener editTextFocusChangeListener) {
             //itemView = rouletteitemlist_item.xml一つ分
             super(itemView);
             // Define click listener for the ViewHolder's View
@@ -68,12 +70,13 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
 
 
             this.editTextListenerForItemName = editTextListenerForItemName;
-            //EditText(ルーレット名)の更新状況を監視するリスナーをセットする
             this.itemName.addTextChangedListener(editTextListenerForItemName);
+            this.editTextFocusChangeListener = editTextFocusChangeListener;
+            this.itemName.setOnFocusChangeListener(editTextFocusChangeListener);
 
             this.editTextListenerForRatio = editTextListenerForRatio;
-            //EditText(面積比率)の更新状況を監視するリスナーをセットする
             this.ratio.addTextChangedListener(editTextListenerForRatio);
+            this.ratio.setOnFocusChangeListener(editTextFocusChangeListener);
 
             this.switch100OnCheckedChangeListener = switch100OnCheckedChangeListener;
             this.switch100.setOnCheckedChangeListener(switch100OnCheckedChangeListener);
@@ -127,7 +130,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.rouletteitemlist_item, viewGroup, false);
 
-        return new ViewHolder(view ,new EditTextListenerForItemName(),new EditTextListenerForRatio(), new Switch100OnCheckedChangeListener(), new Switch0OnCheckedChangeListener());
+        return new ViewHolder(view ,new EditTextListenerForItemName(),new EditTextListenerForRatio(), new Switch100OnCheckedChangeListener(), new Switch0OnCheckedChangeListener(), new EditTextFocusChangeListener());
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -231,9 +234,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         this.rouletteItemDataSet = rouletteItemDataSet;
     }
 
-    // we make TextWatcher to be aware of the position it currently works with
-    // this way, once a new item is attached in onBindViewHolder, it will
-    // update current position MyCustomEditTextListener, reference to which is kept by ViewHolder
+    //itemNameの更新状況を監視するリスナー
     protected class EditTextListenerForItemName implements TextWatcher {
         private int position;
 
@@ -257,9 +258,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         }
     }
 
-    // we make TextWatcher to be aware of the position it currently works with
-    // this way, once a new item is attached in onBindViewHolder, it will
-    // update current position MyCustomEditTextListener, reference to which is kept by ViewHolder
+    //ratioの更新状況を監視するリスナー
     protected class EditTextListenerForRatio implements TextWatcher {
         private int position;
 
@@ -290,6 +289,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         }
     }
 
+    //switch100のONOFFを監視するリスナー
     protected class Switch100OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
         private int position;
 
@@ -303,6 +303,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         }
     }
 
+    //switch0のONOFFを監視するリスナー
     protected class Switch0OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
         private int position;
 
@@ -313,6 +314,26 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             rouletteItemDataSet.setOnOffInfoOfSwitch0Partially(position, isChecked);
+        }
+    }
+
+    //edittextのフォーカスのリスナー
+    protected class EditTextFocusChangeListener implements View.OnFocusChangeListener {
+
+        private int position;
+
+        public void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onFocusChange(View view, boolean isFocused) {
+            if (isFocused) {
+                EditText editText = (EditText)view;
+                //フォーカスがあたった時、文字列の最後にフォーカスが当たるようにする
+                editText.setSelection((editText.getText().length()));
+                //editText.setNextFocusDownId(R.id.itemName);
+            }
         }
     }
 }

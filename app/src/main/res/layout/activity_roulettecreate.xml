@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00000000"
+    android:background="#FFFFFFFF"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".MainActivity">
 
     <include
@@ -22,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="@string/hint_roulette_name"
-        android:gravity="center_horizontal"
         android:maxLines="3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_roulette_create"
@@ -31,35 +32,25 @@
 
     <Button
         android:id="@+id/item_add_button"
-        android:layout_width="77dp"
-        android:layout_height="38dp"
-        android:layout_margin="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/add_item"
+        android:textColor="@color/appPrimaryColor"
+        android:background="@drawable/add_item_button_drawable"
         app:layout_constraintTop_toBottomOf="@id/rouletteName"
-        app:layout_constraintEnd_toStartOf="@+id/create_finish_button"
-        app:layout_constraintStart_toEndOf="@id/cheat_button"
-        app:layout_constraintBottom_toTopOf="@+id/roulette_item_list"/>
-
-    <Button
-        android:id="@+id/create_finish_button"
-        android:layout_width="77dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:text="@string/create_finish"
-        app:layout_constraintTop_toBottomOf="@+id/rouletteName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/roulette_item_list"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/cheat_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="28dp"
+        android:layout_margin="16dp"
         android:background="#00000000"
         android:text=""
+        android:textColor="@color/appPrimaryColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rouletteName"
         app:layout_constraintBottom_toTopOf="@+id/roulette_item_list"/>
@@ -69,7 +60,7 @@
         android:id="@+id/roulette_item_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="10dp"
         android:clipToPadding="false"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -77,8 +68,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_finish_button"
+        app:layout_constraintTop_toBottomOf="@+id/item_add_button"
         tools:listitem="@layout/rouletteitemlist_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/create_finish_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/appPink"
+        app:rippleColor="@color/appPrimaryColor"
+        app:srcCompat="@drawable/ic_baseline_done_outline_24"
+        android:tint="@color/appPrimaryColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <!--
     <ScrollView
         android:id="@+id/scrollView"

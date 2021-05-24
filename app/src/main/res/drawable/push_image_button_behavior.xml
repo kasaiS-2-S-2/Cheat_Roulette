@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:enterFadeDuration="500"
+    android:exitFadeDuration="500">
+    <!-- ImageButtonの画像クリック時に色を変える -->
+    <item android:state_pressed="true">
+        <shape
+            android:shape="rectangle">
+            <!-- ボタンの色(半透明で薄いグレー) -->
+            <solid android:color="@android:color/darker_gray"/>
+            <corners
+                android:radius="6dp" />
+        </shape>
+    </item>
+    <item android:drawable="@android:color/transparent"/>
+</selector>

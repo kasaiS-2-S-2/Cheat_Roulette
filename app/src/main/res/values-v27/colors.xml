@@ -8,7 +8,6 @@
     <color name="colorPickerDialogColor">#FF424242</color>
 
     <color name="appPrimaryColor">#FFFFFFFF</color>
-    <color name="appSubColor">#FF3B3B3B</color>
+    <color name="appSubColor">#FF000000</color>
     <color name="appSubBrown">#FF934A00</color>
-    <color name="appPink">#FFE81564</color>
 </resources>

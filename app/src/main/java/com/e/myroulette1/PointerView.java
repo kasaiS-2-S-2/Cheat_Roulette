@@ -63,17 +63,17 @@ public class PointerView extends View {
         path = new Path();
 
         paint = new Paint();//////////////////////////////////////////////////
-        paint.setColor(getResources().getColor(R.color.appSubBrown));
+        paint.setColor(getResources().getColor(R.color.appPink));
         paint.setAntiAlias(true);/////////////////////////////////////////////
         //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
         //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
 
         paint2 = new Paint();/////////////////////////////////////////////
-        paint2.setColor(Color.BLACK);///////////////////////////////////////
+        paint2.setColor(getResources().getColor(R.color.appSubColor));///////////////////////////////////////
         paint2.setAntiAlias(true);
 
         paint3 = new Paint();
-        paint3.setColor(Color.BLACK);
+        paint3.setColor(getResources().getColor(R.color.appSubColor));
         paint3.setAntiAlias(true);
         paint3.setStyle(Paint.Style.STROKE);
         paint3.setStrokeWidth(8);
@@ -121,17 +121,17 @@ public class PointerView extends View {
         path = new Path();
 
         paint = new Paint();//////////////////////////////////////////////////
-        paint.setColor(getResources().getColor(R.color.appSubBrown));
+        paint.setColor(getResources().getColor(R.color.appPink));
         paint.setAntiAlias(true);/////////////////////////////////////////////
         //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
         //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
 
         paint2 = new Paint();/////////////////////////////////////////////
-        paint2.setColor(Color.BLACK);///////////////////////////////////////
+        paint2.setColor(getResources().getColor(R.color.appSubColor));///////////////////////////////////////
         paint2.setAntiAlias(true);
 
         paint3 = new Paint();
-        paint3.setColor(Color.BLACK);
+        paint3.setColor(getResources().getColor(R.color.appSubColor));
         paint3.setAntiAlias(true);
         paint3.setStyle(Paint.Style.STROKE);
         paint3.setStrokeWidth(8);

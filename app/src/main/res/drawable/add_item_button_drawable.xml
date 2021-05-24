@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:enterFadeDuration="500"
+    android:exitFadeDuration="500">
+    <!-- ImageButtonの画像クリック時に色を変える -->
+    <item android:state_pressed="true">
+        <shape
+            android:shape="rectangle">
+            <!-- ボタンの色(半透明で薄いグレー) -->
+            <solid android:color="@android:color/darker_gray"/>
+            <corners
+               android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid android:color="@color/appPink"/>
+            <corners
+                android:radius="8dp" />
+        </shape>
+
+    </item>
+</selector>

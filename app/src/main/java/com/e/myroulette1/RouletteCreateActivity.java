@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorChangedListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -115,17 +117,21 @@ public class RouletteCreateActivity extends AppCompatActivity {
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
 
-                // Here is where you'll implement swipe to delete
-                rouletteItemListAdapter.getRouletteItemDataSet().getColors().remove(position);
-                rouletteItemListAdapter.getRouletteItemDataSet().getItemNames().remove(position);
-                rouletteItemListAdapter.getRouletteItemDataSet().getItemRatios().remove(position);
-                rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch100().remove(position);
-                rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch0().remove(position);
+                if (!(rouletteItemListAdapter.getItemCount() <= 2)) {
+                    // Here is where you'll implement swipe to delete
+                    rouletteItemListAdapter.getRouletteItemDataSet().getColors().remove(position);
+                    rouletteItemListAdapter.getRouletteItemDataSet().getItemNames().remove(position);
+                    rouletteItemListAdapter.getRouletteItemDataSet().getItemRatios().remove(position);
+                    rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch100().remove(position);
+                    rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch0().remove(position);
 
-                rouletteItemListAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                    rouletteItemListAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
 
-                //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
-                rouletteItemListAdapter.notifyItemRangeChanged(position, rouletteItemListAdapter.getItemCount() - position);
+                    //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
+                    rouletteItemListAdapter.notifyItemRangeChanged(position, rouletteItemListAdapter.getItemCount() - position);
+                } else {
+                    rouletteItemListAdapter.notifyItemChanged(position);
+                }
             }
         }).attachToRecyclerView(rouletteItemList);
 
@@ -218,7 +224,10 @@ public class RouletteCreateActivity extends AppCompatActivity {
                     //RouletteItemListAdapterのaddItemをルーレット項目追加に使用する
                     ((RouletteItemListAdapter) rouletteItemList.getAdapter()).addItem(generateColor(), "", 1, false, false);
                     //新しいルーレット項目が追加された時、recyclerViewを一番下に自動スクロールする
-                    rouletteItemList.smoothScrollToPosition(rouletteItemList.getAdapter().getItemCount() - 1);
+                    rouletteItemList.scrollToPosition(rouletteItemList.getAdapter().getItemCount() - 1);
+                    //Log.d("ああああああああああああああああああJJJJJ", String.valueOf(rouletteItemList.getChildCount()));
+                    //rouletteItemList.getChildAt(rouletteItemList.getChildCount() - 1).findViewById(R.id.itemName).requestFocus();
+
                 /*
                 hueLevel++;
                 if (hueLevel >= 12) { hueLevel = 0; }
@@ -265,8 +274,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
             }
         });
 
-        Button createFinishButton = findViewById(R.id.create_finish_button);
-        createFinishButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton createFinishFab = findViewById(R.id.create_finish_fab);
+        createFinishFab.setOnClickListener(new View.OnClickListener() {
            // @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {

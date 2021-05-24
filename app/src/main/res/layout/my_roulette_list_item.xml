@@ -128,8 +128,9 @@ limitations under the License. -->
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:background="#00FFFFFF"
+                android:background="@drawable/push_image_button_behavior"
                 app:srcCompat="@drawable/ic_baseline_edit_36"
+                android:tint="@color/appSubColor"
                 android:onClick="onEditMyRoulette" />
 
             <com.e.myroulette1.BarrageGuardImageButton
@@ -140,9 +141,10 @@ limitations under the License. -->
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:background="#00FFFFFF"
+                android:background="@drawable/push_image_button_behavior"
                 android:onClick="onDeleteMyRoulette"
-                app:srcCompat="@drawable/ic_baseline_delete_forever_36" />
+                app:srcCompat="@drawable/ic_baseline_delete_forever_36"
+                android:tint="@color/appSubColor"/>
 
         </LinearLayout>
 
