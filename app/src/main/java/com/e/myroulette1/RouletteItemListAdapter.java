@@ -1,5 +1,6 @@
 package com.e.myroulette1;
 
+import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -109,14 +112,14 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
          */
     }
 
-    public void setFocusItemName(int position) {
+    protected void setFocusItemName(int position) {
         ViewHolder holder = (ViewHolder) rouletteItemList.findViewHolderForLayoutPosition(position);
         if (holder != null) {
             holder.getItemName().requestFocus();
         }
     }
 
-    public void setFocusRatio(int position) {
+    protected void setFocusRatio(int position) {
         ViewHolder holder = (ViewHolder) rouletteItemList.findViewHolderForLayoutPosition(position);
         if (holder != null) {
             holder.getRatio().requestFocus();
@@ -151,7 +154,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    //なんかstaticになってた。理由不明　5/26
+    //なんかstaticになってた。理由不明　5/26 →　公式ドキュメントでなんかstaticにしている。なんでだろ？static1取ってちゃんと動作するかふわん
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final Button colorButton;
         private final EditText itemName;
@@ -170,14 +173,14 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         int holderIndex;
 
 
-        public void focusNextItemName() {
+        protected void focusNextItemName() {
             int position = getAdapterPosition() + 1;
             if (position < getItemCount()) {
                 setFocusItemName(position);
             }
         }
 
-        public void focusNextRatio() {
+        protected void focusNextRatio() {
             int position = getAdapterPosition() + 1;
             if (position < getItemCount()) {
                 setFocusRatio(position);
@@ -202,8 +205,22 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
             this.itemName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                    focusNextItemName();
-                    return true;
+                    boolean handled = false;
+                    switch (actionId) {
+                        //キーボードのNEXTが押された場合は、ひとつ下のcardviewのitemNameにフォーカスが移動するようにする
+                        case EditorInfo.IME_ACTION_NEXT:
+                            focusNextItemName();
+                            handled = true;
+                            break;
+
+                        //キーボードのDONEが押された場合は、キーボードを閉じる
+                        case EditorInfo.IME_ACTION_DONE:
+                            InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                            handled = true;
+                            break;
+                    }
+                    return handled;
                 }
             });
 
@@ -213,8 +230,22 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
             this.ratio.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                    focusNextRatio();
-                    return true;
+                    boolean handled = false;
+                    switch (actionId) {
+                        //キーボードのNEXTが押された場合は、ひとつ下のcardviewのRatioにフォーカスが移動するようにする
+                        case EditorInfo.IME_ACTION_NEXT:
+                            focusNextRatio();
+                            handled = true;
+                            break;
+
+                        //キーボードのDONEが押された場合は、キーボードを閉じる
+                        case EditorInfo.IME_ACTION_DONE:
+                            InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                            handled = true;
+                            break;
+                    }
+                    return handled;
                 }
             });
 
