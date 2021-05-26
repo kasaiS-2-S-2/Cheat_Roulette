@@ -43,7 +43,7 @@
     <string name="item_name_hint">項目名</string>
     <string name="create_finish">作成</string>
     <string name="hint_roulette_name">ルーレット名</string>
-    <string name="add_item">追加</string>
+    <string name="add_item">＋ 追加</string>
     <string name="hide_cheat">隠す</string>
     <string name="notice_item_is_max">これ以上追加できません</string>
     <string name="notify_cannot_split">これ以上分割できません</string>

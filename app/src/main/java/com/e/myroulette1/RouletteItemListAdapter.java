@@ -4,6 +4,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,108 +21,18 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemListAdapter.ViewHolder> {
 
     //private ArrayList<RouletteItemListInfo> rouletteItemDataSet;
+    private RecyclerView rouletteItemList;
     private RouletteItemListInfo rouletteItemDataSet;
-
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final Button colorButton;
-        private final EditText itemName;
-        private final EditText ratio;
-        private final ImageButton deleteButton;
-        private final SwitchCompat switch100;
-        private final SwitchCompat switch0;
-        private final LinearLayout linearLayout2;
-
-        protected final EditTextListenerForItemName editTextListenerForItemName;
-        protected final EditTextListenerForRatio editTextListenerForRatio;
-        protected final Switch100OnCheckedChangeListener switch100OnCheckedChangeListener;
-        protected final Switch0OnCheckedChangeListener switch0OnCheckedChangeListener;
-        protected final EditTextFocusChangeListener editTextFocusChangeListener;
-
-        int holderIndex;
-
-        public ViewHolder(View itemView,
-                          EditTextListenerForItemName editTextListenerForItemName,
-                          EditTextListenerForRatio editTextListenerForRatio,
-                          Switch100OnCheckedChangeListener switch100OnCheckedChangeListener,
-                          Switch0OnCheckedChangeListener switch0OnCheckedChangeListener,
-                          EditTextFocusChangeListener editTextFocusChangeListener) {
-            //itemView = rouletteitemlist_item.xml一つ分
-            super(itemView);
-            // Define click listener for the ViewHolder's View
-
-            this.colorButton = itemView.findViewById(R.id.colorButton);
-
-            this.itemName = itemView.findViewById(R.id.itemName);
-            this.itemName.setMaxWidth(itemName.getWidth());
-
-            this.ratio = itemView.findViewById(R.id.ratio);
-            this.ratio.setMaxWidth(ratio.getWidth());
-
-            this.deleteButton = itemView.findViewById(R.id.deleteButton);
-
-            this.switch100 = itemView.findViewById(R.id.switch100);
-
-            this.switch0 = itemView.findViewById(R.id.switch0);
-
-            this.linearLayout2 = itemView.findViewById(R.id.LinearLayout2);
-
-
-            this.editTextListenerForItemName = editTextListenerForItemName;
-            this.itemName.addTextChangedListener(editTextListenerForItemName);
-            this.editTextFocusChangeListener = editTextFocusChangeListener;
-            this.itemName.setOnFocusChangeListener(editTextFocusChangeListener);
-
-            this.editTextListenerForRatio = editTextListenerForRatio;
-            this.ratio.addTextChangedListener(editTextListenerForRatio);
-            this.ratio.setOnFocusChangeListener(editTextFocusChangeListener);
-
-            this.switch100OnCheckedChangeListener = switch100OnCheckedChangeListener;
-            this.switch100.setOnCheckedChangeListener(switch100OnCheckedChangeListener);
-
-            this.switch0OnCheckedChangeListener = switch0OnCheckedChangeListener;
-            this.switch0.setOnCheckedChangeListener(switch0OnCheckedChangeListener);
-        }
-
-        public Button getColorButton() {
-            return colorButton;
-        }
-
-        public EditText getItemName() {
-            return itemName;
-        }
-
-        public EditText getRatio() {
-            return ratio;
-        }
-
-        public ImageButton getDeleteButton() {
-            return deleteButton;
-        }
-
-        public SwitchCompat getSwitch100() {
-            return switch100;
-        }
-
-        public SwitchCompat getSwitch0() {
-            return switch0;
-        }
-
-        public LinearLayout getLinearLayout2() {
-            return linearLayout2;
-        }
-    }
-
     /**
      * Initialize the dataset of the Adapter.
      *
      * @param dataSet String[] containing the data to populate views to be used
      * by RecyclerView.
      */
-    public RouletteItemListAdapter(RouletteItemListInfo dataSet) { rouletteItemDataSet = dataSet; }
+    public RouletteItemListAdapter(RecyclerView recyclerView, RouletteItemListInfo dataSet) {
+        this.rouletteItemList = recyclerView;
+        this.rouletteItemDataSet = dataSet;
+    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -197,6 +109,20 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
          */
     }
 
+    public void setFocusItemName(int position) {
+        ViewHolder holder = (ViewHolder) rouletteItemList.findViewHolderForLayoutPosition(position);
+        if (holder != null) {
+            holder.getItemName().requestFocus();
+        }
+    }
+
+    public void setFocusRatio(int position) {
+        ViewHolder holder = (ViewHolder) rouletteItemList.findViewHolderForLayoutPosition(position);
+        if (holder != null) {
+            holder.getRatio().requestFocus();
+        }
+    }
+
     protected void deleteItem(int position) {
         rouletteItemDataSet.getColors().remove(position);
         rouletteItemDataSet.getItemNames().remove(position);
@@ -218,6 +144,134 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         rouletteItemDataSet.getOnOffInfoOfSwitch0().add(OnOffInfoOfSwitch0);
         //挿入した位置を指定して、notifyする（getItemCount()-1 がrouletteItemListの末尾のインデックス）
         notifyItemInserted(getItemCount() - 1);
+    }
+
+
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder).
+     */
+    //なんかstaticになってた。理由不明　5/26
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private final Button colorButton;
+        private final EditText itemName;
+        private final EditText ratio;
+        private final ImageButton deleteButton;
+        private final SwitchCompat switch100;
+        private final SwitchCompat switch0;
+        private final LinearLayout linearLayout2;
+
+        protected final EditTextListenerForItemName editTextListenerForItemName;
+        protected final EditTextListenerForRatio editTextListenerForRatio;
+        protected final Switch100OnCheckedChangeListener switch100OnCheckedChangeListener;
+        protected final Switch0OnCheckedChangeListener switch0OnCheckedChangeListener;
+        protected final EditTextFocusChangeListener editTextFocusChangeListener;
+
+        int holderIndex;
+
+
+        public void focusNextItemName() {
+            int position = getAdapterPosition() + 1;
+            if (position < getItemCount()) {
+                setFocusItemName(position);
+            }
+        }
+
+        public void focusNextRatio() {
+            int position = getAdapterPosition() + 1;
+            if (position < getItemCount()) {
+                setFocusRatio(position);
+            }
+        }
+
+        public ViewHolder(View itemView,
+                          EditTextListenerForItemName editTextListenerForItemName,
+                          EditTextListenerForRatio editTextListenerForRatio,
+                          Switch100OnCheckedChangeListener switch100OnCheckedChangeListener,
+                          Switch0OnCheckedChangeListener switch0OnCheckedChangeListener,
+                          EditTextFocusChangeListener editTextFocusChangeListener) {
+            //itemView = rouletteitemlist_item.xml一つ分
+            super(itemView);
+            // Define click listener for the ViewHolder's View
+
+            this.colorButton = itemView.findViewById(R.id.colorButton);
+
+            this.itemName = itemView.findViewById(R.id.itemName);
+            this.itemName.setMaxWidth(itemName.getWidth());
+            //フォーカス移動時、ひとつ下のcardviewのitemNameにフォーカスが移動するようにする
+            this.itemName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                    focusNextItemName();
+                    return true;
+                }
+            });
+
+            this.ratio = itemView.findViewById(R.id.ratio);
+            this.ratio.setMaxWidth(ratio.getWidth());
+            //フォーカス移動時、ひとつ下のcardviewのRatioにフォーカスが移動するようにする
+            this.ratio.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                    focusNextRatio();
+                    return true;
+                }
+            });
+
+
+
+            this.deleteButton = itemView.findViewById(R.id.deleteButton);
+
+            this.switch100 = itemView.findViewById(R.id.switch100);
+
+            this.switch0 = itemView.findViewById(R.id.switch0);
+
+            this.linearLayout2 = itemView.findViewById(R.id.LinearLayout2);
+
+
+            this.editTextListenerForItemName = editTextListenerForItemName;
+            this.itemName.addTextChangedListener(editTextListenerForItemName);
+            this.editTextFocusChangeListener = editTextFocusChangeListener;
+            this.itemName.setOnFocusChangeListener(editTextFocusChangeListener);
+
+            this.editTextListenerForRatio = editTextListenerForRatio;
+            this.ratio.addTextChangedListener(editTextListenerForRatio);
+            this.ratio.setOnFocusChangeListener(editTextFocusChangeListener);
+
+            this.switch100OnCheckedChangeListener = switch100OnCheckedChangeListener;
+            this.switch100.setOnCheckedChangeListener(switch100OnCheckedChangeListener);
+
+            this.switch0OnCheckedChangeListener = switch0OnCheckedChangeListener;
+            this.switch0.setOnCheckedChangeListener(switch0OnCheckedChangeListener);
+        }
+
+        public Button getColorButton() {
+            return colorButton;
+        }
+
+        public EditText getItemName() {
+            return itemName;
+        }
+
+        public EditText getRatio() {
+            return ratio;
+        }
+
+        public ImageButton getDeleteButton() {
+            return deleteButton;
+        }
+
+        public SwitchCompat getSwitch100() {
+            return switch100;
+        }
+
+        public SwitchCompat getSwitch0() {
+            return switch0;
+        }
+
+        public LinearLayout getLinearLayout2() {
+            return linearLayout2;
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

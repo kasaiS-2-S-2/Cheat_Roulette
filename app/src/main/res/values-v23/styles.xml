@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimaryColor</item>
         <item name="colorPrimaryDark">@color/appPrimaryColor</item>
-        <item name="colorAccent">@color/appSubBrown</item>
+        <item name="colorAccent">@color/appPink</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -14,7 +14,7 @@
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/appSubColor</item>
-        <item name="android:textColorSecondary">@color/appSubColor</item>
+        <item name="android:textColorSecondary">@color/appPink</item>
         <item name="android:colorBackground">@color/appPrimaryColor</item>
     </style>
 

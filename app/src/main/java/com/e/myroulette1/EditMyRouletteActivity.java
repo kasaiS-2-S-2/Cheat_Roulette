@@ -51,7 +51,8 @@ public class EditMyRouletteActivity extends AppCompatActivity {
     private RouletteItemListInfo rouletteItemListInfo = new RouletteItemListInfo(
             new ArrayList<Integer>(), new ArrayList<String>(), new ArrayList<Integer>(), new ArrayList<Boolean>(), new ArrayList<Boolean>());
     private RecyclerView rouletteItemList;
-    private EditMyRouletteAdapter rouletteItemListAdapter = new EditMyRouletteAdapter(rouletteItemListInfo);
+    private EditMyRouletteAdapter rouletteItemListAdapter;
+    //private EditMyRouletteAdapter rouletteItemListAdapter = new EditMyRouletteAdapter(rouletteItemListInfo);
     //private RouletteItemListInfo rouletteItemListInfo;
 
     public static boolean visibleFlag = false;
@@ -109,6 +110,7 @@ public class EditMyRouletteActivity extends AppCompatActivity {
         int ScreenHeight = realSize.y;
 
         rouletteItemList = findViewById(R.id.roulette_item_list);
+        rouletteItemListAdapter = new EditMyRouletteAdapter(rouletteItemList, rouletteItemListInfo);
         rouletteItemList.setAdapter(rouletteItemListAdapter);
         rouletteItemList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -680,6 +682,7 @@ public class EditMyRouletteActivity extends AppCompatActivity {
         View dialoglayout = inflater.inflate(R.layout.color_pick_dialog, null);
         //アラートダイアログの中にある色ボタン（選択色確認のview）
         ColorButton dialogColorButton = dialoglayout.findViewById(R.id.color_preview);
+        ((GradientDrawable) dialogColorButton.getBackground()).setColor(((ColorButton)colorButton).getButtonColor());
         colorPickAlert.setView(dialoglayout);
 
         ColorPickerView colorPickerView = (ColorPickerView) dialoglayout.findViewById(R.id.color_picker_view);

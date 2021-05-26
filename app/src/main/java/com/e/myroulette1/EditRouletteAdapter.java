@@ -4,10 +4,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 public class EditRouletteAdapter extends RouletteItemListAdapter {
 
-    public EditRouletteAdapter(RouletteItemListInfo dataSet) {
-        super(dataSet);
+    public EditRouletteAdapter(RecyclerView recyclerView, RouletteItemListInfo dataSet) {
+        super(recyclerView ,dataSet);
     }
 
     @Override

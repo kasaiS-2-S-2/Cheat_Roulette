@@ -598,9 +598,16 @@ public class MainActivity extends AppCompatActivity {
                             // we display the correct sector pointed by the triangle at the end of the rotate animation
                             //resultTextView.setText(getSector(360f - (degree % 360)));
                             //ルーレットが止まった位置の項目名と色をそれぞれ設定する
-                            constraintLayout.setBackgroundColor(rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout)));
+                            int resultBackgroundColor = rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout));
+                            constraintLayout.setBackgroundColor(resultBackgroundColor);
                             //changeBackgroundColorWithAnimation(rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout)));
-                            resultTextView.setText(rouletteViewInLayout.getTextStrings().get(getSector(degree, rouletteViewInLayout)));
+                            String resultText = rouletteViewInLayout.getTextStrings().get(getSector(degree, rouletteViewInLayout));
+                            if (rouletteViewInLayout.isColorDark(resultBackgroundColor)) {
+                                resultTextView.setTextColor(Color.WHITE);
+                            } else {
+                                resultTextView.setTextColor(Color.BLACK);
+                            }
+                            resultTextView.setText(resultText);
                             //resultTv.setText(getSector(degree));
                             //Log.d("getsector", String.valueOf(360 - (degree % 720)));
 
@@ -616,7 +623,6 @@ public class MainActivity extends AppCompatActivity {
                             //editRouletteFab.setEnabled(true);
                             //myRouletteFab.setEnabled(true);
                             toolbar.findViewById(R.id.menuButton).setEnabled(true);
-                            Log.d("getsector", String.valueOf(degree));
                             //degreeOld = degree;
                         }
 
@@ -672,14 +678,14 @@ public class MainActivity extends AppCompatActivity {
                 if (rouletteExists) {
                     //背景色、resultTextViewをそれぞれ初期化する
                     //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                    changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
-                    resultTextView.setText("");
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
                     if (rouletteViewInLayout.splitCount >= 2) {
                         (rouletteViewInLayout.splitCount)--;
                         rouletteViewInLayout.invalidate();
 
                         if (rotate != null) {
+                            changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
+                            resultTextView.setText("");
                             //ルーレットを変更した場合は,角度を初期値に戻す
                             rotate.cancel();
                         }

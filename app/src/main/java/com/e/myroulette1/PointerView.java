@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -158,11 +157,11 @@ public class PointerView extends View {
 
         // 三角形を書く
         float tx1 = xc;
-        float ty1 = yc - xc - (xc/12) + (xc/3);
+        float ty1 = yc - xc - (xc/8) + (xc/3);
         float tx2 = xc - (xc/24);
-        float ty2 = yc - xc - (xc/12);
+        float ty2 = yc - xc - (xc/8);
         float tx3 = xc + (xc/24);
-        float ty3 = yc - xc - (xc/12);
+        float ty3 = yc - xc - (xc/8);
 
         //paint.setStrokeWidth(10);
         path.moveTo(tx1, ty1);

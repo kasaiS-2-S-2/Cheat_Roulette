@@ -7,13 +7,17 @@ package com.e.myroulette1;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import java.util.ArrayList;
 
@@ -21,6 +25,9 @@ public class RouletteView extends View {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean isAnimation;
 
+    //Bitmap rotateIcon, rotateIcon2;
+
+    VectorDrawableCompat rotateIcon;
 
     //各ルーレット情報の主キー
     private int id;
@@ -75,10 +82,20 @@ public class RouletteView extends View {
 
     boolean isStateNoRoulette = true;
 
+    Bitmap icLauncherBitmap;
+    Matrix matrix;
+
 
     public RouletteView(Context context, AttributeSet attrs) { //クラスRouletteViewのコンストラクタ
         super(context, attrs);
 
+        //icLauncherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
+        //Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.mipmap.ic_launcher, null);
+        //icLauncherBitmap = ResourceUtil.drawableToBitmap(drawable);
+        //行列を作成する。
+        //matrix = new Matrix();
+        //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_24);
+        rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_24, null);
         //float strokeWidth = 400.0f;///////////////////////////////////////////
         paint = new Paint();//////////////////////////////////////////////////
         paint.setAntiAlias(true);/////////////////////////////////////////////
@@ -134,6 +151,8 @@ public class RouletteView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);///////////////////////////////////////////////
 
+        canvas.save();
+
         if (isStateNoRoulette) {
             canvas.drawCircle(getWidth()/2f, getHeight()/2f, (getWidth()/2f) * (15f/16f), paint4);
 
@@ -180,6 +199,7 @@ public class RouletteView extends View {
 
             canvas.rotate(270, xc, yc); //項目順になるようにルーレットの初期位置を設定
 
+
             sumOfAngle = 0;
             angleCount = 0;
             for (int k = 0; k < splitCount; k++) {
@@ -195,7 +215,16 @@ public class RouletteView extends View {
                 }
             }
 
+            canvas.rotate(90, xc, yc);
+            //canvas.drawBitmap(rotateIcon, xc - rotateIcon.getWidth()/2f, yc - rotateIcon.getHeight()/2f, null);
 
+            //rotateIcon.setBounds((int)(xc - rotateIcon.getIntrinsicWidth()/2), (int)(yc - rotateIcon.getIntrinsicHeight()/2),(int)xc + rotateIcon.getIntrinsicWidth()/2, (int)yc + rotateIcon.getIntrinsicHeight()/2);
+            rotateIcon.setBounds((int)(xc - getWidth()/7), (int)(yc - getWidth()/7),
+                    (int)xc + getWidth()/7, (int)yc + getWidth()/7);
+            canvas.drawCircle(xc, yc, getWidth()/7f, paint4);
+            rotateIcon.draw(canvas);
+
+            canvas.rotate(-90, xc, yc);
             textPaint.setTextSize(getWidth() / 25f); //動的に文字の大きさを決める
 
             for (int k = 0; k < splitCount; k++) {
@@ -246,17 +275,37 @@ public class RouletteView extends View {
                 }
             }
 
+
+            //VectorDrawableCompat rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_24, null);
+            //rotateIcon.setBounds(0, 0, rotateIcon.getIntrinsicWidth(), rotateIcon.getIntrinsicHeight());
+            //rotateIcon.draw(canvas);
+
+            //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_24);
+
+
+
+            //x方向に2倍拡大する,y方向に0.5倍に縮小する。
+            //matrix.postScale(2,0.5f);
+            //Bitmapの中央を起点に90度回転する。
+            //matrix.postRotate(90,xc , yc);
+            //x方向に50,y方向に1500移動する。
+            //matrix.postTranslate(xc,yc);
+
+           // canvas.drawBitmap(icLauncherBitmap,0,0,null);
+            //canvas.drawBitmap(rotateIcon , matrix , paint3);
+
+
             //枠線描画
             float edgeWidth = getWidth()/32f;
             edgePaint.setStrokeWidth(edgeWidth);
             canvas.drawCircle(xc, yc, rouletteRadius - edgeWidth/2f , edgePaint);
             //中心の白い円の描画
-            //canvas.drawCircle(xc, yc, 200, paint2);
+            //canvas.drawCircle(xc, yc, 200, paint2)
 
         }
     }
 
-    private boolean isColorDark(int color) {
+    public boolean isColorDark(int color) {
         //16進数に変換
         String hexColor = Integer.toHexString(color);
 

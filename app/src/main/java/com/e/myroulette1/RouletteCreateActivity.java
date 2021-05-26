@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,7 +56,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
     private RouletteItemListInfo rouletteItemListInfo = new RouletteItemListInfo(
             new ArrayList<Integer>(), new ArrayList<String>(), new ArrayList<Integer>(), new ArrayList<Boolean>(), new ArrayList<Boolean>());
     private RecyclerView rouletteItemList;
-    private RouletteItemListAdapter rouletteItemListAdapter = new RouletteItemListAdapter(rouletteItemListInfo);
+    private RouletteItemListAdapter rouletteItemListAdapter;
+    //private RouletteItemListAdapter rouletteItemListAdapter = new RouletteItemListAdapter(rouletteItemList ,rouletteItemListInfo);
     //private RouletteItemListInfo rouletteItemListInfo;
 
     public static boolean visibleFlag = false;
@@ -91,6 +91,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         rouletteItemList = findViewById(R.id.roulette_item_list);
+        rouletteItemListAdapter = new RouletteItemListAdapter(rouletteItemList, rouletteItemListInfo);
         rouletteItemList.setAdapter(rouletteItemListAdapter);
         rouletteItemList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -130,7 +131,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                     //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
                     rouletteItemListAdapter.notifyItemRangeChanged(position, rouletteItemListAdapter.getItemCount() - position);
                 } else {
-                    rouletteItemListAdapter.notifyItemChanged(position);
+                    //rouletteItemListAdapter.notifyItemChanged(position);
                 }
             }
         }).attachToRecyclerView(rouletteItemList);
@@ -518,6 +519,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
         View dialoglayout = inflater.inflate(R.layout.color_pick_dialog, null);
         //アラートダイアログの中にある色ボタン（選択色確認のview）
         ColorButton dialogColorButton = dialoglayout.findViewById(R.id.color_preview);
+        ((GradientDrawable) dialogColorButton.getBackground()).setColor(((ColorButton)colorButton).getButtonColor());
         colorPickAlert.setView(dialoglayout);
 
         ColorPickerView colorPickerView = (ColorPickerView) dialoglayout.findViewById(R.id.color_picker_view);
