@@ -6,7 +6,7 @@
     android:id="@+id/drawer_layout_main"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".MainActivity"
+    tools:context="com.e.myroulette1.MainActivity"
     android:fitsSystemWindows="true"
     tools:openDrawer="right">
 
@@ -92,14 +92,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--今のadUnitIdはテストようだから、リリース時は置き換える-->
+            <!--<com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_main"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </com.google.android.gms.ads.AdView>-->
 
             <TextView
                 android:id="@+id/resultTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="30dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="150dp"
+                android:textSize="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="160dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginStart="30dp"
@@ -169,14 +183,13 @@
 
             </LinearLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:fabs_menu_clickableOverlay="true"
-            app:fabs_menu_overlayColor="#D0FFFFFF"
+            app:fabs_menu_overlayColor="#EDFFFFFF"
             tools:layout_behavior="@string/fabs_menu_layout_behavior">
 
             <!-- FABs Menu is the main view. It will contain all the items FABs and it create the menu fab itself -->

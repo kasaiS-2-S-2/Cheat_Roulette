@@ -5,18 +5,23 @@ package com.e.myroulette1;
 //import android.annotation.SuppressLint;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -32,6 +37,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorChangedListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
@@ -64,6 +71,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
     private Toast mToast = null;
 
+    //private AdView mAdView;
     //private int rouletteCount = 0;
 
 
@@ -83,6 +91,13 @@ public class RouletteCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roulettecreate);
+
+        //広告を付ける
+        AdView mAdView;
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         visibleFlag = false;
 
         toolbar = findViewById(R.id.toolbar_roulette_create);
@@ -214,7 +229,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
             //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                if (rouletteItemList.getAdapter().getItemCount() >= 300) {
+                if (rouletteItemListAdapter.getItemCount() >= 300) {
                     if (mToast != null) mToast.cancel();
                     mToast = Toast.makeText(getApplicationContext(), R.string.notice_item_is_max, Toast.LENGTH_SHORT);
                     mToast.show();
@@ -222,10 +237,18 @@ public class RouletteCreateActivity extends AppCompatActivity {
                     //addEditView(layout, scale, margins);
                     //rouletteItemListAdapter.addItem(generateColor(), "", 1, 0, 0);
 
+                    //項目が追加された場合は、キーボードを隠す
+                    if (getCurrentFocus() != null) {
+                        InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                        //RouletteItemListAdapter.ViewHolder viewHolder =(RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForLayoutPosition(rouletteItemListAdapter.getItemCount()-1);
+                        //viewHolder.getItemName().requestFocus();
+                    }
                     //RouletteItemListAdapterのaddItemをルーレット項目追加に使用する
-                    ((RouletteItemListAdapter) rouletteItemList.getAdapter()).addItem(generateColor(), "", 1, false, false);
+                    rouletteItemListAdapter.addItem(generateColor(), "", 1, false, false);
                     //新しいルーレット項目が追加された時、recyclerViewを一番下に自動スクロールする
-                    rouletteItemList.scrollToPosition(rouletteItemList.getAdapter().getItemCount() - 1);
+                    rouletteItemList.scrollToPosition(rouletteItemListAdapter.getItemCount() - 1);
                     //Log.d("ああああああああああああああああああJJJJJ", String.valueOf(rouletteItemList.getChildCount()));
                     //rouletteItemList.getChildAt(rouletteItemList.getChildCount() - 1).findViewById(R.id.itemName).requestFocus();
 
@@ -257,6 +280,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                     //cheatButton.setVisibility(View.INVISIBLE);
                     cheatButton.setText("");
                     cheatButton.setBackgroundColor(Color.TRANSPARENT);
+
                 } else {
                     // falseの場合は、イカサマスイッチを表示
                     for (int i = 0; i < rouletteItemList.getChildCount(); i++) {
@@ -271,6 +295,12 @@ public class RouletteCreateActivity extends AppCompatActivity {
                     //cheatButton.setVisibility(View.VISIBLE);
                     cheatButton.setText(R.string.hide_cheat);
                     cheatButton.setBackgroundColor(Color.RED);
+                }
+
+                //イカサマボタンが押された場合、キーボードを隠す
+                if (getCurrentFocus() != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 }
             }
         });
@@ -437,6 +467,19 @@ public class RouletteCreateActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //背景タプでフォーカスを外し、キーボードを隠す処理
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        ViewGroup rouletteCreateLayout = findViewById(R.id.roulette_create_layout);
+        InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        //キーボードを隠す
+        inputMethodManager.hideSoftInputFromWindow(rouletteCreateLayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //背景にフォーカスを移す
+        rouletteCreateLayout.requestFocus();
+
+        return false;
     }
 
     @Override

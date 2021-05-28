@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
 
@@ -35,10 +38,18 @@ public class MyRouletteActivity extends AppCompatActivity {
     private Button returnButton;
     private Toolbar toolbar;
 
+    //private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_roulette);
+
+        //広告を付ける
+        AdView mAdView;
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         toolbar = findViewById(R.id.toolbar_myRoulette);
         toolbar.setTitle(R.string.myRoulette);

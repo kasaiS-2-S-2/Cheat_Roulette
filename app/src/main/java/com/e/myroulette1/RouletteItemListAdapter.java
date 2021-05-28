@@ -140,6 +140,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
     }
 
     public void addItem(int generatedColor, String itemName, int itemRatio, Boolean OnOffInfoOfSwitch100, Boolean OnOffInfoOfSwitch0) {
+
         rouletteItemDataSet.getColors().add(generatedColor);
         rouletteItemDataSet.getItemNames().add(itemName);
         rouletteItemDataSet.getItemRatios().add(itemRatio);
@@ -147,6 +148,13 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         rouletteItemDataSet.getOnOffInfoOfSwitch0().add(OnOffInfoOfSwitch0);
         //挿入した位置を指定して、notifyする（getItemCount()-1 がrouletteItemListの末尾のインデックス）
         notifyItemInserted(getItemCount() - 1);
+        //新しいルーレット項目が追加された時、recyclerViewを一番下に自動スクロールする
+        //rouletteItemList.scrollToPosition(getItemCount() - 1);
+        //ViewHolder holder = (ViewHolder) rouletteItemList.findViewHolderForLayoutPosition(getItemCount());
+        //CardView cardView = (CardView)rouletteItemList.getLayoutManager().getChildAt(getItemCount() - 1);
+        //if (cardView != null) {
+        //    cardView.findViewById(R.id.itemName).requestFocus();
+        //}
     }
 
 
@@ -154,7 +162,8 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    //なんかstaticになってた。理由不明　5/26 →　公式ドキュメントでなんかstaticにしている。なんでだろ？static1取ってちゃんと動作するかふわん
+    //なんかstaticになってた。理由不明　5/26 →　公式ドキュメントでなんかstaticにしている。なんでだろ？
+        //→　https://stackoverflow.com/questions/31302341/what-difference-between-static-and-non-static-viewholder-in-recyclerview-adapter
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final Button colorButton;
         private final EditText itemName;

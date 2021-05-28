@@ -26,7 +26,7 @@ So, we are leaving the template code in. -->
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".MainActivity">
+    tools:context="com.e.myroulette1.MyRouletteActivity">
 
     <include
         android:id="@+id/toolbar_myRoulette"
@@ -121,6 +121,20 @@ So, we are leaving the template code in. -->
     </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
     -->
 
+    <!--今のadUnitIdはテストようだから、リリース時は置き換える-->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </com.google.android.gms.ads.AdView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

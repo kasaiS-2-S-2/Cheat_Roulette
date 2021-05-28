@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">My Roulette1</string>
+    <string name="button">buttom</string>
+    <string name="return_sub">RETURN</string>
+    <string name="main">Main Activity</string>
+    <string name="sub">Sub Activity</string>
+    <string name="hint1">Message to Sub</string>
+    <string name="hint2">Message to Main</string>
+    <string name="to_main">"  to Main"</string>
+    <string name="from_main">"from Main"</string>
+    <string name="to_sub">"  to Sub"</string>
+    <string name="from_sub">"from Sub"</string>
+    <string name="move">move</string>
+    <string name="back">back</string>
+    <string name="message">message</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="hint_word">Word…</string>
+    <string name="button_save">Save</string>
+    <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="add_word">Add word</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="roulette_create">ルーレット作成</string>
+    <string name="edit_roulette">ルーレット編集</string>
+    <string name="myRoulette">Myルーレット</string>
+    <string name="edit_myRoulette">Myルーレット編集</string>
+    <string name="sound_option">サウンド</string>
+    <string name="roulette_time">止まるまでの時間</string>
+    <string name="roulette_time_short">短め</string>
+    <string name="roulette_time_normal">普通</string>
+    <string name="roulette_time_long">長め</string>
+    <string name="more_action">moreAction</string>
+    <string name="page_explain">画面説明</string>
+    <string name="tutorial">チュートリアル</string>
+    <string name="roulette_split">分割</string>
+    <string name="item_name_hint">項目名</string>
+    <string name="create_finish">作成</string>
+    <string name="hint_roulette_name">ルーレット名</string>
+    <string name="add_item">＋ 追加</string>
+    <string name="hide_cheat">隠す</string>
+    <string name="notice_item_is_max">これ以上追加できません</string>
+    <string name="notify_cannot_split">これ以上分割できません</string>
+
+</resources>
