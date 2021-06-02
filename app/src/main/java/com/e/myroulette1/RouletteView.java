@@ -58,7 +58,7 @@ public class RouletteView extends View {
 
     private RectF rectF = null;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-    Paint paint, startButtonPaint, paint3, paint4, edgePaint, shadowPaint;
+    Paint colorPaint, startButtonPaint, startButtonBelowPaint, firstColorPaint, edgePaint, shadowPaint;
 
     Paint textPaint;
 
@@ -90,13 +90,13 @@ public class RouletteView extends View {
         //icLauncherBitmap = ResourceUtil.drawableToBitmap(drawable);
         //行列を作成する。
         //matrix = new Matrix();
-        //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_24);
-        rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_24, null);
+        //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_100);
+        rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_100, null);
         rotateIcon.setTint(getResources().getColor(R.color.roulette_start_icon));
         //float strokeWidth = 400.0f;///////////////////////////////////////////
-        paint = new Paint();//////////////////////////////////////////////////
-        paint.setAntiAlias(true);/////////////////////////////////////////////
-        setLayerType(LAYER_TYPE_HARDWARE, paint);
+        colorPaint = new Paint();//////////////////////////////////////////////////
+        colorPaint.setAntiAlias(true);/////////////////////////////////////////////
+        setLayerType(LAYER_TYPE_HARDWARE, colorPaint);
         //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
         //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
 
@@ -114,15 +114,15 @@ public class RouletteView extends View {
         startButtonPaint.setAntiAlias(true);
         setLayerType(LAYER_TYPE_SOFTWARE, startButtonPaint);
 
-        paint3 = new Paint();
-        paint3.setColor(getResources().getColor(R.color.roulette_start_button_below));
-        paint3.setAntiAlias(true);
-        setLayerType(LAYER_TYPE_HARDWARE, paint3);
+        startButtonBelowPaint = new Paint();
+        startButtonBelowPaint.setColor(getResources().getColor(R.color.roulette_start_button_below));
+        startButtonBelowPaint.setAntiAlias(true);
+        setLayerType(LAYER_TYPE_HARDWARE, startButtonBelowPaint);
 
-        paint4 = new Paint();
-        paint4.setColor(getResources().getColor(R.color.roulette_first_color));
-        paint4.setAntiAlias(true);
-        setLayerType(LAYER_TYPE_HARDWARE, paint4);
+        firstColorPaint = new Paint();
+        firstColorPaint.setColor(getResources().getColor(R.color.roulette_first_color));
+        firstColorPaint.setAntiAlias(true);
+        setLayerType(LAYER_TYPE_HARDWARE, firstColorPaint);
 
         //枠線の描画
         edgePaint = new Paint();
@@ -151,8 +151,8 @@ public class RouletteView extends View {
         canvas.save();
 
         if (isStateNoRoulette) {
-            canvas.drawCircle(getWidth()/2f, getHeight()/2f, (getWidth()/2f) * (15f/16f), paint4);
-            canvas.drawCircle(getWidth()/2f, getHeight()/2f, getWidth()/5.4f ,paint3);
+            canvas.drawCircle(getWidth()/2f, getHeight()/2f, (getWidth()/2f) * (15f/16f), firstColorPaint);
+            canvas.drawCircle(getWidth()/2f, getHeight()/2f, getWidth()/5.4f ,startButtonBelowPaint);
         } else {
 
             if (xc == 0.0f) xc = getWidth() / 2f;
@@ -203,8 +203,8 @@ public class RouletteView extends View {
                 // パネルの描画
                 for (int i = 0; i < num; i++) {
                     //paint.setColor(colors[i]);
-                    paint.setColor(colors.get(i));//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった →　検証したら、多分.size()ってより剰余の計算量がでかいっぽい
-                    canvas.drawArc(rectF, sumOfAngle + pos, angle * itemRatios.get(i), true, paint);
+                    colorPaint.setColor(colors.get(i));//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった →　検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+                    canvas.drawArc(rectF, sumOfAngle + pos, angle * itemRatios.get(i), true, colorPaint);
                     //枠線描画
                     //canvas.drawArc(rectF, sumOfAngle + pos, angle * itemRatios.get(i), true, edgePaint);
                     sumOfAngle += angle * itemRatios.get(i);
@@ -218,7 +218,7 @@ public class RouletteView extends View {
             //rotateIcon.setBounds((int)(xc - rotateIcon.getIntrinsicWidth()/2), (int)(yc - rotateIcon.getIntrinsicHeight()/2),(int)xc + rotateIcon.getIntrinsicWidth()/2, (int)yc + rotateIcon.getIntrinsicHeight()/2);
             rotateIcon.setBounds((int)(xc - getWidth()/8), (int)(yc - getWidth()/8),
                     (int)xc + getWidth()/8, (int)yc + getWidth()/8);
-            canvas.drawCircle(xc, yc, getWidth()/5.4f ,paint3);
+            canvas.drawCircle(xc, yc, getWidth()/5.4f ,startButtonBelowPaint);
             startButtonPaint.setShadowLayer(rouletteRadius/30f, 0, 0, Color.BLACK);
             canvas.drawCircle(xc, yc, (getWidth()/7.1f) * 0.9f ,startButtonPaint);
             //canvas.drawCircle(xc, yc, getWidth()/7f, paint4);
@@ -276,11 +276,11 @@ public class RouletteView extends View {
             }
 
 
-            //VectorDrawableCompat rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_24, null);
+            //VectorDrawableCompat rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_100, null);
             //rotateIcon.setBounds(0, 0, rotateIcon.getIntrinsicWidth(), rotateIcon.getIntrinsicHeight());
             //rotateIcon.draw(canvas);
 
-            //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_24);
+            //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_100);
 
 
 

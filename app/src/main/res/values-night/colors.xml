@@ -26,7 +26,7 @@
     <color name="split_button_border_color">#FF3B3B3B</color>
     <color name="pointer_view_border">#FF000000</color>
     <color name="roulette_first_color">#FF444444</color>
-    <color name="roulette_start_button">#FFBA0000</color>
+    <color name="roulette_start_button">#FFA40000</color>
     <color name="roulette_start_button_below">#FFAAAAAA</color>
     <color name="roulette_start_icon">#E8FFFFFF</color>
 </resources>

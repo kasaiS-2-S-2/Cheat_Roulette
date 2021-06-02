@@ -14,7 +14,7 @@
 
     <style name="AppTheme.strongShadow" parent="AppTheme">
         <!-- shadow -->
-        <item name="android:ambientShadowAlpha">0.4</item>
+        <item name="android:ambientShadowAlpha">0.7</item>
         <item name="android:spotShadowAlpha">0.7</item>
     </style>
 

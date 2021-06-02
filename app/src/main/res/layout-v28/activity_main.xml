@@ -90,7 +90,7 @@
                 android:elevation="8dp"
                 android:outlineAmbientShadowColor="#88000000"
                 android:outlineSpotShadowColor="#E0000000"
-                app:srcCompat="@drawable/ic_baseline_refresh_24"
+                app:srcCompat="@drawable/ic_baseline_refresh_100"
                 android:tint="@color/roulette_start_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

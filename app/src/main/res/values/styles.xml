@@ -11,8 +11,8 @@
 
     <style name="AppTheme.strongShadow" parent="AppTheme">
         <!-- shadow -->
-        <item name="android:ambientShadowAlpha">0.15</item>
-        <item name="android:spotShadowAlpha">0.35</item>
+        <item name="android:ambientShadowAlpha">0.2</item>
+        <item name="android:spotShadowAlpha">0.6</item>
     </style>
 
     <style name="BaseToolbar" parent="@style/Widget.AppCompat.Toolbar">
