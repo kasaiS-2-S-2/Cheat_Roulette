@@ -11,4 +11,22 @@
     <color name="appSubColor">#FF3B3B3B</color>
     <color name="appSubBrown">#FF934A00</color>
     <color name="appPink">#FFE81564</color>
+
+    <color name="layout_background">#FFFFFFFF</color>
+    <color name="sub_layout_background">#FFFFFFFF</color>
+    <color name="vector_asset_color">#FF3B3B3B</color>
+    <color name="button_content_color">#FFFFFFFF</color>
+    <color name="toolbar_text_color">#FF3B3B3B</color>
+    <color name="layout_text_color">#FF3B3B3B</color>
+    <color name="fabs_background_color">#FFFFFFFF</color>
+    <color name="fabs_ripple_color">#FF888888</color>
+    <color name="fabs_menu_overlay_color">#EEFFFFFF</color>
+    <color name="fabs_title_background">#FF3B3B3B</color>
+    <color name="fabs_title_text">#FFFFFFFF</color>
+    <color name="split_button_border_color">#FFFFFFFF</color>
+    <color name="pointer_view_border">#FF000000</color>
+    <color name="roulette_first_color">#FFDADADA</color>
+    <color name="roulette_start_button">#FFD00000</color>
+    <color name="roulette_start_button_below">#FFAAAAAA</color>
+    <color name="roulette_start_icon">#FFFFFFFF</color>
 </resources>

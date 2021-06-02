@@ -7,8 +7,26 @@
     <color name="buttonLabel">#FFFFFF</color>
     <color name="colorPickerDialogColor">#FF424242</color>
 
-    <color name="appPrimaryColor">#FFFFFFFF</color>
-    <color name="appSubColor">#FF3B3B3B</color>
+    <color name="appPrimaryColor">#FF2A2A2A</color>
+    <color name="appSubColor">#FF2A2A2A</color>
     <color name="appSubBrown">#FF934A00</color>
     <color name="appPink">#FFE81564</color>
+
+    <color name="layout_background">#FF393939</color>
+    <color name="sub_layout_background">#FF444444</color>
+    <color name="vector_asset_color">@android:color/darker_gray</color>
+    <color name="button_content_color">#FFFFFFFF</color>
+    <color name="toolbar_text_color">#FFFFFFFF</color>
+    <color name="layout_text_color">#FFFFFFFF</color>
+    <color name="fabs_menu_overlay_color">#ED2A2A2A</color>
+    <color name="fabs_background_color">#FF333333</color>
+    <color name="fabs_ripple_color">#FF888888</color>
+    <color name="fabs_title_background">#FF333333</color>
+    <color name="fabs_title_text">#FFFFFFFF</color>
+    <color name="split_button_border_color">#FF3B3B3B</color>
+    <color name="pointer_view_border">#FF000000</color>
+    <color name="roulette_first_color">#FF444444</color>
+    <color name="roulette_start_button">#FFBA0000</color>
+    <color name="roulette_start_button_below">#FFAAAAAA</color>
+    <color name="roulette_start_icon">#E8FFFFFF</color>
 </resources>

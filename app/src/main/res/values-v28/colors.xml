@@ -29,4 +29,6 @@
     <color name="roulette_start_button">#FFD00000</color>
     <color name="roulette_start_button_below">#FFAAAAAA</color>
     <color name="roulette_start_icon">#FFFFFFFF</color>
+    <color name="defaultOutlineAmbientShadowColor">#16000000</color>
+    <color name="defaultOutlineSpotShadowColor">#44000000</color>
 </resources>

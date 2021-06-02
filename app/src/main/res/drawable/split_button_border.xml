@@ -4,10 +4,10 @@
 
     <stroke
         android:width="3dp"
-        android:color="@color/appSubColor" />
+        android:color="@color/split_button_border_color" />
 
     <corners android:radius="6dp"/>
 
-    <solid android:color="#FFFFFFFF"/>
+    <solid android:color="@color/layout_background"/>
 
 </shape>

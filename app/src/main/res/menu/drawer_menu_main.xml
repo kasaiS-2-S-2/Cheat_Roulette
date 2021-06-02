@@ -13,19 +13,32 @@
                     android:id="@+id/nav_sound_option"
                     android:title="@string/sound_option"
                     android:icon="@drawable/ic_baseline_volume_up_24"
-                    app:actionLayout="@layout/switch_drawer_layout"/>
+                    app:actionLayout="@layout/sound_switch_in_drawer_layout"/>
 
                 <item
                     android:id="@+id/nav_roulette_time_option"
                     android:title="@string/roulette_time"
-                    android:icon="@drawable/ic_baseline_timer_24"
-                    android:checkable="false"/>
+                    android:icon="@drawable/ic_baseline_timer_24" />
 
                 <item
                     android:id="@+id/nav_roulette_time_bar"
                     android:title=""
                     app:actionLayout="@layout/roulette_time_radio_group"/>
 
+                <item
+                    android:id="@+id/nav_change_theme"
+                    android:title="テーマ"
+                    android:icon="@drawable/ic_baseline_brightness_4_24" />
+
+                <item
+                    android:id="@+id/nav_theme_bar"
+                    android:title=""
+                    app:actionLayout="@layout/change_theme_radio_group"/>
+
+                <item
+                    android:id="@+id/nav_theme_save_option"
+                    android:title="テーマを固定"
+                    app:actionLayout="@layout/theme_save_switch_in_drawer_layout"/>
 
             </menu>
 

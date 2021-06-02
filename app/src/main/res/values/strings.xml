@@ -47,5 +47,17 @@
     <string name="hide_cheat">隠す</string>
     <string name="notice_item_is_max">これ以上追加できません</string>
     <string name="notify_cannot_split">これ以上分割できません</string>
+    <string name="light_theme">ライト</string>
+    <string name="dark_theme">ダーク</string>
+    <string name="saved_sound_state_key">sonud_state</string>
+    <string name="saved_time_short_state_key">time_short_state</string>
+    <string name="saved_time_normal_state_key">time_normal_state</string>
+    <string name="saved_time_long_state_key">time_long_state</string>
+    <string name="saved_theme_save_state_key">theme_save_state</string>
+    <string name="saved_theme_state_key">theme_state</string>
+    <string name="saved_theme_changed_manually_key">theme_changed_manually</string>
+    <string name="saved_roulette_key">saved_roulette</string>
+    <string name="saved_roulette_exist_key">saved_roulette_exist</string>
+    <string name="saved_cheat_flag_state_key">cheat_flag_state</string>
 
 </resources>

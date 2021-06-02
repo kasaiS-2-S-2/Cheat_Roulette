@@ -1,10 +1,5 @@
 package com.e.myroulette1;
 
-/* 課題　*/
-/*
-・ edittextのフォーカスのこと　→　フォーカス　→　edittextの場合だったら、入力線が点滅しているときや、文字キーが出ているときのこと。　→　onwindowforcuchangeにおいて、これが作用していそう。
- */
-
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -32,6 +27,9 @@ public class RouletteView extends View {
     //各ルーレット情報の主キー
     private int id;
 
+    //分割数
+    private int splitCount = 1;
+
     //ルーレットの名前
     private String rouletteName;
 
@@ -39,7 +37,7 @@ public class RouletteView extends View {
     private ArrayList<Integer> colors = new ArrayList<Integer>();
 
     //ルーレットの文字列のリスト
-    private ArrayList<String> textStrings = new ArrayList<String>();
+    private ArrayList<String> itemNames = new ArrayList<String>();
 
     //ルーレットの項目比率のリスト
     private ArrayList<Integer> itemRatios = new ArrayList<Integer>();
@@ -60,7 +58,7 @@ public class RouletteView extends View {
 
     private RectF rectF = null;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-    Paint paint, paint2, paint3, paint4, edgePaint, shadowPaint;
+    Paint paint, startButtonPaint, paint3, paint4, edgePaint, shadowPaint;
 
     Paint textPaint;
 
@@ -69,8 +67,6 @@ public class RouletteView extends View {
     int num;
 
     int sumOfItemRatio = 0;
-
-    int splitCount = 1;
 
     int angleCount = 0;
 
@@ -96,6 +92,7 @@ public class RouletteView extends View {
         //matrix = new Matrix();
         //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_24);
         rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_24, null);
+        rotateIcon.setTint(getResources().getColor(R.color.roulette_start_icon));
         //float strokeWidth = 400.0f;///////////////////////////////////////////
         paint = new Paint();//////////////////////////////////////////////////
         paint.setAntiAlias(true);/////////////////////////////////////////////
@@ -112,18 +109,18 @@ public class RouletteView extends View {
         textPaint.setAntiAlias(true);
         setLayerType(LAYER_TYPE_HARDWARE, textPaint);
 
-        paint2 = new Paint();/////////////////////////////////////////////
-        paint2.setColor(Color.BLACK);///////////////////////////////////////
-        paint2.setAntiAlias(true);
-        setLayerType(LAYER_TYPE_HARDWARE, paint2);
+        startButtonPaint = new Paint();/////////////////////////////////////////////
+        startButtonPaint.setColor(getResources().getColor(R.color.roulette_start_button));///////////////////////////////////////
+        startButtonPaint.setAntiAlias(true);
+        setLayerType(LAYER_TYPE_SOFTWARE, startButtonPaint);
 
         paint3 = new Paint();
-        paint3.setColor(Color.RED);
+        paint3.setColor(getResources().getColor(R.color.roulette_start_button_below));
         paint3.setAntiAlias(true);
         setLayerType(LAYER_TYPE_HARDWARE, paint3);
 
         paint4 = new Paint();
-        paint4.setColor(Color.LTGRAY);
+        paint4.setColor(getResources().getColor(R.color.roulette_first_color));
         paint4.setAntiAlias(true);
         setLayerType(LAYER_TYPE_HARDWARE, paint4);
 
@@ -137,7 +134,7 @@ public class RouletteView extends View {
 
         shadowPaint = new Paint();
         shadowPaint.setAntiAlias(true);
-        //ここだけはソフトウェアレイアーを使う　→　影をうまく表示できないため
+        //ソフトウェアレイアーを使う　→　影をうまく表示できないため
         setLayerType(LAYER_TYPE_SOFTWARE, shadowPaint);
         //shadowPaint.setColor(Color.parseColor("#00000000"));
 
@@ -155,7 +152,7 @@ public class RouletteView extends View {
 
         if (isStateNoRoulette) {
             canvas.drawCircle(getWidth()/2f, getHeight()/2f, (getWidth()/2f) * (15f/16f), paint4);
-
+            canvas.drawCircle(getWidth()/2f, getHeight()/2f, getWidth()/5.4f ,paint3);
         } else {
 
             if (xc == 0.0f) xc = getWidth() / 2f;
@@ -219,9 +216,12 @@ public class RouletteView extends View {
             //canvas.drawBitmap(rotateIcon, xc - rotateIcon.getWidth()/2f, yc - rotateIcon.getHeight()/2f, null);
 
             //rotateIcon.setBounds((int)(xc - rotateIcon.getIntrinsicWidth()/2), (int)(yc - rotateIcon.getIntrinsicHeight()/2),(int)xc + rotateIcon.getIntrinsicWidth()/2, (int)yc + rotateIcon.getIntrinsicHeight()/2);
-            rotateIcon.setBounds((int)(xc - getWidth()/7), (int)(yc - getWidth()/7),
-                    (int)xc + getWidth()/7, (int)yc + getWidth()/7);
-            canvas.drawCircle(xc, yc, getWidth()/7f, paint4);
+            rotateIcon.setBounds((int)(xc - getWidth()/8), (int)(yc - getWidth()/8),
+                    (int)xc + getWidth()/8, (int)yc + getWidth()/8);
+            canvas.drawCircle(xc, yc, getWidth()/5.4f ,paint3);
+            startButtonPaint.setShadowLayer(rouletteRadius/30f, 0, 0, Color.BLACK);
+            canvas.drawCircle(xc, yc, (getWidth()/7.1f) * 0.9f ,startButtonPaint);
+            //canvas.drawCircle(xc, yc, getWidth()/7f, paint4);
             rotateIcon.draw(canvas);
 
             canvas.rotate(-90, xc, yc);
@@ -251,11 +251,11 @@ public class RouletteView extends View {
                     }
 
                     //描く文字列
-                    String willDrawText = textStrings.get(j);
+                    String willDrawText = itemNames.get(j);
                     //文字列の最大右端位置
                     float textEdgeRight = getWidth() - ((3 * getWidth())/32f);
                     //文字列の左端位置
-                    float textEdgeLeft = xc + (getWidth()/5.5f);
+                    float textEdgeLeft = xc + (getWidth()/5f);
                     //文字列の最大幅
                     //float maxTextWidth = (getWidth() - (getWidth()/16f)) - (xc + (getWidth()/6f));
                     float maxTextWidth = textEdgeRight - textEdgeLeft;
@@ -349,9 +349,10 @@ public class RouletteView extends View {
         this.id = id;
     }
 
-    public void setRouletteContents(String rouletteNameInfo,
+    public void setRouletteContents(int splitCount,
+                                    String rouletteNameInfo,
                                     ArrayList<Integer> colorsInfo,
-                                    ArrayList<String> textStringsInfo,
+                                    ArrayList<String> itemNamesInfo,
                                     ArrayList<Integer> itemRatiosInfo,
                                     ArrayList<Integer> OnOffOfSwitch100Info,
                                     ArrayList<Integer> OnOffOfSwitch0Info,
@@ -359,14 +360,15 @@ public class RouletteView extends View {
 
 
         this.isStateNoRoulette = false;
-        this.splitCount = 1;
 
+        //ルーレットの分割数
+        this.splitCount = splitCount;
         //ルーレットの名前
         this.rouletteName = rouletteNameInfo;
         //ルーレットの色のリスト
         this.colors = colorsInfo;
         //ルーレットの文字列のリスト
-        this.textStrings = textStringsInfo;
+        this.itemNames = itemNamesInfo;
         //ルーレットの項目比率のリスト
         this.itemRatios = itemRatiosInfo;
         //必中スイッチのONOFF情報
@@ -392,14 +394,18 @@ public class RouletteView extends View {
     }
 
     public int getId() { return id; }
+
+    public void setSplitCount(int splitCount) { this.splitCount = splitCount; }
+    public int getSplitCount() { return splitCount; }
+
     public String getRouletteName() {
         return rouletteName;
     }
     public ArrayList<Integer> getColors() {
         return colors;
     }
-    public ArrayList<String> getTextStrings() {
-        return textStrings;
+    public ArrayList<String> getItemNames() {
+        return itemNames;
     }
     public ArrayList<Integer> getItemRatios() {
         return itemRatios;

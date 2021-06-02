@@ -117,7 +117,7 @@ class MyRouletteViewHolder extends RecyclerView.ViewHolder {
         }
         dateView.setText(date);
         rouletteView.setId(id);
-        rouletteView.setRouletteContents(rouletteName, colorsInfo, itemNamesInfo, itemRatiosInfo,
+        rouletteView.setRouletteContents(1, rouletteName, colorsInfo, itemNamesInfo, itemRatiosInfo,
                 OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
     }
 

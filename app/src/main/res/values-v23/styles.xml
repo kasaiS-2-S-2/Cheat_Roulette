@@ -1,6 +1,8 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimaryColor</item>
         <item name="colorPrimaryDark">@color/appPrimaryColor</item>
@@ -8,12 +10,18 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="AppTheme.strongShadow" parent="AppTheme">
+        <!-- shadow -->
+        <item name="android:ambientShadowAlpha">0.15</item>
+        <item name="android:spotShadowAlpha">0.35</item>
+    </style>
+
     <style name="BaseToolbar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:theme">@style/ToolbarTheme</item>
     </style>
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textColorPrimary">@color/appSubColor</item>
+        <item name="android:textColorPrimary">@color/toolbar_text_color</item>
         <item name="android:textColorSecondary">@color/appPink</item>
         <item name="android:colorBackground">@color/appPrimaryColor</item>
     </style>

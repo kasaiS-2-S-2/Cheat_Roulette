@@ -21,6 +21,7 @@
             android:name=".MyRouletteActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:theme="@style/AppTheme.strongShadow"
             android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>

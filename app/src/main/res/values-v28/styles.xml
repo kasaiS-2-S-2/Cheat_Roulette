@@ -1,18 +1,23 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimaryColor</item>
-        <item name="colorPrimaryDark">@android:color/darker_gray</item>
+        <item name="colorPrimaryDark">@color/appPrimaryColor</item>
         <item name="colorAccent">@color/appPink</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/appPrimaryColor</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="AppTheme.strongShadow" parent="AppTheme">
         <!-- shadow -->
-        <item name="android:ambientShadowAlpha">0.15</item>
-        <item name="android:spotShadowAlpha">0.35</item>
+        <item name="android:ambientShadowAlpha">1</item>
+        <item name="android:spotShadowAlpha">1</item>
+        <item name="android:outlineAmbientShadowColor">@color/defaultOutlineAmbientShadowColor</item>
+        <item name="android:outlineSpotShadowColor">@color/defaultOutlineSpotShadowColor</item>
     </style>
 
     <style name="BaseToolbar" parent="@style/Widget.AppCompat.Toolbar">

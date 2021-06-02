@@ -1,27 +1,38 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar"/>
+
+    <style name="AppTheme" parent="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimaryColor</item>
         <item name="colorPrimaryDark">@color/appPrimaryColor</item>
         <item name="colorAccent">@color/appPink</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/appPrimaryColor</item>
+    </style>
+
+    <style name="AppTheme.strongShadow" parent="AppTheme">
+        <!-- shadow -->
+        <item name="android:ambientShadowAlpha">0.4</item>
+        <item name="android:spotShadowAlpha">0.7</item>
     </style>
 
     <style name="BaseToolbar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:theme">@style/ToolbarTheme</item>
+        <item name="popupTheme">@style/PopupMenuStyle</item>
     </style>
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textColorPrimary">@color/appSubColor</item>
+        <item name="android:textColorPrimary">@color/toolbar_text_color</item>
         <item name="android:textColorSecondary">@color/appPink</item>
         <item name="android:colorBackground">@color/appPrimaryColor</item>
     </style>
 
-    <!--<style name="PopupMenuStyle" parent="android:Widget.Holo.Light.PopupMenu">
-        <item name="android:background">@color/appSubColor</item>
-        <item name="android:textColor">@color/appPrimaryColor</item>
-    </style>-->
+    <style name="PopupMenuStyle" parent="android:Widget.Holo.Light.PopupMenu">
+        <item name="android:background">@color/layout_background</item>
+        <item name="android:textColor">@color/toolbar_text_color</item>
+    </style>
 
     <!-- The default font for RecyclerView items is too small.
     The margin is a simple delimiter between the words. -->
@@ -38,21 +49,21 @@
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
-    <style name="Switch100Style" parent="Theme.AppCompat.Light">
+    <style name="Switch100Style" parent="Theme.AppCompat.DayNight">
         <!--ボタンON時のボタンの通り道（透明度30%）・ボタンとタッチフィードバックカラー-->
         <item name="colorControlActivated">#FFFF0040</item>
         <!--ボタンOFF時のボタンの通り道（透明度30%）-->
-        <item name="android:colorForeground">#000000</item>
+        <item name="android:colorForeground">#EEEEEE</item>
         <!-- OFFボタンを押したときのタッチフィードバックカラー -->
         <item name="colorControlHighlight">#c0c0c0</item>
 
     </style>
 
-    <style name="Switch0Style" parent="Theme.AppCompat.Light">
+    <style name="Switch0Style" parent="Theme.AppCompat.DayNight">
         <!--ボタンON時のボタンの通り道（透明度30%）・ボタンとタッチフィードバックカラー-->
         <item name="colorControlActivated">#FF17A8FF</item>
         <!--ボタンOFF時のボタンの通り道（透明度30%）-->
-        <item name="android:colorForeground">#000000</item>
+        <item name="android:colorForeground">#EEEEEE</item>
         <!-- OFFボタンを押したときのタッチフィードバックカラー -->
         <item name="colorControlHighlight">#c0c0c0</item>
     </style>

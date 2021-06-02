@@ -86,8 +86,8 @@ public class MyRouletteActivity extends AppCompatActivity {
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Here is where you'll implement swipe to delete
                 new AlertDialog.Builder(viewHolder.itemView.getContext())
-                        .setMessage("Are you sure?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setMessage("削除してもよろしいですか？")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 int position = viewHolder.getAdapterPosition();
                                 //スワイプされたList<word>の項目をList<word>から削除
@@ -102,7 +102,7 @@ public class MyRouletteActivity extends AppCompatActivity {
                                 MainActivity.mMyRouletteViewModel.delete(primaryKey);
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // User cancelled the dialog,
                                     // so we will refresh the adapter to prevent hiding the item from UI
@@ -242,7 +242,7 @@ public class MyRouletteActivity extends AppCompatActivity {
         //Intent fromMyRouletteToMain = new Intent(getApplicationContext(), MainActivity.class);
         fromMyRouletteToMain.putExtra("rouletteName", selectedRouletteView.getRouletteName());
         fromMyRouletteToMain.putIntegerArrayListExtra("colors", selectedRouletteView.getColors());
-        fromMyRouletteToMain.putStringArrayListExtra("textStrings", selectedRouletteView.getTextStrings());
+        fromMyRouletteToMain.putStringArrayListExtra("textStrings", selectedRouletteView.getItemNames());
         fromMyRouletteToMain.putIntegerArrayListExtra("itemRatios", selectedRouletteView.getItemRatios());
         fromMyRouletteToMain.putIntegerArrayListExtra("OnOffInfoOfSwitch100", selectedRouletteView.getOnOffInfoOfSwitch100());
         fromMyRouletteToMain.putIntegerArrayListExtra("OnOffInfoOfSwitch0", selectedRouletteView.getOnOffInfoOfSwitch0());
@@ -273,7 +273,7 @@ public class MyRouletteActivity extends AppCompatActivity {
         fromMyRouletteToEditMyRoulette.putExtra("rouletteId", selectedRouletteView.getId());
         fromMyRouletteToEditMyRoulette.putExtra("rouletteName", selectedRouletteView.getRouletteName());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("colors", selectedRouletteView.getColors());
-        fromMyRouletteToEditMyRoulette.putStringArrayListExtra("itemNames", selectedRouletteView.getTextStrings());
+        fromMyRouletteToEditMyRoulette.putStringArrayListExtra("itemNames", selectedRouletteView.getItemNames());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("itemRatios", selectedRouletteView.getItemRatios());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch100", selectedRouletteView.getOnOffInfoOfSwitch100());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch0", selectedRouletteView.getOnOffInfoOfSwitch0());

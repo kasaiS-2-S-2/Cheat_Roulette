@@ -5,12 +5,15 @@ import android.animation.ValueAnimator;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -26,6 +29,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,17 +37,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -70,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private RotateAnimation rotate;
-    private RouletteView rouletteViewInLayout;//onWindowFocusChange用の変数
+    private RouletteView rouletteViewInLayout;
     private PushImageButton rouletteStartButton;
     private TextView resultTextView;
     private Button resetButton;
@@ -127,15 +132,177 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d("あああああああああああああああ", "onStart");
+
+        //SwitchCompat soundSwitch = findViewById(R.id.sound_switch_in_drawer_layout);
+        //SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        //boolean soundStateStart = sharedPref.getBoolean(getString(R.string.saved_sound_state_key), true);
+        //Log.d("ああああああああああああSSSSSSSSSSｓ", String.valueOf(navigationView));
+        //Log.d("ああああああああああああSSSSSSSSSSｓ", String.valueOf(navigationView.findViewById(R.id.nav_sound_option)));
+        //Log.d("ああああああああああああSSSSSSSSSSｓ", String.valueOf(navigationView.findViewById(R.id.sound_switch_in_drawer_layout)));
+        /*soundSwitch.setChecked(soundStateStart);
+        soundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean(getString(R.string.saved_sound_state_key), isChecked);
+                editor.apply();
+            }
+        });
+
+         */
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Log.d("あああああああああああああああ", "onPostCreate");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d("あああああああああああああああ", "onResume");
-
         //soundPool.stop(drumRollLoopStreamID);
 
+    }
+
+    //@RequiresApi(api = Build.VERSION_CODES.Q)
+    public void onWindowFocusChanged(boolean hasFocus) {
+        //public void onResume() {
+        //super.onRestart();
+        //super.onStart();
+        //super.onResume();
+
+        super.onWindowFocusChanged(hasFocus);
+
+        Log.d("あああああああああああああああああ", "onWindowFocusChanged");
+
+        //情報保存用の共有環境設定ファイル
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+
+        //サウンドの情報を取得、適用
+        boolean startSoundState = sharedPref.getBoolean(getString(R.string.saved_sound_state_key), true);
+        SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
+        soundSwitch.setChecked(startSoundState);
+
+        //止まるまでの時間の情報を取得、適用
+        RadioGroup timeRadioGroup = navigationView.findViewById(R.id.nav_roulette_time_bar).findViewById(R.id.time_radio_group);
+        boolean startTimeShortState = sharedPref.getBoolean(getString(R.string.saved_time_short_state_key), false);
+        boolean startTimeNormalState = sharedPref.getBoolean(getString(R.string.saved_time_normal_state_key), true);
+        boolean startTimeLongState = sharedPref.getBoolean(getString(R.string.saved_time_long_state_key), false);
+        ((RadioButton)timeRadioGroup.findViewById(R.id.time_short)).setChecked(startTimeShortState);
+        ((RadioButton)timeRadioGroup.findViewById(R.id.time_normal)).setChecked(startTimeNormalState);
+        ((RadioButton)timeRadioGroup.findViewById(R.id.time_long)).setChecked(startTimeLongState);
+        // Check which radio button was clicked
+        switch(timeRadioGroup.getCheckedRadioButtonId()) {
+            case R.id.time_short:
+                toDegree = 1440f;
+                duration = 5000;
+                interpolatorFactor = 2.3f;
+                break;
+            case R.id.time_normal:
+                toDegree = 5400f;
+                duration = 10000;
+                interpolatorFactor = 2.3f;
+                break;
+            case R.id.time_long:
+                toDegree = 14400f;
+                duration = 17000;
+                interpolatorFactor = 2.0f;
+                break;
+            default:
+                //例外があった場合、デフォルトで抽選時間 普通の値を設定
+                toDegree = 5400f;
+                duration = 10000;
+                interpolatorFactor = 2.3f;
+                break;
+        }
+
+        //どのテーマかの情報を取得、適用
+        RadioGroup themeRadioGroup = navigationView.findViewById(R.id.nav_theme_bar).findViewById(R.id.change_theme_radio_group);
+        /*boolean startThemeState = sharedPref.getBoolean(getString(R.string.saved_theme_state_key), false);
+        if (startThemeState) {
+            //ダークにチェック
+            ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(false);
+            ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(true);
+        } else {
+            //ライトにチェック
+            ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(true);
+            ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(false);
+        }
+         */
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active, we're using the light theme
+                //ライトにチェック
+                ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(true);
+                ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(false);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Night mode is active, we're using dark theme
+                //ダークにチェック
+                ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(false);
+                ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(true);
+                break;
+        }
+
+        //テーマを保存するかの情報を取得、適用
+        boolean startThemeSaveState = sharedPref.getBoolean(getString(R.string.saved_theme_save_state_key), false);
+        SwitchCompat themeSaveSwitch = navigationView.findViewById(R.id.nav_theme_save_option).findViewById(R.id.theme_save_switch_in_drawer_layout);
+        themeSaveSwitch.setChecked(startThemeSaveState);
+
+        //rouletteView = new RouletteView(getApplicationContext());
+
+        //xc = rouletteView.getWidth() / 2;
+        //yc = rouletteView.getHeight() / 2;
+
+        ////////////////////////////////////////////////////////////////
+        //constraintLayout.addView(new PointerView(getApplicationContext(), rouletteView.xc, rouletteView.yc));
+        //if (constraintLayout.getChildAt(constraintLayout.getChildCount() - 2) instanceof RouletteView) {
+        //rouletteViewInLayout = (RouletteView) constraintLayout.getChildAt(constraintLayout.getChildCount() - 2);
+        //rouletteViewInLayout = findViewById(R.id.roulette);
+        //}
+        //setContentView(constraintLayout);
+
+        /*
+        //Myルーレットのルーレットをセットする場合の処理
+        Intent fromMainIntent = getIntent();
+        if (fromMainIntent.getAction() != null && fromMainIntent.getAction().equals("SET_MYROULETTE")) {
+            //RouletteView rouletteView = findViewById(R.id.roulette);
+            //rouletteView.splitCount = 1;
+            String rouletteNameInfo = fromMainIntent.getStringExtra("rouletteName");
+            ArrayList<Integer> colorsInfo = fromMainIntent.getIntegerArrayListExtra("colors");
+            ArrayList<String> textStringsInfo = fromMainIntent.getStringArrayListExtra("textStrings");
+            ArrayList<Integer> itemRatiosInfo = fromMainIntent.getIntegerArrayListExtra("itemRatios");
+            ArrayList<Integer> OnOffOfSwitch100Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
+            ArrayList<Integer> OnOffOfSwitch0Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
+            //rouletteView.itemProbabilities.clear();
+            ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
+            //int itemProbabilitySize = intent.getIntExtra("itemProbabilitySize", 0);
+            float itemProbabilityArray[] = fromMainIntent.getFloatArrayExtra("itemProbability");
+            for (int i = 0; i < itemProbabilityArray.length; i++) {
+                itemProbabilitiesInfo.add(itemProbabilityArray[i]);
+            }
+            if (!itemProbabilitiesInfo.isEmpty()) {
+                //イカサマ設定のルーレットセット時は、イカサマモードONで初期化
+                CheatFlag = true;
+            }
+            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
+            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
+            //constraintLayout.addView(rouletteView);
+            //constraintLayout.addView(new PointerView(getApplicationContext()));
+
+            rouletteViewInLayout.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
+            setContentView(constraintLayout);
+            rouletteExists = true;
+        }
+
+         */
+
+
+        //////////////////////////////////////////////////////////////////////////
     }
 
     @Override
@@ -182,6 +349,37 @@ public class MainActivity extends AppCompatActivity {
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        //情報保存用の共有環境設定ファイル
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        //テーマが手動で変更されたかの情報を取得
+        boolean themeChangedManually = sharedPref.getBoolean(getString(R.string.saved_theme_changed_manually_key), false);
+        //テーマを保存するかの情報を取得
+        boolean themeSaveState = sharedPref.getBoolean(getString(R.string.saved_theme_save_state_key), false);
+
+        if (!themeChangedManually) {
+            if (themeSaveState) {
+                //どのテーマかの情報を取得、適用
+                boolean startThemeState = sharedPref.getBoolean(getString(R.string.saved_theme_state_key), false);
+                if (startThemeState) {
+                    //ダークテーマを適用
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    //ライトテーマを適用
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+            } else {
+                //システムに応じてテーマを適用
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            }
+        } else {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            //手動でのテーマ変更後は、keyをfalse（初期化）にし、保存する
+            editor.putBoolean(getString(R.string.saved_theme_changed_manually_key), false);
+            editor.apply();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -286,13 +484,13 @@ public class MainActivity extends AppCompatActivity {
         disp.getSize(displayAre);
 
         constraintLayout = findViewById(R.id.constraintLayout);
-        constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().width = displayAre.x / 3;
-        constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().height = displayAre.x / 3;
+        constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().width = (int)(displayAre.x / 3.55f);
+        constraintLayout.getViewById(R.id.rouletteStartButton).getLayoutParams().height = (int)(displayAre.x / 3.55f);
 
         splitButtonLayout = findViewById(R.id.split_button_layout);
         ViewGroup.LayoutParams layoutParams = splitButtonLayout.getLayoutParams();
         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) layoutParams;
-        marginLayoutParams.setMargins(0, displayAre.x / 3, 0, 0);
+        marginLayoutParams.setMargins(0, (int)(displayAre.x / 2.9f), 0, 20);
         splitButtonLayout.setLayoutParams(marginLayoutParams);
         //Matrix matrix = new Matrix();
         //matrix.setScale(displayAre.x * 2f / 9f, displayAre.x * 2f / 9f);
@@ -305,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(drawerLayout);
         //setContentView(relativeLayout);
 
-        rouletteViewInLayout = findViewById(R.id.roulette);
+
         rouletteStartButton = findViewById(R.id.rouletteStartButton);
         resultTextView = findViewById(R.id.resultTextView);
         //resetButton = findViewById(R.id.reset_button);
@@ -316,6 +514,58 @@ public class MainActivity extends AppCompatActivity {
         //editButton = findViewById(R.id.edit_button);
         //toMyRouletteButton = findViewById(R.id.myRoulette_button);
         //fabsMenu = findViewById(R.id.fabs_menu);
+
+        rouletteViewInLayout = findViewById(R.id.roulette);
+        //ルーレットの状態保存があったかどうかの情報を共有環境設定から取得
+        boolean savedRouletteExist = sharedPref.getBoolean(getString(R.string.saved_roulette_exist_key), false);
+        if (savedRouletteExist) {
+
+            SavedRouletteOfMainActivity savedRouletteOfMainActivity;
+            Gson gson = new Gson();
+            String savedRouletteString = sharedPref.getString(getString(R.string.saved_roulette_key), "");
+
+            // 保存したオブジェクトを取得
+            if ( !TextUtils.isEmpty(savedRouletteString)) {
+                // 保存した文字列から、保存されているルーレット情報を取得する
+                savedRouletteOfMainActivity = gson.fromJson(savedRouletteString, SavedRouletteOfMainActivity.class);
+            } else {
+                // 何も保存されてない 初期時点 この時はデフォルト値を入れて上げる
+                savedRouletteOfMainActivity = SavedRouletteOfMainActivity.getDefaultInstance();
+            }
+
+            //得た情報を元にルーレットをセットする
+            rouletteViewInLayout.setRouletteContents(
+                    savedRouletteOfMainActivity.getSplitCount(),
+                    savedRouletteOfMainActivity.getRouletteName(),
+                    savedRouletteOfMainActivity.getColors(),
+                    savedRouletteOfMainActivity.getItemNames(),
+                    savedRouletteOfMainActivity.getItemRatios(),
+                    savedRouletteOfMainActivity.getOnOffOfSwitch100(),
+                    savedRouletteOfMainActivity.getOnOffOfSwitch0(),
+                    savedRouletteOfMainActivity.getItemProbabilities()
+            );
+            //rouletteViewInLayout.invalidate();
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
+            editor.apply();
+
+            //背景色を初期化する
+            constraintLayout.setBackgroundColor(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
+
+            if (TextUtils.isEmpty(rouletteViewInLayout.getRouletteName())) {
+                toolbar.setTitle("ルーレット");
+            } else {
+                toolbar.setTitle(rouletteViewInLayout.getRouletteName());
+            }
+
+            if (!(rouletteViewInLayout.getItemProbabilities().isEmpty())) {
+                //保存されているチートフラッグを適用
+                CheatFlag = sharedPref.getBoolean(getString(R.string.saved_cheat_flag_state_key), true);
+            }
+
+            rouletteExists = true;
+        }
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -333,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
                             //Intent intent = new Intent(getApplication(), SubActivity.class);
                             rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
                             rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
-                            rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getTextStrings());
+                            rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getItemNames());
                             rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
                             rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
                             rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
@@ -410,7 +660,7 @@ public class MainActivity extends AppCompatActivity {
                     //Intent intent = new Intent(getApplication(), SubActivity.class);
                     rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
                     rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
-                    rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getTextStrings());
+                    rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getItemNames());
                     rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
                     rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
                     rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
@@ -438,6 +688,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //myRouletteFab.setEnabled(false);
 
+        //rouletteStartButton = findViewById(R.id.rouletteStartButton);
         rouletteStartButton.setOnClickListener(new View.OnClickListener() {
             // クリック時に呼ばれるメソッド
             @Override
@@ -447,7 +698,7 @@ public class MainActivity extends AppCompatActivity {
                     //degree = 0;
                     //float degree = 0;
                     //degreeOld = degree % 360;///////////////////////////////////////////////////////////////////
-                    sectorDegree = 360f / (rouletteViewInLayout.sumOfItemRatio * rouletteViewInLayout.splitCount);
+                    sectorDegree = 360f / (rouletteViewInLayout.sumOfItemRatio * rouletteViewInLayout.getSplitCount());
 
                     if (rouletteViewInLayout.getItemProbabilities().isEmpty() || !CheatFlag) {
                         //普通の抽選
@@ -572,7 +823,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onAnimationStart(Animation animation) {
                             //背景色、resultTextViewをそれぞれ初期化する
                             //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                            changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
+                            changeBackgroundColorWithAnimation(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
 
                             resultTextView.setText("");
 
@@ -588,12 +839,12 @@ public class MainActivity extends AppCompatActivity {
                             //editRouletteFab.setEnabled(false);
                             //myRouletteFab.setEnabled(false);
                             toolbar.findViewById(R.id.menuButton).setEnabled(false);
+                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-                            SwitchCompat soundSwitch = findViewById(R.id.nav_sound_option).findViewById(R.id.switch_drawer_layout);
+                            SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
                             if (soundSwitch.isChecked()) {
                                 soundPool.play(drumRollStart, 1.0f, 1.0f, 1, 0, 1);
-                                drumRollLoopStreamID =
-                                        soundPool.play(drumRollLoop, 1.0f, 1.0f, 1, 5, 1);
+                                drumRollLoopStreamID = soundPool.play(drumRollLoop, 1.0f, 1.0f, 1, 5, 1);
                             }
                             // we empty the result text view when the animation start
                             resultTextView.setText("");
@@ -602,7 +853,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            SwitchCompat soundSwitch = findViewById(R.id.nav_sound_option).findViewById(R.id.switch_drawer_layout);
+                            SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
                             if (soundSwitch.isChecked()) {
                                 soundPool.stop(drumRollLoopStreamID);
                                 soundPool.play(finishSound, 1.0f, 1.0f, 1, 0, 1);
@@ -613,7 +864,7 @@ public class MainActivity extends AppCompatActivity {
                             int resultBackgroundColor = rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout));
                             constraintLayout.setBackgroundColor(resultBackgroundColor);
                             //changeBackgroundColorWithAnimation(rouletteViewInLayout.getColors().get(getSector(degree, rouletteViewInLayout)));
-                            String resultText = rouletteViewInLayout.getTextStrings().get(getSector(degree, rouletteViewInLayout));
+                            String resultText = rouletteViewInLayout.getItemNames().get(getSector(degree, rouletteViewInLayout));
                             if (rouletteViewInLayout.isColorDark(resultBackgroundColor)) {
                                 resultTextView.setTextColor(Color.WHITE);
                             } else {
@@ -635,6 +886,7 @@ public class MainActivity extends AppCompatActivity {
                             //editRouletteFab.setEnabled(true);
                             //myRouletteFab.setEnabled(true);
                             toolbar.findViewById(R.id.menuButton).setEnabled(true);
+                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                             //degreeOld = degree;
                         }
 
@@ -662,18 +914,19 @@ public class MainActivity extends AppCompatActivity {
                     if (mToast != null) mToast.cancel();
                     mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
                     mToast.show();
-                } else if (rouletteViewInLayout.getColors().size() * (rouletteViewInLayout.splitCount + 1) > 300){
+                } else if (rouletteViewInLayout.getColors().size() * (rouletteViewInLayout.getSplitCount() + 1) > 300){
                     if (mToast != null) mToast.cancel();
                     mToast = Toast.makeText(getApplicationContext(), R.string.notify_cannot_split, Toast.LENGTH_SHORT);
                     mToast.show();
                 } else {
                     //背景色、resultTextViewをそれぞれ初期化する
                     //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                    changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
+                    changeBackgroundColorWithAnimation(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
                     resultTextView.setText("");
 
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
-                    (rouletteViewInLayout.splitCount)++;
+                    //(rouletteViewInLayout.splitCount)++;
+                    rouletteViewInLayout.setSplitCount(rouletteViewInLayout.getSplitCount() + 1);
                     rouletteViewInLayout.invalidate();
 
                     if (rotate != null) {
@@ -691,12 +944,13 @@ public class MainActivity extends AppCompatActivity {
                     //背景色、resultTextViewをそれぞれ初期化する
                     //constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     //RouletteView roulette = (RouletteView) rouletteViewInLayout;
-                    if (rouletteViewInLayout.splitCount >= 2) {
-                        (rouletteViewInLayout.splitCount)--;
+                    if (rouletteViewInLayout.getSplitCount() >= 2) {
+                        //(rouletteViewInLayout.getSplitCount())--;
+                        rouletteViewInLayout.setSplitCount(rouletteViewInLayout.getSplitCount() - 1);
                         rouletteViewInLayout.invalidate();
 
                         if (rotate != null) {
-                            changeBackgroundColorWithAnimation(Color.parseColor("#FFFFFFFF"));
+                            changeBackgroundColorWithAnimation(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
                             resultTextView.setText("");
                             //ルーレットを変更した場合は,角度を初期値に戻す
                             rotate.cancel();
@@ -759,67 +1013,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //@RequiresApi(api = Build.VERSION_CODES.Q)
-    public void onWindowFocusChanged(boolean hasFocus) {
-        //public void onResume() {
-        //super.onRestart();
-        //super.onStart();
-        //super.onResume();
-
-        super.onWindowFocusChanged(hasFocus);
-
-        //rouletteView = new RouletteView(getApplicationContext());
-
-        //xc = rouletteView.getWidth() / 2;
-        //yc = rouletteView.getHeight() / 2;
-
-        ////////////////////////////////////////////////////////////////
-        //constraintLayout.addView(new PointerView(getApplicationContext(), rouletteView.xc, rouletteView.yc));
-        //if (constraintLayout.getChildAt(constraintLayout.getChildCount() - 2) instanceof RouletteView) {
-        //rouletteViewInLayout = (RouletteView) constraintLayout.getChildAt(constraintLayout.getChildCount() - 2);
-        //rouletteViewInLayout = findViewById(R.id.roulette);
-        //}
-        //setContentView(constraintLayout);
-
-        /*
-        //Myルーレットのルーレットをセットする場合の処理
-        Intent fromMainIntent = getIntent();
-        if (fromMainIntent.getAction() != null && fromMainIntent.getAction().equals("SET_MYROULETTE")) {
-            //RouletteView rouletteView = findViewById(R.id.roulette);
-            //rouletteView.splitCount = 1;
-            String rouletteNameInfo = fromMainIntent.getStringExtra("rouletteName");
-            ArrayList<Integer> colorsInfo = fromMainIntent.getIntegerArrayListExtra("colors");
-            ArrayList<String> textStringsInfo = fromMainIntent.getStringArrayListExtra("textStrings");
-            ArrayList<Integer> itemRatiosInfo = fromMainIntent.getIntegerArrayListExtra("itemRatios");
-            ArrayList<Integer> OnOffOfSwitch100Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
-            ArrayList<Integer> OnOffOfSwitch0Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
-            //rouletteView.itemProbabilities.clear();
-            ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
-            //int itemProbabilitySize = intent.getIntExtra("itemProbabilitySize", 0);
-            float itemProbabilityArray[] = fromMainIntent.getFloatArrayExtra("itemProbability");
-            for (int i = 0; i < itemProbabilityArray.length; i++) {
-                itemProbabilitiesInfo.add(itemProbabilityArray[i]);
-            }
-            if (!itemProbabilitiesInfo.isEmpty()) {
-                //イカサマ設定のルーレットセット時は、イカサマモードONで初期化
-                CheatFlag = true;
-            }
-            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
-            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
-            //constraintLayout.addView(rouletteView);
-            //constraintLayout.addView(new PointerView(getApplicationContext()));
-
-            rouletteViewInLayout.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
-            setContentView(constraintLayout);
-            rouletteExists = true;
-        }
-
-         */
-
-
-        //////////////////////////////////////////////////////////////////////////
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -852,14 +1045,14 @@ public class MainActivity extends AppCompatActivity {
                     //constraintLayout.addView(rouletteView);
                     //constraintLayout.addView(new PointerView(getApplicationContext()));
 
-                    rouletteViewInLayout.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
+                    rouletteViewInLayout.setRouletteContents(1,rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
                     //setContentView(relativeLayout);
                     rouletteViewInLayout.invalidate();
                     //setContentView(drawerLayout);
                     //rouletteViewInLayout.setRotation(- (360f - degreeOld));
 
                     //背景色、resultTextViewをそれぞれ初期化する
-                    constraintLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    constraintLayout.setBackgroundColor(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
                     resultTextView.setText("");
 
                     if (rotate != null) {
@@ -867,7 +1060,7 @@ public class MainActivity extends AppCompatActivity {
                         rotate.cancel();
                     }
 
-                    if (rouletteNameInfo.isEmpty()) {
+                    if (TextUtils.isEmpty(rouletteNameInfo)) {
                         toolbar.setTitle("ルーレット");
                     } else {
                         toolbar.setTitle(rouletteNameInfo);
@@ -925,7 +1118,17 @@ public class MainActivity extends AppCompatActivity {
 
      */
 
-    public void onSpeedRadioButtonClicked(View view) {
+    public void onSoundSwitchClicked(View view) {
+        //変更があった場合、その内容を保存する
+        SwitchCompat soundSwitch = (SwitchCompat)view;
+        boolean isChecked = soundSwitch.isChecked();
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(getString(R.string.saved_sound_state_key), isChecked);
+        editor.apply();
+    }
+
+    public void onTimeRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -936,31 +1139,210 @@ public class MainActivity extends AppCompatActivity {
                     toDegree = 1440f;
                     duration = 5000;
                     interpolatorFactor = 2.3f;
+
+                    //チェックがついたら、その情報を保存する
+                    SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(getString(R.string.saved_time_short_state_key), true);
+                    editor.putBoolean(getString(R.string.saved_time_normal_state_key), false);
+                    editor.putBoolean(getString(R.string.saved_time_long_state_key), false);
+                    editor.apply();
                 }
                     break;
+
             case R.id.time_normal:
                 if (checked) {
                     toDegree = 5400f;
                     duration = 10000;
                     interpolatorFactor = 2.3f;
+
+                    //チェックがついたら、その情報を保存する
+                    SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(getString(R.string.saved_time_short_state_key), false);
+                    editor.putBoolean(getString(R.string.saved_time_normal_state_key), true);
+                    editor.putBoolean(getString(R.string.saved_time_long_state_key), false);
+                    editor.apply();
                 }
                     break;
+
             case R.id.time_long:
                 if (checked) {
                     toDegree = 14400f;
                     duration = 17000;
                     interpolatorFactor = 2.0f;
+
+                    //チェックがついたら、その情報を保存する
+                    SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(getString(R.string.saved_time_short_state_key), false);
+                    editor.putBoolean(getString(R.string.saved_time_normal_state_key), false);
+                    editor.putBoolean(getString(R.string.saved_time_long_state_key), true);
+                    editor.apply();
                 }
                     break;
+
             default:
                 //例外が合った場合、デフォルトで抽選時間 普通の値を設定
                 toDegree = 5400f;
                 duration = 10000;
                 interpolatorFactor = 2.3f;
+
+                //チェックがついたら、その情報を保存する
+                SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean(getString(R.string.saved_time_short_state_key), true);
+                editor.putBoolean(getString(R.string.saved_time_normal_state_key), false);
+                editor.putBoolean(getString(R.string.saved_time_long_state_key), false);
+                editor.apply();
+
                 break;
         }
     }
 
+    public void onThemeRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.light_theme:
+                if (checked) {
+                    //チェックがついたら、その情報を保存する
+                    SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    //false = ライトテーマ
+                    editor.putBoolean(getString(R.string.saved_theme_state_key), false);
+                    editor.putBoolean(getString(R.string.saved_theme_changed_manually_key), true);
+
+                    //セットされているルーレットがあった場合、アクティビティ復元時にそのルーレットを復元するために、情報を保存する
+                    if (rouletteExists) {
+                        SavedRouletteOfMainActivity savedRouletteOfMainActivity = new SavedRouletteOfMainActivity();
+                        savedRouletteOfMainActivity.setSavedRouletteContents(
+                                rouletteViewInLayout.getSplitCount(),
+                                rouletteViewInLayout.getRouletteName(),
+                                rouletteViewInLayout.getColors(),
+                                rouletteViewInLayout.getItemNames(),
+                                rouletteViewInLayout.getItemRatios(),
+                                rouletteViewInLayout.getOnOffInfoOfSwitch100(),
+                                rouletteViewInLayout.getOnOffInfoOfSwitch0(),
+                                rouletteViewInLayout.getItemProbabilities()
+                        );
+
+                        Gson gson = new Gson();
+                        //セットされているルーレットを共有環境設定に保存
+                        String savedRouletteString = gson.toJson(savedRouletteOfMainActivity);
+                        editor.putString(getString(R.string.saved_roulette_key), savedRouletteString);
+                        //ルーレットがセットされていたことを共有環境設定に保存
+                        editor.putBoolean(getString(R.string.saved_roulette_exist_key), true);
+
+                        if (!(rouletteViewInLayout.getItemProbabilities().isEmpty())) {
+                            //現在のチートフラッグを保存
+                            editor.putBoolean(getString(R.string.saved_cheat_flag_state_key), CheatFlag);
+                        }
+                    }
+
+                    editor.apply();
+
+                    //ライトテーマにする
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    //getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+                break;
+
+            case R.id.dark_theme:
+                if (checked) {
+                    //チェックがついたら、その情報を保存する
+                    SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    //true = ダークテーマ
+                    editor.putBoolean(getString(R.string.saved_theme_state_key), true);
+                    editor.putBoolean(getString(R.string.saved_theme_changed_manually_key), true);
+
+                    //セットされているルーレットがあった場合、アクティビティ復元時にそのルーレットを復元するために、情報を保存する
+                    if (rouletteExists) {
+                        SavedRouletteOfMainActivity savedRouletteOfMainActivity = new SavedRouletteOfMainActivity();
+                        savedRouletteOfMainActivity.setSavedRouletteContents(
+                                rouletteViewInLayout.getSplitCount(),
+                                rouletteViewInLayout.getRouletteName(),
+                                rouletteViewInLayout.getColors(),
+                                rouletteViewInLayout.getItemNames(),
+                                rouletteViewInLayout.getItemRatios(),
+                                rouletteViewInLayout.getOnOffInfoOfSwitch100(),
+                                rouletteViewInLayout.getOnOffInfoOfSwitch0(),
+                                rouletteViewInLayout.getItemProbabilities()
+                        );
+
+                        Gson gson = new Gson();
+                        //セットされているルーレットを共有環境設定に保存
+                        String savedRouletteString = gson.toJson(savedRouletteOfMainActivity);
+                        editor.putString(getString(R.string.saved_roulette_key), savedRouletteString);
+                        //ルーレットがセットされていたことを共有環境設定に保存
+                        editor.putBoolean(getString(R.string.saved_roulette_exist_key), true);
+
+                        if (!(rouletteViewInLayout.getItemProbabilities().isEmpty())) {
+                            //現在のチートフラッグを保存
+                            editor.putBoolean(getString(R.string.saved_cheat_flag_state_key), CheatFlag);
+                        }
+                    }
+
+                    editor.apply();
+
+                    //ダークテーマにする
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    //getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                break;
+
+            default:
+                //システムに応じてテーマを適用
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+        }
+    }
+
+    public void onThemeSaveSwitchClicked(View view) {
+        //変更があった場合、その内容を保存する
+        SwitchCompat themeSaveSwitch = (SwitchCompat)view;
+        boolean isChecked = themeSaveSwitch.isChecked();
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(getString(R.string.saved_theme_save_state_key), isChecked);
+        editor.apply();
+    }
+
+/*
+    public void onConfigurationChanged (Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active, we're using the light theme
+                //ライトにチェック
+                //((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(true);
+                //((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(false);
+                //false = ライトテーマ
+                //applyDayNightToMain(false);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Night mode is active, we're using dark theme
+                //ダークにチェック
+                //((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(false);
+                //((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(true);
+                //true = ダークテーマ
+                //applyDayNightToMain(true);
+                break;
+        }
+    }
+
+ */
+
+    /*
+    private void applyDayNightToMain(boolean dayNightFlag) {
+        navigationView.setBackgroundColor(Color.WHITE);
+    }
+    */
 
     @Override
     public void onBackPressed() {
@@ -1019,7 +1401,7 @@ public class MainActivity extends AppCompatActivity {
             }
             i++;
 
-        } while (position == null && i < roulette.getColors().size() * roulette.splitCount);
+        } while (position == null && i < roulette.getColors().size() * roulette.getSplitCount());
 
         return position;
     }
@@ -1028,17 +1410,22 @@ public class MainActivity extends AppCompatActivity {
 
         int colorFrom = ((ColorDrawable)constraintLayout.getBackground()).getColor();
         int colorTo = toColor;
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(200);
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                constraintLayout.setBackgroundColor((int) animator.getAnimatedValue());
-            }
+        //背景色に変化がないなら何もしない
+        if (!(colorFrom == colorTo)) {
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(200);
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-        });
-        colorAnimation.start();
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    constraintLayout.setBackgroundColor((int) animator.getAnimatedValue());
+                }
+
+            });
+            colorAnimation.start();
+        }
+
     }
 
 

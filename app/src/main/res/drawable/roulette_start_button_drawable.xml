@@ -6,10 +6,12 @@
             -->
 
 
-    <gradient
+    <!--<gradient
         android:startColor="@color/appPrimaryColor"
         android:centerColor="@color/appPink"
         android:endColor="@color/appSubColor"
-        android:angle="45"/>
+        android:angle="45"/>-->
+
+    <solid android:color="@color/roulette_start_button"/>
 
 </shape>
