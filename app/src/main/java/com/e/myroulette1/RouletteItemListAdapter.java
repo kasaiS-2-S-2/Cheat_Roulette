@@ -171,6 +171,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         private final ImageButton deleteButton;
         private final SwitchCompat switch100;
         private final SwitchCompat switch0;
+        private final LinearLayout linearLayout1;
         private final LinearLayout linearLayout2;
 
         protected final EditTextListenerForItemName editTextListenerForItemName;
@@ -266,6 +267,8 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
 
             this.switch0 = itemView.findViewById(R.id.switch0);
 
+            this.linearLayout1 = itemView.findViewById(R.id.LinearLayout1);
+
             this.linearLayout2 = itemView.findViewById(R.id.LinearLayout2);
 
 
@@ -308,6 +311,8 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         public SwitchCompat getSwitch0() {
             return switch0;
         }
+
+        public LinearLayout getLinearLayout1() { return linearLayout1; }
 
         public LinearLayout getLinearLayout2() {
             return linearLayout2;

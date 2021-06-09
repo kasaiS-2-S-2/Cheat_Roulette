@@ -59,5 +59,19 @@
     <string name="saved_roulette_key">saved_roulette</string>
     <string name="saved_roulette_exist_key">saved_roulette_exist</string>
     <string name="saved_cheat_flag_state_key">cheat_flag_state</string>
+    <string name="roulette_create_tutorial_id">roulette_create_tutorial</string>
+    <string name="roulette_create_continuation_tutorial_id">roulette_create_continuation_tutorial</string>
+    <string name="saved_roulette_create_first_tutorial_done_key">saved_roulette_create_first_tutorial_done</string>
+    <string name="tutorial_skip_text">Finish</string>
+    <string name="edit_roulette_tutorial_id">edit_roulette_tutorial</string>
+    <string name="saved_edit_roulette_first_tutorial_done_key">saved_edit_roulette_first_tutorial_done</string>
+    <string name="saved_edit_myRoulette_first_tutorial_done_key">saved_edit_myRoulette_first_tutorial_done</string>
+    <string name="edit_myRoulette_tutorial_id">edit_myRoulette_tutorial</string>
+    <string name="saved_myRoulette_first_tutorial_done_key">saved_myRoulette_first_tutorial_done</string>
+    <string name="myRoulette_tutorial_id">myRoulette_tutorial</string>
+    <string name="saved_main_first_tutorial_done_key">saved_main_first_tutorial_done</string>
+    <string name="main_tutorial_id">main_tutorial</string>
+    <string name="roulette_create_start_tutorial_id">roulette_create_start_tutorial</string>
+    <string name="roulette_create_latter_tutorial_id">roulette_create_latter_tutorial</string>
 
 </resources>

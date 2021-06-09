@@ -189,6 +189,21 @@
 
             </LinearLayout>
 
+
+            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabs_menu_button_dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/appPink"
+                app:rippleColor="@color/appPrimaryColor"
+                app:srcCompat="@drawable/ic_baseline_add_white_24"
+                android:tint="@color/button_content_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <jahirfiquitiva.libs.fabsmenu.FABsMenuLayout

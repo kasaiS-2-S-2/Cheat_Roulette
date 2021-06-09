@@ -63,8 +63,8 @@ public class MyRouletteListAdapter extends ListAdapter<MyRoulette, MyRouletteVie
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(holder.itemView.getContext())
-                        .setMessage("Are you sure?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setMessage("削除してもよろしいですか？")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //ボタンの押された部分のList<word>の項目をList<word>から削除
                                 deleteItem(holder.getAdapterPosition());
@@ -74,7 +74,7 @@ public class MyRouletteListAdapter extends ListAdapter<MyRoulette, MyRouletteVie
                                 MainActivity.mMyRouletteViewModel.delete(primaryKey);
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog,
                                 // so we will refresh the adapter to prevent hiding the item from UI

@@ -56,6 +56,12 @@ import java.util.Random;
 import jahirfiquitiva.libs.fabsmenu.FABsMenu;
 import jahirfiquitiva.libs.fabsmenu.FABsMenuListener;
 import jahirfiquitiva.libs.fabsmenu.TitleFAB;
+import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.listener.DismissListener;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+import uk.co.deanwild.materialshowcaseview.ShowcaseTooltip;
 
 //import androidx.annotation.RequiresApi;
 
@@ -101,10 +107,13 @@ public class MainActivity extends AppCompatActivity {
     private TitleFAB myRouletteFab;
 
     private boolean rouletteExists = false;
+    private boolean isTutorialState = false;
     static final int RESULT_ROULETTECREATE = 1;
     static final int RESULT_MYROULETTE = 2;
     static final int RESULT_EDITROULETTE = 3;
 
+    private int layoutWidth;
+    private int layoutHeight;
     private static final Random RANDOM = new Random();
     private float degree = 0;
     private float degreeOld = 0;/////////////////////////////////////////////////////////////
@@ -303,6 +312,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         //////////////////////////////////////////////////////////////////////////
+
+        //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
+        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_main_first_tutorial_done_key), false);
+        if (!isFirstTutorialDone) {
+            //isTutorialState = true;
+            isTutorialState = true;
+            tutorial();
+            //最初のチュートリアルが終わったら、そのことを保存しておく
+            //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.saved_main_first_tutorial_done_key), true);
+            editor.apply();
+            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
+        }
     }
 
     @Override
@@ -993,6 +1016,238 @@ public class MainActivity extends AppCompatActivity {
         animation.setDuration(1000);
         rouletteView.startAnimation(animation);
 */
+
+    }
+
+    private void tutorial() {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100);
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.main_tutorial_id));
+
+        /*
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+
+        sequence.setConfig(config);
+
+        sequence.setOnItemDismissedListener(new MaterialShowcaseSequence.OnSequenceItemDismissedListener() {
+            @Override
+            public void onDismiss(MaterialShowcaseView itemView, int position) {
+                isTutorialState = false;
+            }
+        });
+
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                isTutorialState = true;
+            }
+        });
+
+        sequence.singleUse(getString(R.string.main_tutorial_id));
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(constraintLayout)
+                        .setContentText("チュートリアルを開始します。")
+                        .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
+                        .setGravity(16)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        //.setToolTip(itemNameToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withoutShape()
+                        .build()
+        );
+
+        /*
+        ShowcaseTooltip rouletteStartToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(Color.parseColor("#007686"))
+                .text("タップするとセットしてあるルーレットが回転し始めます。回転はしばらくすると勝手に止まります。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(rouletteStartButton)
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(rouletteStartToolTip)
+                        .setDismissOnTouch(true)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .withCircleShape()
+                        .setShapePadding(30)
+                        .build()
+        );
+
+        ShowcaseTooltip splitLayoutToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(Color.parseColor("#007686"))
+                .text("＋：押すとルーレットを分割します。<br><br>−：押すと分割前に戻します。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(splitButtonLayout)
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(splitLayoutToolTip)
+                        .setDismissOnTouch(true)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .withRectangleShape()
+                        .setShapePadding(30)
+                        .build()
+        );
+
+         */
+
+        ShowcaseTooltip drawerMenuToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとメニューが開き、各種設定を行うことができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(toolbar.findViewById(R.id.menuButton))
+                        //.setContentText("タップするとメニューが開き、各種設定を行うことができます。")
+                        .setToolTip(drawerMenuToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withCircleShape()
+                        .setShapePadding(30)
+                        .build()
+        );
+
+        ShowcaseTooltip fabsMenuToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとボタンメニューが出現します。<br><br> タップしてみましょう。");
+
+        FABsMenu faBsMenu = findViewById(R.id.fabs_menu);
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(faBsMenu.getMenuButton())
+                        .setToolTip(fabsMenuToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        //.setDismissOnTouch(true)
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withCircleShape()
+                        .build()
+        );
+
+        ShowcaseTooltip fabRouletteCreateToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("押すとルーレット作成画面に移動します。移動先ではルーレットの作成、保存をすることができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(faBsMenu.findViewById(R.id.fab_roulette_create))
+                        .setToolTip(fabRouletteCreateToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .withCircleShape()
+                        .setShapePadding(30)
+                        .build()
+        );
+
+        ShowcaseTooltip fabEditRouletteToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("押すとルーレット編集画面に移動します。現在セットしてあるルーレットの編集を行うことができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(faBsMenu.findViewById(R.id.fab_edit_roulette))
+                        .setToolTip(fabEditRouletteToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .withCircleShape()
+                        .setShapePadding(30)
+                        .build()
+        );
+
+        ShowcaseTooltip fabMyRouletteToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("押すと保存済みのルーレットを見ることができます。また、保存済みルーレットを編集することもできます。<br><br>以上でこの画面のチュートリアルを終了します。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(faBsMenu.findViewById(R.id.fab_myRoulette))
+                        .setToolTip(fabMyRouletteToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .withCircleShape()
+                        .setShapePadding(30)
+                        .build()
+        );
+
+        /*
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForAdapterPosition(1)).getLinearLayout2())
+                        .setContentText("This is button three")
+                        .withRectangleShape()
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(cheatButton)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(createFinishFab)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+         */
+
+        Log.d("あああああああああああああ", "firstTutorial()");
+        sequence.start();
     }
 
     @Override
@@ -1007,6 +1262,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menuButton:
                 // ボタンをタップした際の処理を記述
                 drawerLayout.openDrawer(Gravity.RIGHT);
+
+                return true;
+
+            case R.id.tutorial:
+                MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.main_tutorial_id));
+                isTutorialState = true;
+                tutorial();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -1023,6 +1286,7 @@ public class MainActivity extends AppCompatActivity {
             case RESULT_EDITROULETTE:
                 if (RESULT_OK == resultCode && intent != null) {
                     //rouletteView.splitCount = 1;
+                    boolean isTutorialContinue = intent.getBooleanExtra("isTutorialContinue", false);
                     String rouletteNameInfo = intent.getStringExtra("rouletteName");
                     ArrayList<Integer> colorsInfo = intent.getIntegerArrayListExtra("colors");
                     ArrayList<String> textStringsInfo = intent.getStringArrayListExtra("textStrings");
@@ -1071,6 +1335,115 @@ public class MainActivity extends AppCompatActivity {
                     notificationManager.cancel(1);
 
                     rouletteExists = true;
+
+                    if (isTutorialContinue) {
+                        ////int pointerPosX = constraintLayout.getLayoutParams().width / 2;
+                        //int pointerPosY = (constraintLayout.getLayoutParams().height / 2) - pointerPosX - (pointerPosX/8);
+
+                        int pointerPosX = constraintLayout.getWidth() / 2;
+                        int pointerPosY = (constraintLayout.getHeight()/ 2) - pointerPosX - (pointerPosX/8) + toolbar.getHeight() * 5/3;
+                        //Log.d("あああああああああああああああああXY", pointerPosX+" " + " "+pointerPosY);
+
+
+                        Log.d("あああああああああああああああああXY", pointerPosX+" " + " "+pointerPosY);
+
+                       //FancyShowCaseView fancyShowCaseView = new FancyShowCaseView(this);
+                        /*
+                       FancyShowCaseView.Builder builder = new FancyShowCaseView.Builder(this);
+                       builder.focusCircleAtPosition(pointerPosX, pointerPosY, constraintLayout.getWidth() / 12)
+                               .title("この部分をタップすることで、イカサマ設定のON、OFFを切り替えることができます。イカサマがバレそうになった時に使ってみましょう。\n\nイカサマ設定が切り替わるとそのことを端末に通知します。\n\n以上でチュートリアルを終了します。")
+                               .titleSize(18, 1)
+                               .build();
+
+                         */
+
+                        /*sequence.addSequenceItem(
+                                new MaterialShowcaseView.Builder(this)
+                                        .setTarget(rouletteName)
+                                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                                        .setToolTip(rouletteNameToolTip)
+                                        .setDismissOnTouch(true)
+                                        //.setTargetTouchable(true)
+                                        //.setDismissOnTargetTouch(true)
+                                        .withRectangleShape()
+                                        .build()
+                        );
+
+                         */
+
+
+                        new FancyShowCaseView.Builder(this)
+                                .focusCircleAtPosition(pointerPosX, pointerPosY, constraintLayout.getWidth() / 12)
+                                .dismissListener(new DismissListener() {
+                                    @Override
+                                    public void onDismiss(@org.jetbrains.annotations.Nullable String s) {
+
+                                        MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.roulette_create_latter_tutorial_id));
+
+                                        ShowcaseConfig config = new ShowcaseConfig();
+                                        config.setDelay(300);
+
+                                        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(MainActivity.this, getString(R.string.roulette_create_latter_tutorial_id));
+
+                                        sequence.setConfig(config);
+
+                                        sequence.singleUse(getString(R.string.roulette_create_latter_tutorial_id));
+
+                                        ShowcaseTooltip splitLayoutToolTip = ShowcaseTooltip.build(MainActivity.this)
+                                                .corner(30)
+                                                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                                                .color(getResources().getColor(R.color.appPrimaryColor))
+                                                .text("＋：押すとルーレットを分割します。<br><br>−：押すと分割前に戻します。");
+
+                                        sequence.addSequenceItem(
+                                                new MaterialShowcaseView.Builder(MainActivity.this)
+                                                        .setTarget(splitButtonLayout)
+                                                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                                                        .setToolTip(splitLayoutToolTip)
+                                                        .setDismissOnTouch(true)
+                                                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                                                        //.setTargetTouchable(true)
+                                                        //.setDismissOnTargetTouch(true)
+                                                        .withRectangleShape()
+                                                        .setShapePadding(30)
+                                                        .build()
+                                        );
+
+                                        ShowcaseTooltip rouletteStartToolTip = ShowcaseTooltip.build(MainActivity.this)
+                                                .corner(30)
+                                                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                                                .color(getResources().getColor(R.color.appPrimaryColor))
+                                                .text("タップするとセットしてあるルーレットが回転し始めます。回転はしばらくすると勝手に止まります。<br><br>以上でチュートリアルを終了します。");
+
+                                        sequence.addSequenceItem(
+                                                new MaterialShowcaseView.Builder(MainActivity.this)
+                                                        .setTarget(rouletteStartButton)
+                                                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                                                        .setToolTip(rouletteStartToolTip)
+                                                        .setDismissOnTouch(true)
+                                                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                                                        //.setTargetTouchable(true)
+                                                        //.setDismissOnTargetTouch(true)
+                                                        .withCircleShape()
+                                                        .setShapePadding(30)
+                                                        .build()
+                                        );
+
+                                        sequence.start();
+                                    }
+
+                                    @Override
+                                    public void onSkipped(@org.jetbrains.annotations.Nullable String s) {
+
+                                    }
+
+                                })
+                                .title("この部分をタップすることで、イカサマ設定のON、OFFを切り替えることができます。イカサマがバレそうになった時に使ってみましょう。\n\nイカサマ設定が切り替わるとそのことを端末に通知します。")
+                                .titleGravity(16)
+                                .titleSize(18, 1)
+                                .build()
+                                .show();
+                    }
                 }
                 break;
         }
@@ -1347,14 +1720,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (drawerLayout.isDrawerOpen(Gravity.RIGHT) ) {
-            drawerLayout.closeDrawer(Gravity.RIGHT);
-        } else if (fabsMenu.isExpanded()) {
-            fabsMenu.collapse();
-        } else {
-            super.onBackPressed();
-        }
-
+        //if (!isTutorialState) {
+            if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+            } else if (fabsMenu.isExpanded()) {
+                fabsMenu.collapse();
+            } else {
+                super.onBackPressed();
+            }
+        //}
     }
 
         /*

@@ -29,4 +29,7 @@
     <color name="roulette_start_button">#FFBA0000</color>
     <color name="roulette_start_button_below">#FFAAAAAA</color>
     <color name="roulette_start_icon">#FFFFFFFF</color>
+    <color name="tutorial_overlay_color">#DD292929</color>
+    <color name="tooltip_text_color">#007686</color>
+    <color name="showcase_text_color">#FFFFFFFF</color>
 </resources>

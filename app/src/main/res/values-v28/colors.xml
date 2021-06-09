@@ -31,4 +31,7 @@
     <color name="roulette_start_icon">#FFFFFFFF</color>
     <color name="defaultOutlineAmbientShadowColor">#16000000</color>
     <color name="defaultOutlineSpotShadowColor">#44000000</color>
+    <color name="tutorial_overlay_color">#DD292929</color>
+    <color name="tooltip_text_color">#007686</color>
+    <color name="showcase_text_color">#FFFFFFFF</color>
 </resources>

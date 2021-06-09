@@ -131,6 +131,10 @@ class MyRouletteViewHolder extends RecyclerView.ViewHolder {
 
     public RouletteView getRouletteView() { return rouletteView; }
 
+    public CardView getCardView() { return cardView; }
+
+    public TextView getRouletteNameView() { return rouletteNameView; }
+
     public ImageButton getDeleteMyRouletteButton() { return deleteMyRouletteButton; }
 
     public ImageButton getEditMyRouletteButton() { return editMyRouletteButton; }

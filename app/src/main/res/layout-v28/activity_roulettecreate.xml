@@ -42,7 +42,7 @@
         android:textColor="@color/button_content_color"
         android:background="@drawable/add_item_button_drawable"
         android:stateListAnimator="@null"
-        android:elevation="8dp"
+        android:elevation="0dp"
         app:layout_constraintTop_toBottomOf="@id/rouletteName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

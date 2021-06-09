@@ -1,9 +1,12 @@
 package com.e.myroulette1;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +27,11 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+import uk.co.deanwild.materialshowcaseview.ShowcaseTooltip;
 
 
 public class MyRouletteActivity extends AppCompatActivity {
@@ -61,7 +69,7 @@ public class MyRouletteActivity extends AppCompatActivity {
         myRouletteList.setAdapter(MainActivity.adapter);
         myRouletteList.setLayoutManager(new LinearLayoutManager(this));
 
-        myRouletteConstrainLayout = findViewById(R.id.myRoulette_constraintLayout);
+        myRouletteConstrainLayout = findViewById(R.id.MyRouletteConstraintLayout);
 
         //スクリーンサイズの取得
         WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
@@ -199,6 +207,198 @@ public class MyRouletteActivity extends AppCompatActivity {
         });
         */
 
+        Log.d("あああああああああああXXXXXXXXX", String.valueOf(myRouletteList.getChildCount()));
+        Log.d("あああああああああああXXXXXXXXX", String.valueOf(myRouletteList.getChildAt(0)));
+        Log.d("あああああああああああXXXXXXXXX", String.valueOf(myRouletteList.getChildAt(1)));
+
+        /*
+        SharedPreferences sharedPref = MyRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
+        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), false);
+        if (!isFirstTutorialDone) {
+            //isTutorialState = true;
+            tutorial();
+            //最初のチュートリアルが終わったら、そのことを保存しておく
+            //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), true);
+            editor.apply();
+            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
+        }
+
+         */
+
+    }
+
+    //@RequiresApi(api = Build.VERSION_CODES.Q)
+    public void onWindowFocusChanged(boolean hasFocus) {
+        //public void onResume() {
+        //super.onRestart();
+        //super.onStart();
+        //super.onResume();
+
+        super.onWindowFocusChanged(hasFocus);
+
+        SharedPreferences sharedPref = MyRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
+        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), false);
+        if (!isFirstTutorialDone) {
+            //isTutorialState = true;
+            tutorial();
+            //最初のチュートリアルが終わったら、そのことを保存しておく
+            //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), true);
+            editor.apply();
+            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
+        }
+    }
+
+    private void tutorial() {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(300);
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.myRoulette_tutorial_id));
+
+        /*
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+
+        sequence.setConfig(config);
+
+        sequence.singleUse(getString(R.string.myRoulette_tutorial_id));
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(myRouletteConstrainLayout)
+                        .setContentText("ここでは保存したルーレットの一覧を見ることができます。\n\n作成したルーレットを保存するには、ルーレット作成完了時の「Myルーレットに保存しますか？」にて「YES」をタップしてください。")
+                        .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
+                        .setGravity(16)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        //.setToolTip(itemNameToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withoutShape()
+                        .build()
+        );
+
+        ShowcaseTooltip myRouletteNameToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("Myルーレットの名前が表示されます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getCardView().findViewById(R.id.roulette_name))
+                        .setTarget(myRouletteList.getChildAt(1).findViewById(R.id.roulette_name))
+                        .setToolTip(myRouletteNameToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withRectangleShape()
+                        .build()
+        );
+
+        ShowcaseTooltip editMyRouletteToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとMyルーレットを編集をすることができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getEditMyRouletteButton())
+                        .setTarget(myRouletteList.getChildAt(1).findViewById(R.id.edit_myRoulette))
+                        .setToolTip(editMyRouletteToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withRectangleShape()
+                        .build()
+        );
+
+        ShowcaseTooltip deleteMyRouletteToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとMyルーレットを削除することができます。スワイプでも削除が可能です。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getDeleteMyRouletteButton())
+                        .setTarget(myRouletteList.getChildAt(1).findViewById(R.id.delete_myRoulette))
+                        .setToolTip(deleteMyRouletteToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withRectangleShape()
+                        .build()
+        );
+
+        ShowcaseTooltip myRouletteItemToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップすることで選択されたMyルーレットがセットされます。<br><br>以上でこの画面のチュートリアルを終了します。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getCardView())
+                        .setTarget(myRouletteList.getChildAt(1))
+                        .setToolTip(myRouletteItemToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withRectangleShape()
+                        .build()
+        );
+
+        /*
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForAdapterPosition(1)).getLinearLayout2())
+                        .setContentText("This is button three")
+                        .withRectangleShape()
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(cheatButton)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(createFinishFab)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+         */
+
+        Log.d("あああああああああああああ", "firstTutorial()");
+        sequence.start();
     }
 
     @Override
@@ -215,6 +415,9 @@ public class MyRouletteActivity extends AppCompatActivity {
                 return true;
             case R.id.tutorial:
                 // ボタンをタップした際の処理を記述
+                MaterialShowcaseView.resetSingleUse(MyRouletteActivity.this, getString(R.string.myRoulette_tutorial_id));
+                tutorial();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);

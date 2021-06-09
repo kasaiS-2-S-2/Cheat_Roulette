@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
@@ -31,6 +32,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +49,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+import uk.co.deanwild.materialshowcaseview.ShowcaseTooltip;
+
 //import androidx.annotation.RequiresApi;
 /*
 今はゴリゴリレイアウト書いてるけど、ホントは,リストviewとか、adapterとか使ったほうが良さそう。
@@ -56,8 +63,12 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
     //public int rouletteCount;
     private CheckBox checkBox;
+    private ConstraintLayout rouletteCreateLayout;
     private EditText rouletteName;
     private Toolbar toolbar;
+    private Button itemAddButton;
+    private Button cheatButton;
+    private FloatingActionButton createFinishFab;
     //private EditText editText, editText2;
     //ルーレットの項目リストの情報を保持するもの
     private RouletteItemListInfo rouletteItemListInfo = new RouletteItemListInfo(
@@ -68,6 +79,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
     //private RouletteItemListInfo rouletteItemListInfo;
 
     public static boolean visibleFlag = false;
+    private boolean isTutorialState = false;
 
     private Toast mToast = null;
 
@@ -104,6 +116,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.roulette_create);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        rouletteCreateLayout = findViewById(R.id.roulette_create_layout);
 
         rouletteItemList = findViewById(R.id.roulette_item_list);
         rouletteItemListAdapter = new RouletteItemListAdapter(rouletteItemList, rouletteItemListInfo);
@@ -146,7 +160,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                     //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
                     rouletteItemListAdapter.notifyItemRangeChanged(position, rouletteItemListAdapter.getItemCount() - position);
                 } else {
-                    //rouletteItemListAdapter.notifyItemChanged(position);
+                    rouletteItemListAdapter.notifyItemChanged(position);
                 }
             }
         }).attachToRecyclerView(rouletteItemList);
@@ -222,13 +236,13 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
         
         //************* ボタンの設定 *************/
-        Button itemAddButton = findViewById(R.id.item_add_button);
-
+        itemAddButton = findViewById(R.id.item_add_button);
         // リスナーをボタンに登録, lambda
         itemAddButton.setOnClickListener(new View.OnClickListener() {
             //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
+
                 if (rouletteItemListAdapter.getItemCount() >= 300) {
                     if (mToast != null) mToast.cancel();
                     mToast = Toast.makeText(getApplicationContext(), R.string.notice_item_is_max, Toast.LENGTH_SHORT);
@@ -262,39 +276,60 @@ public class RouletteCreateActivity extends AppCompatActivity {
         });
 
 
-        Button cheatButton = findViewById(R.id.cheat_button);
+        cheatButton = findViewById(R.id.cheat_button);
         cheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (visibleFlag) {
+                    visibleFlag = false;
                     //trueの場合は、イカサマスイッチを隠す
+                    /*
                     for (int i = 0; i < rouletteItemList.getChildCount(); i++) {
                         rouletteItemList.getChildAt(i).findViewById(R.id.LinearLayout2).setVisibility(View.GONE);
                         //((ViewGroup) layout.getChildAt(i)).getChildAt(1).setVisibility(View.GONE);
                         //rouletteItemListAdapter.notifyItemChanged(i);
                     }
-                    rouletteItemListAdapter.notifyDataSetChanged();
-                    //rouletteItemListAdapter.notifyItemRangeChanged(0, rouletteItemList.getChildCount());
 
-                    visibleFlag = false;
+                     */
+                    rouletteItemListAdapter.notifyDataSetChanged();
+                    //rouletteItemListAdapter.notifyItemRangeChanged(0, rouletteItemListAdapter.getItemCount() - 1);
+
+                    //visibleFlag = false;
                     //cheatButton.setVisibility(View.INVISIBLE);
                     cheatButton.setText("");
                     cheatButton.setBackgroundColor(Color.TRANSPARENT);
 
                 } else {
+                    visibleFlag = true;
                     // falseの場合は、イカサマスイッチを表示
+                    /*
                     for (int i = 0; i < rouletteItemList.getChildCount(); i++) {
                         rouletteItemList.getChildAt(i).findViewById(R.id.LinearLayout2).setVisibility(View.VISIBLE);
                         //((ViewGroup) layout.getChildAt(i)).getChildAt(1).setVisibility(View.VISIBLE);
                         //rouletteItemListAdapter.notifyItemChanged(i);
                     }
+
+                     */
                     rouletteItemListAdapter.notifyDataSetChanged();
                     //rouletteItemListAdapter.notifyItemRangeChanged(0, rouletteItemList.getChildCount());
+                    //rouletteItemListAdapter.notifyItemRangeChanged(0, rouletteItemListAdapter.getItemCount() - 1);
 
-                    visibleFlag = true;
+                    //visibleFlag = true;
                     //cheatButton.setVisibility(View.VISIBLE);
                     cheatButton.setText(R.string.hide_cheat);
                     cheatButton.setBackgroundColor(Color.RED);
+
+                    //SharedPreferences sharedPref = RouletteCreateActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    //boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), false);
+                    if (isTutorialState) {
+                        //チュートリアルのつづきを表示
+                        continuationOfTutorial();
+                        //MaterialShowcaseView.resetSingleUse(RouletteCreateActivity.this, getString(R.string.roulette_create_continuation_first_tutorial_id));//////////////////////////////////////////////////////
+
+                        //チュートリアルが終わったら、チュートリアル状態を解除する
+                        //isTutorialState = false;
+                    }
                 }
 
                 //イカサマボタンが押された場合、キーボードを隠す
@@ -305,9 +340,10 @@ public class RouletteCreateActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton createFinishFab = findViewById(R.id.create_finish_fab);
+
+        createFinishFab = findViewById(R.id.create_finish_fab);
         createFinishFab.setOnClickListener(new View.OnClickListener() {
-           // @RequiresApi(api = Build.VERSION_CODES.N)
+            // @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
@@ -322,7 +358,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                 //絶対ハズレスイッチのONOFF情報（データベースに保存するためboolean から Integerに変換）
                 ArrayList<Integer> OnOffOfSwitch0 = new ArrayList<Integer>();
 
-                for (int i=0; i < rouletteItemCount; i++) {
+                for (int i = 0; i < rouletteItemCount; i++) {
                     //switch100, switch0 それぞれのONOFF情報を追加
                     if (rouletteItemDataSet.getOnOffInfoOfSwitch100().get(i)) {
                         switch100PositiveCount++;
@@ -345,7 +381,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                         if (rouletteItemDataSet.getOnOffInfoOfSwitch100().get(i)) {
                             //そこの項目に当たる確率を付与する
                             //itemProbabilityArray[i] = 1f / switch100PositiveCount;
-                            itemProbabilities.add(1f/switch100PositiveCount);
+                            itemProbabilities.add(1f / switch100PositiveCount);
                         } else {
                             //ONになっていない項目には０％を付与
                             //itemProbabilityArray[i] = 0f;
@@ -372,7 +408,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
                 //ArrayList<Float>はintentで送れないので、送信可能な配列の形に変換
                 float itemProbabilityArray[] = new float[itemProbabilities.size()];
-                for (int i=0; i<itemProbabilities.size(); i++) {
+                for (int i = 0; i < itemProbabilities.size(); i++) {
                     itemProbabilityArray[i] = itemProbabilities.get(i);
                 }
 
@@ -404,69 +440,420 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
                  */
 
-                // 保存するかどうかをアラートダイアログで確認する場合
-                AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
-                builder.setMessage("Myルーレットに保存しますか？")
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
 
-                                MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
-                                        rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                                        rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                                //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+                if (!isTutorialState) {
+                    // 保存するかどうかをアラートダイアログで確認する場合
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
+                    builder.setMessage("Myルーレットに保存しますか？")
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                                            rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                                            rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                                    //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
 
 
-                                MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                                    MainActivity.mMyRouletteViewModel.insert(myRoulette);
 
-                                Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                                fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                                fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                                //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                                fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+                                    //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                    fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                                    fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                                    fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                                    //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                                    fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
 
-                                setResult(RESULT_OK, fromRouletteCreateIntent);
+                                    setResult(RESULT_OK, fromRouletteCreateIntent);
 
-                                RouletteCreateActivity.this.finish();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                                    RouletteCreateActivity.this.finish();
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
 
-                                Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                                fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                                fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                                fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                                //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                                fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+                                    //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                    fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                                    fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                                    fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                                    //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                                    fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
 
-                                setResult(RESULT_OK, fromRouletteCreateIntent);
+                                    setResult(RESULT_OK, fromRouletteCreateIntent);
 
-                                RouletteCreateActivity.this.finish();
-                            }
-                        })
-                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                // ダイアログがキャンセルされた際の処理
-                            }
-                        })
-                        .create()
-                        .show();
+                                    RouletteCreateActivity.this.finish();
+                                }
+                            })
+                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    // ダイアログがキャンセルされた際の処理
+                                }
+                            })
+                            .create()
+                            .show();
 
 //                startActivity(rouletteCreateIntent);
 
-                //finish();
+                    //finish();
+
+                } else {
+                    //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                    fromRouletteCreateIntent.putExtra("isTutorialContinue", isTutorialState);
+                    fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                    fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                    fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                    fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                    //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                    fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+
+                    setResult(RESULT_OK, fromRouletteCreateIntent);
+
+                    isTutorialState = false;
+                    /*
+                    //最初のチュートリアルが終わったら、そのことを保存しておく
+                    SharedPreferences sharedPref = RouletteCreateActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), true);
+                    editor.apply();
+
+                     */
+
+                    RouletteCreateActivity.this.finish();
+                }
 
             }
         });
 
+
+        /*
+        SharedPreferences sharedPref = RouletteCreateActivity.this.getPreferences(Context.MODE_PRIVATE);
+        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), false);
+        if (!isFirstTutorialDone) {
+            isTutorialState = true;
+            tutorial();
+            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
+        }
+
+         */
+    }
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        //public void onResume() {
+        //super.onRestart();
+        //super.onStart();
+        //super.onResume();
+
+        super.onWindowFocusChanged(hasFocus);
+
+        Log.d("あああああああVVVVVVVVVV", "onWindowFocusChanged");
+
+        SharedPreferences sharedPref = RouletteCreateActivity.this.getPreferences(Context.MODE_PRIVATE);
+        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), false);
+        if (!isFirstTutorialDone) {
+            isTutorialState = true;
+            //SharedPreferences sharedPref = RouletteCreateActivity.this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), true);
+            editor.apply();
+
+            tutorial();
+            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
+        }
+    }
+
+    private void tutorial() {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(300); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.roulette_create_tutorial_id));
+
+        /*
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+
+        sequence.setConfig(config);
+
+        sequence.singleUse(getString(R.string.roulette_create_tutorial_id));
+
+        /*
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(rouletteCreateLayout)
+                        .setContentText("ここではルーレットの作成を行うことができます。")
+                        //.setToolTip(itemNameToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withoutShape()
+                        .build()
+        );
+
+         */
+
+        ShowcaseTooltip rouletteNameToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("ここで、作成するルーレットに名前を付けることができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(rouletteName)
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(rouletteNameToolTip)
+                        .setDismissOnTouch(true)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .withRectangleShape()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip colorButtonToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップすると、ルーレット項目の色を自由に選択できます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForLayoutPosition(1)).getColorButton())
+                        //.setTarget(rouletteItemList.getChildAt(1).findViewById(R.id.colorButton))
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(colorButtonToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withRectangleShape()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip itemNameToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("ここでルーレット項目名を設定できます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForLayoutPosition(1)).getItemName())
+                        //.setTarget(rouletteItemList.getChildAt(1).findViewById(R.id.itemName))
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(itemNameToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withRectangleShape()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip ratioToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("ルーレット項目の面積比を、０〜９９の数値で設定できます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForLayoutPosition(1)).getRatio())
+                        //.setTarget(rouletteItemList.getChildAt(1).findViewById(R.id.ratio))
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(ratioToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withRectangleShape()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip deleteToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとルーレット項目を削除できます。スワイプでも削除が可能です。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForLayoutPosition(1)).getDeleteButton())
+                        //.setTarget(rouletteItemList.getChildAt(1).findViewById(R.id.deleteButton))
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(deleteToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withRectangleShape()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip itemAddToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("ここでルーレットの項目を１つずつ追加できます。<br><br>タップして追加してみましょう。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(itemAddButton)
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(itemAddToolTip)
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .withRectangleShape()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip cheatAppearToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("イカサマをするには、この隠しボタンを押す必要があります。<br><br>タップしてみましょう。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(cheatButton)
+                        .setToolTip(cheatAppearToolTip)
+                        //.setContentText("イカサマをするには、この隠しボタンを押す必要があります。\n\nタップしてみましょう。")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withRectangleShape()
+                        .build()
+        );
+
+        /*
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForAdapterPosition(1)).getLinearLayout2())
+                        .setContentText("This is button three")
+                        .withRectangleShape()
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(cheatButton)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(createFinishFab)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+         */
+
+        Log.d("あああああああああああああ", "firstTutorial()");
+        sequence.start();
+    }
+
+    private void continuationOfTutorial() {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(300); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.roulette_create_continuation_tutorial_id));
+
+        /*
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+
+        sequence.setConfig(config);
+
+        sequence.singleUse(getString(R.string.roulette_create_continuation_tutorial_id));
+
+        ShowcaseTooltip cheatSwitchToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("イカサマメニューが出現しました。<br><br>必中スイッチ：この項目が<b>絶対に当たります</b>。<br><br>絶対ハズレスイッチ：この項目が<b>絶対に当たらなくなります</b>。<br><br>ここの設定をしなかった場合は通常の抽選を行います。<br><br>どちらかのスイッチをONにしてみましょう。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        //.setTarget(view)
+                        //.setTarget(rouletteItemList.getChildAt(1).findViewById(R.id.LinearLayout2))
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForLayoutPosition(1)).getLinearLayout2())
+                        //.setTarget(rouletteItemList.getChildAt(0).findViewById(R.id.LinearLayout2))
+                        .setToolTip(cheatSwitchToolTip)
+                        //.setContentText("イカサマメニューが出現しました。\n\n必中スイッチ：必ずこの項目が当たります。\n\n絶対ハズレスイッチ：絶対にこの項目が当たらなくなります。\n\nどちらかのスイッチをONにしてみましょう。")
+                        .withRectangleShape()
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip cheatHideToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("もう一度押すと、イカサマメニューを隠すことができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(cheatButton)
+                        .setToolTip(cheatHideToolTip)
+                        //.setContentText("もう一度押すと、イカサマメニューを隠すことができます。")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withRectangleShape()
+                        .build()
+        );
+
+        ShowcaseTooltip createFinishToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("ここでルーレットの作成を完了します。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(createFinishFab)
+                        .setToolTip(createFinishToolTip)
+                        //.setContentText("ここでルーレットの作成を完了します。")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withCircleShape()
+                        .setShapePadding(50)
+                        .build()
+        );
+
+        sequence.start();
     }
 
     //背景タプでフォーカスを外し、キーボードを隠す処理
@@ -490,14 +877,136 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //キーボードがあれば隠す
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+
         switch (item.getItemId()) {
             case R.id.page_explain:
                 // ボタンをタップした際の処理を記述
                 return true;
             case R.id.tutorial:
-                // ボタンをタップした際の処理を記述
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
+                builder.setTitle("チュートリアルを開始しますか？");
+                builder.setMessage("開始すると現在の編集内容は破棄されます。")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                //int listItemCount = rouletteItemListAdapter.getItemCount();
+
+                                /*
+                                rouletteItemListAdapter.getRouletteItemDataSet().getColors().removeAll(rouletteItemListAdapter.getRouletteItemDataSet().getColors());
+                                rouletteItemListAdapter.getRouletteItemDataSet().getItemNames().removeAll(rouletteItemListAdapter.getRouletteItemDataSet().getItemNames());
+                                rouletteItemListAdapter.getRouletteItemDataSet().getItemRatios().removeAll(rouletteItemListAdapter.getRouletteItemDataSet().getItemRatios());
+                                rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch100()
+                                        .removeAll(rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch100());
+                                rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch0()
+                                        .removeAll(rouletteItemListAdapter.getRouletteItemDataSet().getOnOffInfoOfSwitch0());
+
+                                 */
+
+                                //rouletteItemListInfo.getColors().removeAll(rouletteItemListInfo.getColors());
+                                //rouletteItemListInfo.getItemNames().removeAll(rouletteItemListInfo.getItemNames());
+                                //rouletteItemListInfo.getItemRatios().removeAll(rouletteItemListInfo.getItemRatios());
+                                //rouletteItemListInfo.getOnOffInfoOfSwitch100().removeAll(rouletteItemListInfo.getOnOffInfoOfSwitch100());
+                                //rouletteItemListInfo.getOnOffInfoOfSwitch0().removeAll(rouletteItemListInfo.getOnOffInfoOfSwitch0());
+
+                                rouletteItemListInfo.setColors(new ArrayList<Integer>(Arrays.asList(generateColor(), generateColor())));
+                                rouletteItemListInfo.setItemNames(new ArrayList<String>(Arrays.asList("", "")));
+                                rouletteItemListInfo.setItemRatios(new ArrayList<Integer>(Arrays.asList(1, 1)));
+                                rouletteItemListInfo.setOnOffInfoOfSwitch100(new ArrayList<Boolean>(Arrays.asList(false, false)));
+                                rouletteItemListInfo.setOnOffInfoOfSwitch0(new ArrayList<Boolean>(Arrays.asList(false, false)));
+
+                                rouletteItemListAdapter.notifyDataSetChanged();
+
+                                //rouletteItemListAdapter.notifyDataSetChanged();
+
+                                //rouletteItemListAdapter.addItem(generateColor(), "", 1, false, false);
+                                //rouletteItemListAdapter.addItem(generateColor(), "", 1, false, false);
+
+                                if (visibleFlag) {
+                                    visibleFlag = false;
+
+                                    rouletteItemListAdapter.notifyDataSetChanged();
+                                    //rouletteItemListAdapter.notifyItemRangeChanged(0, rouletteItemList.getChildCount());
+
+                                    //visibleFlag = false;
+                                    //cheatButton.setVisibility(View.INVISIBLE);
+                                    cheatButton.setText("");
+                                    cheatButton.setBackgroundColor(Color.TRANSPARENT);
+                                }
+
+                                MaterialShowcaseView.resetSingleUse(RouletteCreateActivity.this, getString(R.string.roulette_create_tutorial_id));
+                                MaterialShowcaseView.resetSingleUse(RouletteCreateActivity.this, getString(R.string.roulette_create_continuation_tutorial_id));
+                                MaterialShowcaseView.resetSingleUse(RouletteCreateActivity.this, getString(R.string.roulette_create_start_tutorial_id));
+
+                                isTutorialState = true;
+
+                                //チュートリアルを始める
+                                ShowcaseConfig config = new ShowcaseConfig();
+                                config.setDelay(300); // half second between each showcase view
+
+                                MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(RouletteCreateActivity.this, getString(R.string.roulette_create_start_tutorial_id));
+
+                                sequence.setConfig(config);
+
+                                sequence.singleUse(getString(R.string.roulette_create_start_tutorial_id));
+
+                                sequence.setOnItemDismissedListener(new MaterialShowcaseSequence.OnSequenceItemDismissedListener() {
+                                    @Override
+                                    public void onDismiss(MaterialShowcaseView itemView, int position) {
+                                        tutorial();
+                                    }
+                                });
+
+                                //sequence.singleUse(getString(R.string.roulette_create_tutorial_id));
+
+                                sequence.addSequenceItem(
+                                        new MaterialShowcaseView.Builder(RouletteCreateActivity.this)
+                                                .setTarget(rouletteCreateLayout)
+                                                .setContentText("ここではルーレットの作成を行うことができます。")
+                                                .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
+                                                .setGravity(16)
+                                                .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                                                //.setToolTip(itemNameToolTip)
+                                                //.setTargetTouchable(true)
+                                                //.setDismissOnTargetTouch(true)
+                                                .setDismissOnTouch(true)
+                                                .withoutShape()
+                                                .build()
+                                );
+
+                                sequence.start();
+
+                                //tutorial();
+                            }
+                        })
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        })
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                // ダイアログがキャンセルされた際の処理
+                            }
+                        })
+                        .create()
+                        .show();
+
+                //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_tutorial_id));
+                ///MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_continuation_tutorial_id));
+                //isTutorialState = true;
+                //チュートリアルを始める
+                //tutorial();
+
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
