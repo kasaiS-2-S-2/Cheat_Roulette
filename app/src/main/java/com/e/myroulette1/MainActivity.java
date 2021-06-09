@@ -1022,6 +1022,7 @@ public class MainActivity extends AppCompatActivity {
     private void tutorial() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(100);
+        config.setRenderOverNavigationBar(true);
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.main_tutorial_id));
 
@@ -1052,8 +1053,46 @@ public class MainActivity extends AppCompatActivity {
 
         sequence.singleUse(getString(R.string.main_tutorial_id));
 
+
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
+                        .setTarget(constraintLayout)
+                        .setContentText("チュートリアルを開始します。")
+                        .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
+                        .setGravity(16)
+                        //.renderOverNavigationBar()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        //.setToolTip(itemNameToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withoutShape()
+                        .build()
+        );
+
+        ShowcaseTooltip drawerMenuToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとメニューが開き、各種設定を行うことができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(toolbar.findViewById(R.id.menuButton))
+                        //.setTarget(constraintLayout)
+                        //.setContentText("タップするとメニューが開き、各種設定を行うことができます。")
+                        .setToolTip(drawerMenuToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withCircleShape()
+                        //.withoutShape()
+                        //.setGravity(16)
+                        .setShapePadding(30)
+                        .build()
+
+                        /*
                         .setTarget(constraintLayout)
                         .setContentText("チュートリアルを開始します。")
                         .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
@@ -1065,65 +1104,8 @@ public class MainActivity extends AppCompatActivity {
                         .setDismissOnTouch(true)
                         .withoutShape()
                         .build()
-        );
 
-        /*
-        ShowcaseTooltip rouletteStartToolTip = ShowcaseTooltip.build(this)
-                .corner(30)
-                .textColor(Color.parseColor("#007686"))
-                .text("タップするとセットしてあるルーレットが回転し始めます。回転はしばらくすると勝手に止まります。");
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(rouletteStartButton)
-                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
-                        .setToolTip(rouletteStartToolTip)
-                        .setDismissOnTouch(true)
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
-                        .withCircleShape()
-                        .setShapePadding(30)
-                        .build()
-        );
-
-        ShowcaseTooltip splitLayoutToolTip = ShowcaseTooltip.build(this)
-                .corner(30)
-                .textColor(Color.parseColor("#007686"))
-                .text("＋：押すとルーレットを分割します。<br><br>−：押すと分割前に戻します。");
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(splitButtonLayout)
-                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
-                        .setToolTip(splitLayoutToolTip)
-                        .setDismissOnTouch(true)
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
-                        .withRectangleShape()
-                        .setShapePadding(30)
-                        .build()
-        );
-
-         */
-
-        ShowcaseTooltip drawerMenuToolTip = ShowcaseTooltip.build(this)
-                .corner(30)
-                .textColor(getResources().getColor(R.color.tooltip_text_color))
-                .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップするとメニューが開き、各種設定を行うことができます。");
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(toolbar.findViewById(R.id.menuButton))
-                        //.setContentText("タップするとメニューが開き、各種設定を行うことができます。")
-                        .setToolTip(drawerMenuToolTip)
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
-                        .setDismissOnTouch(true)
-                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
-                        .withCircleShape()
-                        .setShapePadding(30)
-                        .build()
+                         */
         );
 
         ShowcaseTooltip fabsMenuToolTip = ShowcaseTooltip.build(this)
@@ -1341,7 +1323,7 @@ public class MainActivity extends AppCompatActivity {
                         //int pointerPosY = (constraintLayout.getLayoutParams().height / 2) - pointerPosX - (pointerPosX/8);
 
                         int pointerPosX = constraintLayout.getWidth() / 2;
-                        int pointerPosY = (constraintLayout.getHeight()/ 2) - pointerPosX - (pointerPosX/8) + toolbar.getHeight() * 5/3;
+                        int pointerPosY = (constraintLayout.getHeight()/ 2) - pointerPosX - (pointerPosX/8) + ((3 * toolbar.getHeight()) / 2);
                         //Log.d("あああああああああああああああああXY", pointerPosX+" " + " "+pointerPosY);
 
 
@@ -1381,7 +1363,8 @@ public class MainActivity extends AppCompatActivity {
                                         MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.roulette_create_latter_tutorial_id));
 
                                         ShowcaseConfig config = new ShowcaseConfig();
-                                        config.setDelay(300);
+                                        config.setDelay(100);
+                                        config.setRenderOverNavigationBar(true);
 
                                         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(MainActivity.this, getString(R.string.roulette_create_latter_tutorial_id));
 
@@ -1405,7 +1388,6 @@ public class MainActivity extends AppCompatActivity {
                                                         //.setTargetTouchable(true)
                                                         //.setDismissOnTargetTouch(true)
                                                         .withRectangleShape()
-                                                        .setShapePadding(30)
                                                         .build()
                                         );
 

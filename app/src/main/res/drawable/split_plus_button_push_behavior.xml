@@ -6,7 +6,6 @@
     <item android:state_pressed="true">
         <shape
             android:shape="rectangle">
-            <!-- ボタンの色(半透明で薄いグレー) -->
             <solid android:color="#E07E7E7E"/>
             <corners
                 android:bottomRightRadius="6dp"

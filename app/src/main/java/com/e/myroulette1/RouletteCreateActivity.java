@@ -574,7 +574,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
     private void tutorial() {
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(300); // half second between each showcase view
+        config.setDelay(100);
+        config.setRenderOverNavigationBar(true);
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.roulette_create_tutorial_id));
 
@@ -778,7 +779,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
     private void continuationOfTutorial() {
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(300); // half second between each showcase view
+        config.setDelay(100); // half second between each showcase view
+        config.setRenderOverNavigationBar(true);
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.roulette_create_continuation_tutorial_id));
 
@@ -947,7 +949,8 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
                                 //チュートリアルを始める
                                 ShowcaseConfig config = new ShowcaseConfig();
-                                config.setDelay(300); // half second between each showcase view
+                                config.setDelay(100);
+                                config.setRenderOverNavigationBar(true);
 
                                 MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(RouletteCreateActivity.this, getString(R.string.roulette_create_start_tutorial_id));
 

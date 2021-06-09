@@ -494,7 +494,8 @@ public class EditMyRouletteActivity extends AppCompatActivity {
 
     private void tutorial() {
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(300);
+        config.setDelay(100);
+        config.setRenderOverNavigationBar(true);
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.edit_myRoulette_tutorial_id));
 
