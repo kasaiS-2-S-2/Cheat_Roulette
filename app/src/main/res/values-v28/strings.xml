@@ -73,4 +73,7 @@
     <string name="main_tutorial_id">main_tutorial</string>
     <string name="roulette_create_start_tutorial_id">roulette_create_start_tutorial</string>
     <string name="roulette_create_latter_tutorial_id">roulette_create_latter_tutorial</string>
+    <string name="theme">テーマ</string>
+    <string name="fixed_theme">テーマを固定</string>
+    <string name="detail_settings">詳細な設定</string>
 </resources>

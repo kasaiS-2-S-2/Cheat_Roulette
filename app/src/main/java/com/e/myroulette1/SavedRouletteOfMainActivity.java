@@ -36,6 +36,7 @@ public class SavedRouletteOfMainActivity {
 
     // デフォルト値の入ったオブジェクトを返す
     public static SavedRouletteOfMainActivity getDefaultInstance() {
+
         SavedRouletteOfMainActivity instance = new SavedRouletteOfMainActivity();
 
         instance.splitCount = 1;

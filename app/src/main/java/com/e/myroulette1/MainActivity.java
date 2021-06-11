@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         //情報保存用の共有環境設定ファイル
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
 
+        /*
         //サウンドの情報を取得、適用
         boolean startSoundState = sharedPref.getBoolean(getString(R.string.saved_sound_state_key), true);
         SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
@@ -230,17 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         //どのテーマかの情報を取得、適用
         RadioGroup themeRadioGroup = navigationView.findViewById(R.id.nav_theme_bar).findViewById(R.id.change_theme_radio_group);
-        /*boolean startThemeState = sharedPref.getBoolean(getString(R.string.saved_theme_state_key), false);
-        if (startThemeState) {
-            //ダークにチェック
-            ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(false);
-            ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(true);
-        } else {
-            //ライトにチェック
-            ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(true);
-            ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(false);
-        }
-         */
+
         int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         switch (currentNightMode) {
             case Configuration.UI_MODE_NIGHT_NO:
@@ -275,43 +266,35 @@ public class MainActivity extends AppCompatActivity {
         //}
         //setContentView(constraintLayout);
 
-        /*
-        //Myルーレットのルーレットをセットする場合の処理
-        Intent fromMainIntent = getIntent();
-        if (fromMainIntent.getAction() != null && fromMainIntent.getAction().equals("SET_MYROULETTE")) {
-            //RouletteView rouletteView = findViewById(R.id.roulette);
-            //rouletteView.splitCount = 1;
-            String rouletteNameInfo = fromMainIntent.getStringExtra("rouletteName");
-            ArrayList<Integer> colorsInfo = fromMainIntent.getIntegerArrayListExtra("colors");
-            ArrayList<String> textStringsInfo = fromMainIntent.getStringArrayListExtra("textStrings");
-            ArrayList<Integer> itemRatiosInfo = fromMainIntent.getIntegerArrayListExtra("itemRatios");
-            ArrayList<Integer> OnOffOfSwitch100Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
-            ArrayList<Integer> OnOffOfSwitch0Info = fromMainIntent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
-            //rouletteView.itemProbabilities.clear();
-            ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
-            //int itemProbabilitySize = intent.getIntExtra("itemProbabilitySize", 0);
-            float itemProbabilityArray[] = fromMainIntent.getFloatArrayExtra("itemProbability");
-            for (int i = 0; i < itemProbabilityArray.length; i++) {
-                itemProbabilitiesInfo.add(itemProbabilityArray[i]);
-            }
-            if (!itemProbabilitiesInfo.isEmpty()) {
-                //イカサマ設定のルーレットセット時は、イカサマモードONで初期化
-                CheatFlag = true;
-            }
-            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
-            //constraintLayout.removeView(constraintLayout.getChildAt(constraintLayout.getChildCount() - 1));
-            //constraintLayout.addView(rouletteView);
-            //constraintLayout.addView(new PointerView(getApplicationContext()));
-
-            rouletteViewInLayout.setRouletteContents(rouletteNameInfo, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
-            setContentView(constraintLayout);
-            rouletteExists = true;
-        }
-
-         */
+        */
 
 
         //////////////////////////////////////////////////////////////////////////
+
+        //どのテーマかの情報を取得、適用
+        //RadioGroup themeRadioGroup = navigationView.findViewById(R.id.nav_theme_bar).findViewById(R.id.change_theme_radio_group);
+        RadioGroup themeRadioGroup = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_theme_bar).getActionView()).findViewById(R.id.change_theme_radio_group);
+        RadioButton lightThemeRadioButton = themeRadioGroup.findViewById(R.id.light_theme);
+        RadioButton darkThemeRadioButton = themeRadioGroup.findViewById(R.id.dark_theme);
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active, we're using the light theme
+                //ライトにチェック
+                //((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(true);
+                //((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(false);
+                lightThemeRadioButton.setChecked(true);
+                darkThemeRadioButton.setChecked(false);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Night mode is active, we're using dark theme
+                //ダークにチェック
+                //((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(false);
+                //((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(true);
+                darkThemeRadioButton.setChecked(true);
+                lightThemeRadioButton.setChecked(false);
+                break;
+        }
 
         //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_main_first_tutorial_done_key), false);
@@ -387,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean startThemeState = sharedPref.getBoolean(getString(R.string.saved_theme_state_key), false);
                 if (startThemeState) {
                     //ダークテーマを適用
+                    Log.d("ああああああLLLLLLLLL", "Mode_NIGHT_YES");
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 } else {
                     //ライトテーマを適用
@@ -484,6 +468,61 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout_main);
         navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
+
+        //情報保存用の共有環境設定ファイル
+        //SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        //サウンドの情報を取得、適用
+        boolean startSoundState = sharedPref.getBoolean(getString(R.string.saved_sound_state_key), true);
+        SwitchCompat soundSwitch = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_sound_option).getActionView()).findViewById(R.id.sound_switch_in_drawer_layout);
+        soundSwitch.setChecked(startSoundState);
+
+        //止まるまでの時間の情報を取得、適用
+        RadioGroup timeRadioGroup = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_roulette_time_bar).getActionView()).findViewById(R.id.time_radio_group);
+        boolean startTimeShortState = sharedPref.getBoolean(getString(R.string.saved_time_short_state_key), false);
+        boolean startTimeNormalState = sharedPref.getBoolean(getString(R.string.saved_time_normal_state_key), true);
+        boolean startTimeLongState = sharedPref.getBoolean(getString(R.string.saved_time_long_state_key), false);
+        ((RadioButton)timeRadioGroup.findViewById(R.id.time_short)).setChecked(startTimeShortState);
+        ((RadioButton)timeRadioGroup.findViewById(R.id.time_normal)).setChecked(startTimeNormalState);
+        ((RadioButton)timeRadioGroup.findViewById(R.id.time_long)).setChecked(startTimeLongState);
+
+
+        /*
+        //どのテーマかの情報を取得、適用
+        RadioGroup themeRadioGroup = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_theme_bar).getActionView()).findViewById(R.id.change_theme_radio_group);
+        RadioButton lightThemeRadioButton = themeRadioGroup.findViewById(R.id.light_theme);
+        RadioButton darkThemeRadioButton = themeRadioGroup.findViewById(R.id.dark_theme);
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active, we're using the light theme
+                //ライトにチェック
+                //((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(true);
+                //((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(false);
+                Log.d("ああああああLLLLLLLLL", "Mode_NIGHT_YES1");
+                lightThemeRadioButton.setChecked(true);
+                darkThemeRadioButton.setChecked(false);
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Night mode is active, we're using dark theme
+                //ダークにチェック
+                Log.d("ああああああLLLLLLLLL", "Mode_NIGHT_YES2");
+                //((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(false);
+                //((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(true);
+                darkThemeRadioButton.setChecked(true);
+                //lightThemeRadioButton.setSelected(false);
+
+                Log.d("ああああああLLLLLLLLL", "Mode_NIGHT_YES3");
+                lightThemeRadioButton.setChecked(false);
+                break;
+        }
+
+         */
+
+
+        //テーマを保存するかの情報を取得、適用
+        boolean startThemeSaveState = sharedPref.getBoolean(getString(R.string.saved_theme_save_state_key), false);
+        SwitchCompat themeSaveSwitch = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_theme_save_option).getActionView()).findViewById(R.id.theme_save_switch_in_drawer_layout);
+        themeSaveSwitch.setChecked(startThemeSaveState);
 
         //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, );
 
@@ -595,6 +634,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.nav_detail_settings:
+
+                        break;
+
                     case R.id.nav_roulette_create:
                         Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
                         //Intent intent = new Intent(getApplication(), SubActivity.class);
@@ -824,6 +867,36 @@ public class MainActivity extends AppCompatActivity {
 
 
                     //RotateAnimation rotate = new RotateAnimation(360f - degreeOld, (360f - degree) + 360f - degreeOld, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
+
+                    //情報保存用の共有環境設定ファイル
+                    SharedPreferences pref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                    //止まるまでの時間の情報を取得、適用
+                    //RadioGroup timeRadioGroup = navigationView.findViewById(R.id.nav_roulette_time_bar).findViewById(R.id.time_radio_group);
+                    boolean startTimeShortState = pref.getBoolean(getString(R.string.saved_time_short_state_key), false);
+                    boolean startTimeNormalState = pref.getBoolean(getString(R.string.saved_time_normal_state_key), true);
+                    boolean startTimeLongState = pref.getBoolean(getString(R.string.saved_time_long_state_key), false);
+
+                    if (startTimeNormalState) {
+                        toDegree = 5400f;
+                        duration = 10000;
+                        interpolatorFactor = 2.3f;
+                    } else if (startTimeShortState) {
+                        toDegree = 1440f;
+                        duration = 5000;
+                        interpolatorFactor = 2.3f;
+                    } else if (startTimeLongState) {
+                        toDegree = 14400f;
+                        duration = 17000;
+                        interpolatorFactor = 2.0f;
+                    } else {
+                        //例外があった場合、デフォルトで抽選時間 普通の値を設定
+                        toDegree = 5400f;
+                        duration = 10000;
+                        interpolatorFactor = 2.3f;
+                    }
+
+                    boolean soundState = pref.getBoolean(getString(R.string.saved_sound_state_key), true);
+
                     rotate = new RotateAnimation(0, (360f - degree) + toDegree, rouletteViewInLayout.xc, rouletteViewInLayout.yc);
                     rotate.setDuration(duration);       // アニメーションにかける時間(ミリ秒)
                     rotate.setFillAfter(true);          // アニメーション表示後の状態を保持
@@ -862,10 +935,15 @@ public class MainActivity extends AppCompatActivity {
                             //editRouletteFab.setEnabled(false);
                             //myRouletteFab.setEnabled(false);
                             toolbar.findViewById(R.id.menuButton).setEnabled(false);
+                            toolbar.findViewById(R.id.tutorialMenuButton).setEnabled(false);
                             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-                            SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
-                            if (soundSwitch.isChecked()) {
+                            //SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
+                            //情報保存用の共有環境設定ファイル
+                            //SharedPreferences pref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                            //boolean soundState = pref.getBoolean(getString(R.string.saved_sound_state_key), true);
+
+                            if (soundState) {
                                 soundPool.play(drumRollStart, 1.0f, 1.0f, 1, 0, 1);
                                 drumRollLoopStreamID = soundPool.play(drumRollLoop, 1.0f, 1.0f, 1, 5, 1);
                             }
@@ -876,8 +954,12 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
-                            if (soundSwitch.isChecked()) {
+                            //SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
+                            //情報保存用の共有環境設定ファイル
+                            //SharedPreferences pref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                            //boolean soundState = pref.getBoolean(getString(R.string.saved_sound_state_key), true);
+
+                            if (soundState) {
                                 soundPool.stop(drumRollLoopStreamID);
                                 soundPool.play(finishSound, 1.0f, 1.0f, 1, 0, 1);
                             }
@@ -909,6 +991,7 @@ public class MainActivity extends AppCompatActivity {
                             //editRouletteFab.setEnabled(true);
                             //myRouletteFab.setEnabled(true);
                             toolbar.findViewById(R.id.menuButton).setEnabled(true);
+                            toolbar.findViewById(R.id.tutorialMenuButton).setEnabled(true);
                             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                             //degreeOld = degree;
                         }
@@ -1242,6 +1325,47 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuButton:
+
+                /*
+                //情報保存用の共有環境設定ファイル
+                SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+                //サウンドの情報を取得、適用
+                boolean startSoundState = sharedPref.getBoolean(getString(R.string.saved_sound_state_key), true);
+                SwitchCompat soundSwitch = navigationView.findViewById(R.id.nav_sound_option).findViewById(R.id.sound_switch_in_drawer_layout);
+                soundSwitch.setChecked(startSoundState);
+
+                //止まるまでの時間の情報を取得、適用
+                RadioGroup timeRadioGroup = navigationView.findViewById(R.id.nav_roulette_time_bar).findViewById(R.id.time_radio_group);
+                boolean startTimeShortState = sharedPref.getBoolean(getString(R.string.saved_time_short_state_key), false);
+                boolean startTimeNormalState = sharedPref.getBoolean(getString(R.string.saved_time_normal_state_key), true);
+                boolean startTimeLongState = sharedPref.getBoolean(getString(R.string.saved_time_long_state_key), false);
+                ((RadioButton)timeRadioGroup.findViewById(R.id.time_short)).setChecked(startTimeShortState);
+                ((RadioButton)timeRadioGroup.findViewById(R.id.time_normal)).setChecked(startTimeNormalState);
+                ((RadioButton)timeRadioGroup.findViewById(R.id.time_long)).setChecked(startTimeLongState);
+
+                //どのテーマかの情報を取得、適用
+                RadioGroup themeRadioGroup = navigationView.findViewById(R.id.nav_theme_bar).findViewById(R.id.change_theme_radio_group);
+                int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        // Night mode is not active, we're using the light theme
+                        //ライトにチェック
+                        ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(true);
+                        ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(false);
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        // Night mode is active, we're using dark theme
+                        //ダークにチェック
+                        ((RadioButton)themeRadioGroup.findViewById(R.id.light_theme)).setChecked(false);
+                        ((RadioButton)themeRadioGroup.findViewById(R.id.dark_theme)).setChecked(true);
+                        break;
+                }
+                //テーマを保存するかの情報を取得、適用
+                boolean startThemeSaveState = sharedPref.getBoolean(getString(R.string.saved_theme_save_state_key), false);
+                SwitchCompat themeSaveSwitch = navigationView.findViewById(R.id.nav_theme_save_option).findViewById(R.id.theme_save_switch_in_drawer_layout);
+                themeSaveSwitch.setChecked(startThemeSaveState);
+
+                 */
                 // ボタンをタップした際の処理を記述
                 drawerLayout.openDrawer(Gravity.RIGHT);
 

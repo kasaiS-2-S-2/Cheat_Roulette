@@ -31,5 +31,5 @@
     <color name="roulette_start_icon">#E8FFFFFF</color>
     <color name="tutorial_overlay_color">#BBFFFFFF</color>
     <color name="tooltip_text_color">#FFFFFFFF</color>
-    <color name="showcase_text_color">#FF2A2A2A</color>
+    <color name="showcase_text_color">#FF000000</color>
 </resources>

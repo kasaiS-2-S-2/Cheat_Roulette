@@ -27,7 +27,7 @@
 
                 <item
                     android:id="@+id/nav_change_theme"
-                    android:title="テーマ"
+                    android:title="@string/theme"
                     android:icon="@drawable/ic_baseline_brightness_4_24" />
 
                 <item
@@ -37,9 +37,13 @@
 
                 <item
                     android:id="@+id/nav_theme_save_option"
-                    android:title="テーマを固定"
+                    android:title="@string/fixed_theme"
                     app:actionLayout="@layout/theme_save_switch_in_drawer_layout"/>
 
+                <item
+                    android:id="@+id/nav_detail_settings"
+                    android:title="@string/detail_settings"
+                    android:icon="@drawable/ic_baseline_settings_24"/>
             </menu>
 
         </item>
@@ -77,9 +81,46 @@
 
             <menu>
             <item
-                android:id="@+id/nav_login"
+                android:id="@+id/nav_logina"
                 android:title="login"
                 android:icon="@drawable/ic_baseline_refresh_100"/>
+
+                <item
+                    android:id="@+id/nav_loga"
+                    android:title="log1" />
+
+            </menu>
+        </item>
+    </group>
+
+    <item android:title="commute" >
+
+        <menu>
+
+            <item
+                android:id="@+id/nav_la"
+                android:title="log2"
+                android:icon="@drawable/ic_baseline_menu_24"/>
+
+            <item
+                android:id="@+id/nav_ga"
+                android:title="log3"
+                android:icon="@drawable/ic_baseline_menu_24"/>
+
+        </menu>
+
+    </item>
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="profile">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_login"
+                    android:title="login"
+                    android:icon="@drawable/ic_baseline_refresh_100"/>
 
                 <item
                     android:id="@+id/nav_log"
