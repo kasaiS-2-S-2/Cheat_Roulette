@@ -84,6 +84,7 @@
     <string name="appear_alert_delete_myRoulette">Myルーレット削除時に確認をする</string>
     <string name="saved_auto_save_created_roulette_key">saved_auto_save_created_roulette</string>
     <string name="auto_save_created_roulette">作成したルーレットを自動保存する</string>
+    <string name="notificatoin_myRoulettes_are_max">保存可能個数の上限を超えているため保存できません。Myルーレットを削除してください。</string>
 
 
 </resources>

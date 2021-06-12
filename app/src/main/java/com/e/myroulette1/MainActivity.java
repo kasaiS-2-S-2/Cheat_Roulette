@@ -347,7 +347,6 @@ public class MainActivity extends AppCompatActivity {
             //if (redisplayLastUseRoulette) {
             //次回アプリ開始時のためにセットしてあるルーレット情報を保存
             saveRouletteInfoToSharedPrefs(editor);
-            Log.d("あSSSSSSSSSSSSSSSSSSSSSS", "savedsvesavesave");
             //ルーレットがセットされていなかったことを共有環境設定に保存
             //editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
             //editor.putString(getString(R.string.saved_roulette_key), "");
@@ -639,8 +638,6 @@ public class MainActivity extends AppCompatActivity {
                         savedRouletteOfMainActivity.getOnOffOfSwitch0(),
                         savedRouletteOfMainActivity.getItemProbabilities()
                 );
-
-                Log.d("あSSSSSSSSSSSSSSSSSSSSSS", "setsetsetsetset");
             }// else {
                 // 何も保存されてない 初期時点 この時はデフォルト値を入れて上げる
                 //savedRouletteOfMainActivity = SavedRouletteOfMainActivity.getDefaultInstance();

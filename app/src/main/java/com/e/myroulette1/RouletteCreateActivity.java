@@ -452,13 +452,17 @@ public class RouletteCreateActivity extends AppCompatActivity {
                                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
 
-                                        MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
-                                                rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                                                rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                                        //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
-
-
-                                        MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                                        int myRouletteCount = MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().size();
+                                        if (myRouletteCount < 50) {
+                                            //保存個数上限未満なら保存
+                                            MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                                                    rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                                                    rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                                            //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+                                            MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                                        } else {
+                                            Toast.makeText(RouletteCreateActivity.this, getString(R.string.notificatoin_myRoulettes_are_max), Toast.LENGTH_SHORT).show();
+                                        }
 
                                         //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
                                         fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
@@ -505,12 +509,18 @@ public class RouletteCreateActivity extends AppCompatActivity {
                                 .show();
                     } else {
                         //確認しない場合（自動保存）
-                        MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
-                                rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                                rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                        //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
 
-                        MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                        int myRouletteCount = MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().size();
+                        if (myRouletteCount < 50) {
+                            //保存個数上限未満なら保存
+                            MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                                    rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                                    rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                            //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+                            MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                        } else {
+                            Toast.makeText(RouletteCreateActivity.this, getString(R.string.notificatoin_myRoulettes_are_max), Toast.LENGTH_SHORT).show();
+                        }
 
                         //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
                         fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
