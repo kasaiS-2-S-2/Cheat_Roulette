@@ -122,7 +122,7 @@ limitations under the License. -->
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <com.e.myroulette1.BarrageGuardImageButton
+            <com.kasai.cheatroulette.BarrageGuardImageButton
                 android:id="@+id/edit_myRoulette"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,7 +133,7 @@ limitations under the License. -->
                 android:tint="@color/vector_asset_color"
                 android:onClick="onEditMyRoulette" />
 
-            <com.e.myroulette1.BarrageGuardImageButton
+            <com.kasai.cheatroulette.BarrageGuardImageButton
                 android:id="@+id/delete_myRoulette"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -148,7 +148,7 @@ limitations under the License. -->
 
         </LinearLayout>
 
-        <com.e.myroulette1.RouletteView
+        <com.kasai.cheatroulette.RouletteView
             android:id="@+id/myRoulette"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

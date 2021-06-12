@@ -9,7 +9,7 @@
     android:background="@color/appPrimaryColor"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context="com.e.myroulette1.RouletteCreateActivity">
+    tools:context="com.kasai.cheatroulette.RouletteCreateActivity">
 
     <include
         android:id="@+id/toolbar_roulette_create"

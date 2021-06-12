@@ -7,7 +7,7 @@
     android:id="@+id/drawer_layout_main"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context="com.e.myroulette1.MainActivity"
+    tools:context="com.kasai.cheatroulette.MainActivity"
     android:fitsSystemWindows="true"
     android:background="@color/appPrimaryColor"
     tools:openDrawer="right">
@@ -67,21 +67,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.e.myroulette1.RouletteView
+            <com.kasai.cheatroulette.RouletteView
                 android:id="@+id/roulette"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/toolbar_main"
                 tools:ignore="MissingClass" />
 
-            <com.e.myroulette1.PointerView
+            <com.kasai.cheatroulette.PointerView
                 android:id="@+id/pointerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/toolbar_main"
                 tools:ignore="MissingClass" />
 
-            <com.e.myroulette1.PushImageButton
+            <com.kasai.cheatroulette.PushImageButton
                 android:id="@+id/rouletteStartButton"
                 android:layout_width="140dp"
                 android:layout_height="140dp"

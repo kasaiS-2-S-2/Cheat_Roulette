@@ -44,6 +44,7 @@
                     android:id="@+id/nav_detail_settings"
                     android:title="@string/detail_settings"
                     android:icon="@drawable/ic_baseline_settings_24"/>
+
             </menu>
 
         </item>
@@ -67,7 +68,20 @@
                     android:id="@+id/nav_myRoulette"
                     android:title="@string/myRoulette"
                     android:icon="@drawable/ic_baseline_refresh_24"/>
+            </menu>
 
+        </item>
+    </group>
+
+    <group>
+        <item
+            android:title="その他">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_review_app"
+                    android:title="@string/review_app"
+                    android:icon="@drawable/ic_baseline_star_border_24"/>
             </menu>
 
         </item>
