@@ -43,6 +43,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -335,6 +336,36 @@ public class MainActivity extends AppCompatActivity {
 
         //soundPool.stop(drumRollLoopStreamID);
         soundPool.autoPause();
+
+        //SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        if (rouletteExists) {
+            //boolean redisplayLastUseRoulette = defaultPref.getBoolean(getString(R.string.saved_redisplay_last_use_roulette_key), true);
+            //boolean savedRouletteExist = sharedPref.getBoolean(getString(R.string.saved_roulette_exist_key), true);
+
+            //if (redisplayLastUseRoulette) {
+            //次回アプリ開始時のためにセットしてあるルーレット情報を保存
+            saveRouletteInfoToSharedPrefs(editor);
+            Log.d("あSSSSSSSSSSSSSSSSSSSSSS", "savedsvesavesave");
+            //ルーレットがセットされていなかったことを共有環境設定に保存
+            //editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
+            //editor.putString(getString(R.string.saved_roulette_key), "");
+            //editor.apply();
+            //次回アプリ開始時のためにセットしてあるルーレット情報を保存
+            //saveRouletteInfoToSharedPrefs(editor);
+            //} else if (!savedRouletteExist) {
+            //ルーレットがセットされていなかったことを共有環境設定に保存
+            //editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
+            //editor.putString(getString(R.string.saved_roulette_key), "");
+            //editor.apply();
+            //次回アプリ開始時のためにセットしてあるルーレット情報を保存
+            //saveRouletteInfoToSharedPrefs(editor);
+            //ルーレットがセットされていなかったことを共有環境設定に保存
+            //editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
+            //editor.putString(getString(R.string.saved_roulette_key), "");
+            //editor.apply();
+        }
     }
 
     @Override
@@ -345,18 +376,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         //通知を削除
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(1);
         Log.d("あああああああああああああああ", "onDestroy");
+
+        super.onDestroy();
+
+
+        //} else {
+            //ルーレットがセットされていなかったことを共有環境設定に保存
+            //editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
+            //editor.putString(getString(R.string.saved_roulette_key), "");
+            //editor.apply();
+        //}
     }
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         //情報保存用の共有環境設定ファイル
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
         //テーマが手動で変更されたかの情報を取得
@@ -580,37 +618,41 @@ public class MainActivity extends AppCompatActivity {
         rouletteViewInLayout = findViewById(R.id.roulette);
         //ルーレットの状態保存があったかどうかの情報を共有環境設定から取得
         boolean savedRouletteExist = sharedPref.getBoolean(getString(R.string.saved_roulette_exist_key), false);
+        //SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        //boolean redisplayLastUseRoulette = defaultPref.getBoolean(getString(R.string.saved_redisplay_last_use_roulette_key), true);
         if (savedRouletteExist) {
-
             SavedRouletteOfMainActivity savedRouletteOfMainActivity;
             Gson gson = new Gson();
             String savedRouletteString = sharedPref.getString(getString(R.string.saved_roulette_key), "");
-
             // 保存したオブジェクトを取得
-            if ( !TextUtils.isEmpty(savedRouletteString)) {
+            if (!TextUtils.isEmpty(savedRouletteString)) {
                 // 保存した文字列から、保存されているルーレット情報を取得する
                 savedRouletteOfMainActivity = gson.fromJson(savedRouletteString, SavedRouletteOfMainActivity.class);
-            } else {
-                // 何も保存されてない 初期時点 この時はデフォルト値を入れて上げる
-                savedRouletteOfMainActivity = SavedRouletteOfMainActivity.getDefaultInstance();
-            }
+                //得た情報を元にルーレットをセットする
+                rouletteViewInLayout.setRouletteContents(
+                        savedRouletteOfMainActivity.getSplitCount(),
+                        savedRouletteOfMainActivity.getRouletteName(),
+                        savedRouletteOfMainActivity.getColors(),
+                        savedRouletteOfMainActivity.getItemNames(),
+                        savedRouletteOfMainActivity.getItemRatios(),
+                        savedRouletteOfMainActivity.getOnOffOfSwitch100(),
+                        savedRouletteOfMainActivity.getOnOffOfSwitch0(),
+                        savedRouletteOfMainActivity.getItemProbabilities()
+                );
 
-            //得た情報を元にルーレットをセットする
-            rouletteViewInLayout.setRouletteContents(
-                    savedRouletteOfMainActivity.getSplitCount(),
-                    savedRouletteOfMainActivity.getRouletteName(),
-                    savedRouletteOfMainActivity.getColors(),
-                    savedRouletteOfMainActivity.getItemNames(),
-                    savedRouletteOfMainActivity.getItemRatios(),
-                    savedRouletteOfMainActivity.getOnOffOfSwitch100(),
-                    savedRouletteOfMainActivity.getOnOffOfSwitch0(),
-                    savedRouletteOfMainActivity.getItemProbabilities()
-            );
+                Log.d("あSSSSSSSSSSSSSSSSSSSSSS", "setsetsetsetset");
+            }// else {
+                // 何も保存されてない 初期時点 この時はデフォルト値を入れて上げる
+                //savedRouletteOfMainActivity = SavedRouletteOfMainActivity.getDefaultInstance();
+            //}
             //rouletteViewInLayout.invalidate();
 
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
-            editor.apply();
+            //SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            //if (!(defaultPref.getBoolean(getString(R.string.saved_redisplay_last_use_roulette_key), true))) {
+                //SharedPreferences.Editor editor = sharedPref.edit();
+                //editor.putBoolean(getString(R.string.saved_roulette_exist_key), false);
+                //editor.apply();
+            //}
 
             //背景色を初期化する
             constraintLayout.setBackgroundColor(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
@@ -635,7 +677,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_detail_settings:
-
+                        startActivity(new Intent(MainActivity.this, DetailSettingsActivity.class));
                         break;
 
                     case R.id.nav_roulette_create:
@@ -1694,34 +1736,12 @@ public class MainActivity extends AppCompatActivity {
                     editor.putBoolean(getString(R.string.saved_theme_state_key), false);
                     editor.putBoolean(getString(R.string.saved_theme_changed_manually_key), true);
 
+                    editor.apply();
+
                     //セットされているルーレットがあった場合、アクティビティ復元時にそのルーレットを復元するために、情報を保存する
                     if (rouletteExists) {
-                        SavedRouletteOfMainActivity savedRouletteOfMainActivity = new SavedRouletteOfMainActivity();
-                        savedRouletteOfMainActivity.setSavedRouletteContents(
-                                rouletteViewInLayout.getSplitCount(),
-                                rouletteViewInLayout.getRouletteName(),
-                                rouletteViewInLayout.getColors(),
-                                rouletteViewInLayout.getItemNames(),
-                                rouletteViewInLayout.getItemRatios(),
-                                rouletteViewInLayout.getOnOffInfoOfSwitch100(),
-                                rouletteViewInLayout.getOnOffInfoOfSwitch0(),
-                                rouletteViewInLayout.getItemProbabilities()
-                        );
-
-                        Gson gson = new Gson();
-                        //セットされているルーレットを共有環境設定に保存
-                        String savedRouletteString = gson.toJson(savedRouletteOfMainActivity);
-                        editor.putString(getString(R.string.saved_roulette_key), savedRouletteString);
-                        //ルーレットがセットされていたことを共有環境設定に保存
-                        editor.putBoolean(getString(R.string.saved_roulette_exist_key), true);
-
-                        if (!(rouletteViewInLayout.getItemProbabilities().isEmpty())) {
-                            //現在のチートフラッグを保存
-                            editor.putBoolean(getString(R.string.saved_cheat_flag_state_key), CheatFlag);
-                        }
+                        //saveRouletteInfoToSharedPrefs(editor);
                     }
-
-                    editor.apply();
 
                     //ライトテーマにする
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -1738,34 +1758,12 @@ public class MainActivity extends AppCompatActivity {
                     editor.putBoolean(getString(R.string.saved_theme_state_key), true);
                     editor.putBoolean(getString(R.string.saved_theme_changed_manually_key), true);
 
+                    editor.apply();
+
                     //セットされているルーレットがあった場合、アクティビティ復元時にそのルーレットを復元するために、情報を保存する
                     if (rouletteExists) {
-                        SavedRouletteOfMainActivity savedRouletteOfMainActivity = new SavedRouletteOfMainActivity();
-                        savedRouletteOfMainActivity.setSavedRouletteContents(
-                                rouletteViewInLayout.getSplitCount(),
-                                rouletteViewInLayout.getRouletteName(),
-                                rouletteViewInLayout.getColors(),
-                                rouletteViewInLayout.getItemNames(),
-                                rouletteViewInLayout.getItemRatios(),
-                                rouletteViewInLayout.getOnOffInfoOfSwitch100(),
-                                rouletteViewInLayout.getOnOffInfoOfSwitch0(),
-                                rouletteViewInLayout.getItemProbabilities()
-                        );
-
-                        Gson gson = new Gson();
-                        //セットされているルーレットを共有環境設定に保存
-                        String savedRouletteString = gson.toJson(savedRouletteOfMainActivity);
-                        editor.putString(getString(R.string.saved_roulette_key), savedRouletteString);
-                        //ルーレットがセットされていたことを共有環境設定に保存
-                        editor.putBoolean(getString(R.string.saved_roulette_exist_key), true);
-
-                        if (!(rouletteViewInLayout.getItemProbabilities().isEmpty())) {
-                            //現在のチートフラッグを保存
-                            editor.putBoolean(getString(R.string.saved_cheat_flag_state_key), CheatFlag);
-                        }
+                        //saveRouletteInfoToSharedPrefs(editor);
                     }
-
-                    editor.apply();
 
                     //ダークテーマにする
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -1778,6 +1776,33 @@ public class MainActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                 break;
         }
+    }
+
+    private void saveRouletteInfoToSharedPrefs(SharedPreferences.Editor editor) {
+        SavedRouletteOfMainActivity savedRouletteOfMainActivity = new SavedRouletteOfMainActivity();
+        savedRouletteOfMainActivity.setSavedRouletteContents(
+                rouletteViewInLayout.getSplitCount(),
+                rouletteViewInLayout.getRouletteName(),
+                rouletteViewInLayout.getColors(),
+                rouletteViewInLayout.getItemNames(),
+                rouletteViewInLayout.getItemRatios(),
+                rouletteViewInLayout.getOnOffInfoOfSwitch100(),
+                rouletteViewInLayout.getOnOffInfoOfSwitch0(),
+                rouletteViewInLayout.getItemProbabilities()
+        );
+
+        Gson gson = new Gson();
+        //セットされているルーレットを共有環境設定に保存
+        String savedRouletteString = gson.toJson(savedRouletteOfMainActivity);
+        editor.putString(getString(R.string.saved_roulette_key), savedRouletteString);
+        //ルーレットがセットされていたことを共有環境設定に保存
+        editor.putBoolean(getString(R.string.saved_roulette_exist_key), true);
+
+        if (!(rouletteViewInLayout.getItemProbabilities().isEmpty())) {
+            //現在のチートフラッグを保存
+            editor.putBoolean(getString(R.string.saved_cheat_flag_state_key), CheatFlag);
+        }
+        editor.apply();
     }
 
     public void onThemeSaveSwitchClicked(View view) {

@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -443,63 +444,89 @@ public class RouletteCreateActivity extends AppCompatActivity {
                 Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
 
                 if (!isTutorialState) {
-                    // 保存するかどうかをアラートダイアログで確認する場合
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
-                    builder.setMessage("Myルーレットに保存しますか？")
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                    SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(RouletteCreateActivity.this);
+                    if (!(defaultPref.getBoolean(getString(R.string.saved_auto_save_created_roulette_key), false))) {
+                        // 保存するかどうかをアラートダイアログで確認する場合
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
+                        builder.setMessage("Myルーレットに保存しますか？")
+                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
 
-                                    MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
-                                            rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                                            rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                                    //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+                                        MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                                                rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                                                rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                                        //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
 
 
-                                    MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                                        MainActivity.mMyRouletteViewModel.insert(myRoulette);
 
-                                    //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                                    fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
-                                    fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                                    fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                                    //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                                    fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+                                        //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                        fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                                        fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                                        fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                                        //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                                        fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
 
-                                    setResult(RESULT_OK, fromRouletteCreateIntent);
+                                        setResult(RESULT_OK, fromRouletteCreateIntent);
 
-                                    RouletteCreateActivity.this.finish();
-                                }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                                        RouletteCreateActivity.this.finish();
+                                    }
+                                })
+                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
 
-                                    //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                                    fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
-                                    fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                                    fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                                    //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                                    fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+                                        //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                        fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                                        fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                                        fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                                        //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                                        fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
 
-                                    setResult(RESULT_OK, fromRouletteCreateIntent);
+                                        setResult(RESULT_OK, fromRouletteCreateIntent);
 
-                                    RouletteCreateActivity.this.finish();
-                                }
-                            })
-                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                @Override
-                                public void onCancel(DialogInterface dialog) {
-                                    // ダイアログがキャンセルされた際の処理
-                                }
-                            })
-                            .create()
-                            .show();
+                                        RouletteCreateActivity.this.finish();
+                                    }
+                                })
+                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        // ダイアログがキャンセルされた際の処理
+                                    }
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        //確認しない場合（自動保存）
+                        MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                                rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                                rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                        //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+
+                        MainActivity.mMyRouletteViewModel.insert(myRoulette);
+
+                        //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                        fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                        fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                        fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                        fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                        fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                        //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                        fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+
+                        setResult(RESULT_OK, fromRouletteCreateIntent);
+
+                        RouletteCreateActivity.this.finish();
+                    }
 
 //                startActivity(rouletteCreateIntent);
 

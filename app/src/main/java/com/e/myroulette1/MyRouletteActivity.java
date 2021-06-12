@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -93,39 +94,34 @@ public class MyRouletteActivity extends AppCompatActivity {
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Here is where you'll implement swipe to delete
-                new AlertDialog.Builder(viewHolder.itemView.getContext())
-                        .setMessage("削除してもよろしいですか？")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                int position = viewHolder.getAdapterPosition();
-                                //スワイプされたList<word>の項目をList<word>から削除
-                                MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().remove(position);
-                                //List<word>から削除されたことを通知（viewHolderにそのことを反映している？）
-                                myRouletteList.getAdapter().notifyItemRemoved(position);
-                                //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
-                                myRouletteList.getAdapter().notifyItemRangeChanged(position, myRouletteList.getAdapter().getItemCount() - position);
-                                //スワイプされた箇所のデータベースのprimarykeyを取得
-                                int primaryKey = ((MyRouletteViewHolder)viewHolder).getRouletteView().getId();
-                                //取得したprimarykeyの所のデータを消去
-                                MainActivity.mMyRouletteViewModel.delete(primaryKey);
-                            }
-                        })
-                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MyRouletteActivity.this);
+                if (defaultPref.getBoolean(getString(R.string.saved_appear_alert_delete_myRoulette_key), true)) {
+                    new AlertDialog.Builder(viewHolder.itemView.getContext())
+                            .setMessage("削除してもよろしいですか？")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    deleteMyRoulette(viewHolder);
+                                }
+                            })
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // User cancelled the dialog,
                                     // so we will refresh the adapter to prevent hiding the item from UI
                                     myRouletteList.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
                                 }
-                        })
-                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                // ダイアログがキャンセルされた際の処理
-                                myRouletteList.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
-                            }
-                        })
-                        .create()
-                        .show();
+                            })
+                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    // ダイアログがキャンセルされた際の処理
+                                    myRouletteList.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
+                                }
+                            })
+                            .create()
+                            .show();
+                } else {
+                    deleteMyRoulette(viewHolder);
+                }
             }
         }).attachToRecyclerView(myRouletteList);
 
@@ -250,6 +246,20 @@ public class MyRouletteActivity extends AppCompatActivity {
             editor.apply();
             //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
         }
+    }
+
+    private void deleteMyRoulette(RecyclerView.ViewHolder viewHolder) {
+        int position = viewHolder.getAdapterPosition();
+        //スワイプされたList<word>の項目をList<word>から削除
+        MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().remove(position);
+        //List<word>から削除されたことを通知（viewHolderにそのことを反映している？）
+        myRouletteList.getAdapter().notifyItemRemoved(position);
+        //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
+        myRouletteList.getAdapter().notifyItemRangeChanged(position, myRouletteList.getAdapter().getItemCount() - position);
+        //スワイプされた箇所のデータベースのprimarykeyを取得
+        int primaryKey = ((MyRouletteViewHolder) viewHolder).getRouletteView().getId();
+        //取得したprimarykeyの所のデータを消去
+        MainActivity.mMyRouletteViewModel.delete(primaryKey);
     }
 
     private void tutorial() {

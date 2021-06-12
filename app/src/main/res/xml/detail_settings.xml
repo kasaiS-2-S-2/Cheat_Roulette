@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="詳細設定">
+        <SwitchPreferenceCompat
+            android:key="@string/saved_tutorial_appear_key"
+            android:title="@string/tutorial_appear"
+            android:defaultValue="true"
+            app:singleLineTitle="false"/>
+        <SwitchPreferenceCompat
+            android:key="@string/saved_notification_key"
+            android:title="@string/notification"
+            android:defaultValue="true"
+            app:singleLineTitle="false"/>
+        <SwitchPreferenceCompat
+            android:key="@string/saved_appear_alert_delete_myRoulette_key"
+            android:title="@string/appear_alert_delete_myRoulette"
+            android:defaultValue="true"
+            app:singleLineTitle="false"/>
+        <SwitchPreferenceCompat
+            android:key="@string/saved_auto_save_created_roulette_key"
+            android:title="@string/auto_save_created_roulette"
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -76,6 +76,14 @@
     <string name="theme">テーマ</string>
     <string name="fixed_theme">テーマを固定</string>
     <string name="detail_settings">詳細な設定</string>
+    <string name="saved_tutorial_appear_key">saved_tutorial_appear</string>
+    <string name="tutorial_appear">ルーレット作成チュートリアルを表示する</string>
+    <string name="saved_notification_key">saved_notification</string>
+    <string name="notification">抽選モード変更時に通知をする</string>
+    <string name="saved_appear_alert_delete_myRoulette_key">saved_appear_alert_delete_myRoulette</string>
+    <string name="appear_alert_delete_myRoulette">Myルーレット削除時に確認をする</string>
+    <string name="saved_auto_save_created_roulette_key">saved_auto_save_created_roulette</string>
+    <string name="auto_save_created_roulette">作成したルーレットを自動保存する</string>
 
 
 </resources>

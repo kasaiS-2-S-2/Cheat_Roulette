@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -11,9 +12,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.preference.PreferenceManager;
 
 public class PointerView extends View {
 
@@ -262,16 +263,32 @@ public class PointerView extends View {
             return false;
         if (!MainActivity.CheatFlag) {
             MainActivity.CheatFlag = true;
-            if (MainActivity.mToast != null) MainActivity.mToast.cancel();
-            cheatNotification(true);
-            MainActivity.mToast = Toast.makeText(getContext(), "イカサマモードON", Toast.LENGTH_SHORT);
+            //if (MainActivity.mToast != null) MainActivity.mToast.cancel();
+            Context context = MyApplication.getAppContext();
+            SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(context);
+            if (defaultPref.getBoolean(context.getString(R.string.saved_notification_key), true)) {
+                cheatNotification(true);
+            } else {
+                //通知を削除
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(1);
+            }
+            //MainActivity.mToast = Toast.makeText(getContext(), "イカサマモードON", Toast.LENGTH_SHORT);
         } else {
             MainActivity.CheatFlag = false;
-            if (MainActivity.mToast != null) MainActivity.mToast.cancel();
-            cheatNotification(false);
-            MainActivity.mToast = Toast.makeText(getContext(), "イカサマモードOFF", Toast.LENGTH_SHORT);
+            //if (MainActivity.mToast != null) MainActivity.mToast.cancel();
+            Context context = MyApplication.getAppContext();
+            SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(context);
+            if (defaultPref.getBoolean(context.getString(R.string.saved_notification_key), true)) {
+                cheatNotification(false);
+            } else {
+                //通知を削除
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(1);
+            }
+            //MainActivity.mToast = Toast.makeText(getContext(), "イカサマモードOFF", Toast.LENGTH_SHORT);
         }
-        MainActivity.mToast.show();
+        //MainActivity.mToast.show();
 
         return false;
     }
@@ -280,9 +297,9 @@ public class PointerView extends View {
         Context context = getContext();
         String notificationContent;
         if (OnOrOff) {
-            notificationContent = "イカサマON";
+            notificationContent = "イカサマモードON";
         } else {
-            notificationContent = "イカサマOFF";
+            notificationContent = "イカサマモードOFF";
         }
         /*
         Context context = MyApplication.getAppContext();
