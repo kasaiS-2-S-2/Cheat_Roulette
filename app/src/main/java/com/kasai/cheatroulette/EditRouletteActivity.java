@@ -148,7 +148,7 @@ public class EditRouletteActivity extends AppCompatActivity {
                 return false;
             }
 
-            // Called when a user swipes left or right on a ViewHolder
+            // Called when ic_cheat_roulette_launcher2_foreground user swipes left or right on ic_cheat_roulette_launcher2_foreground ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();

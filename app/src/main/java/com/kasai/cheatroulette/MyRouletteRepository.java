@@ -8,7 +8,7 @@ DAO(データベース操作の機能の集合)を使用するための機能の
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain ic_cheat_roulette_launcher2_foreground copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -45,7 +45,7 @@ class MyRouletteRepository {
         mAllMyRoulette = mMyRouletteDao.getAllMyRoulette();
     }
 
-    // Room executes all queries on a separate thread.
+    // Room executes all queries on ic_cheat_roulette_launcher2_foreground separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     LiveData<List<MyRoulette>> getAllMyRoulette() {
         return mAllMyRoulette;
@@ -53,7 +53,7 @@ class MyRouletteRepository {
 
     MyRoulette getMyRoulette(int id) { return mMyRouletteDao.getMyRoulette(id); }
 
-    // You must call this on a non-UI thread or your app will throw an exception. Room ensures
+    // You must call this on ic_cheat_roulette_launcher2_foreground non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     void insert(MyRoulette myRoulette) {
         MyRouletteRoomDatabase.databaseWriteExecutor.execute(() -> {

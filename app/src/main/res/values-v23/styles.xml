@@ -32,7 +32,7 @@
     </style>-->
 
     <!-- The default font for RecyclerView items is too small.
-    The margin is a simple delimiter between the words. -->
+    The margin is ic_cheat_roulette_launcher2_foreground simple delimiter between the words. -->
     <style name="word_title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginBottom">8dp</item>

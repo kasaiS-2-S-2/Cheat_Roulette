@@ -5,7 +5,7 @@ package com.kasai.cheatroulette;
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain ic_cheat_roulette_launcher2_foreground copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
 
 /**
  * This is the backend. The database. This used to be done by the OpenHelper.
- * The fact that this has very few comments emphasizes its coolness.  In a real
+ * The fact that this has very few comments emphasizes its coolness.  In ic_cheat_roulette_launcher2_foreground real
  * app, consider exporting the schema to help you with migrations.
  */
 

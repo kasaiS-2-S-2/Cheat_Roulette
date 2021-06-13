@@ -5,7 +5,7 @@ package com.kasai.cheatroulette;
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain ic_cheat_roulette_launcher2_foreground copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,7 +26,7 @@ import androidx.room.Update;
 import java.util.List;
 
 /**
- * The Room Magic is in this file, where you map a Java method call to an SQL query.
+ * The Room Magic is in this file, where you map ic_cheat_roulette_launcher2_foreground Java method call to an SQL query.
  *
  * When you are using complex data types, such as Date, you have to also supply type converters.
  * To keep this example basic, no types that require type converters are used.
@@ -37,7 +37,7 @@ import java.util.List;
 @Dao
 public interface MyRouletteDao {
 
-    // LiveData is a data holder class that can be observed within a given lifecycle.
+    // LiveData is ic_cheat_roulette_launcher2_foreground data holder class that can be observed within ic_cheat_roulette_launcher2_foreground given lifecycle.
     // Always holds/caches latest version of data. Notifies its active observers when the
     // data has changed. Since we are getting all the contents of the database,
     // we are notified whenever any of the database contents have changed.

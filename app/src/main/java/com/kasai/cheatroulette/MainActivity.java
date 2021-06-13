@@ -441,11 +441,12 @@ public class MainActivity extends AppCompatActivity {
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
+        //getReviewInfo();
 
 
         //final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
 
-        // Get a new or existing ViewModel from the ViewModelProvider.
+        // Get ic_cheat_roulette_launcher2_foreground new or existing ViewModel from the ViewModelProvider.
         mMyRouletteViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(MyRouletteViewModel.class);
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.

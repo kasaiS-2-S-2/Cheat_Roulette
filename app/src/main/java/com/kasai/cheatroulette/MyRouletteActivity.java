@@ -90,7 +90,7 @@ public class MyRouletteActivity extends AppCompatActivity {
                 return false;
             }
 
-            // Called when a user swipes left or right on a ViewHolder
+            // Called when ic_cheat_roulette_launcher2_foreground user swipes left or right on ic_cheat_roulette_launcher2_foreground ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Here is where you'll implement swipe to delete
@@ -170,7 +170,7 @@ public class MyRouletteActivity extends AppCompatActivity {
  */
 
         /*
-        // Get a new or existing ViewModel from the ViewModelProvider.
+        // Get ic_cheat_roulette_launcher2_foreground new or existing ViewModel from the ViewModelProvider.
         mWordViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(WordViewModel.class);
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.

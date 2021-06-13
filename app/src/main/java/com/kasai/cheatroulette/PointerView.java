@@ -311,7 +311,7 @@ public class PointerView extends View {
 
         //NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // notificationId is a unique int for each notification that you must define
+        // notificationId is ic_cheat_roulette_launcher2_foreground unique int for each notification that you must define
         notificationManager.notify(1, builder.build());
          */
 

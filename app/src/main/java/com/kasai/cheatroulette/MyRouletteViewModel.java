@@ -9,7 +9,7 @@ wordrepositoryを通じてではあるが、DBへのデータ入出力も兼ね�
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain ic_cheat_roulette_launcher2_foreground copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -28,7 +28,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 /**
- * View Model to keep a reference to the word repository and
+ * View Model to keep ic_cheat_roulette_launcher2_foreground reference to the word repository and
  * an up-to-date list of all words.
  */
 

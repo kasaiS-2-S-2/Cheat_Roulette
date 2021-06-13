@@ -41,14 +41,14 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Log.d("ああああああああああああああああああ", "onCreateViewHolder");
-        // Create a new view, which defines the UI of the list item
+        // Create ic_cheat_roulette_launcher2_foreground new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.rouletteitemlist_item, viewGroup, false);
 
         return new ViewHolder(view ,new EditTextListenerForItemName(),new EditTextListenerForRatio(), new Switch100OnCheckedChangeListener(), new Switch0OnCheckedChangeListener(), new EditTextFocusChangeListener());
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    // Replace the contents of ic_cheat_roulette_launcher2_foreground view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         // Get element from your dataset at this position and replace the
@@ -159,7 +159,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
 
 
     /**
-     * Provide a reference to the type of views that you are using
+     * Provide ic_cheat_roulette_launcher2_foreground reference to the type of views that you are using
      * (custom ViewHolder).
      */
     //なんかstaticになってた。理由不明　5/26 →　公式ドキュメントでなんかstaticにしている。なんでだろ？

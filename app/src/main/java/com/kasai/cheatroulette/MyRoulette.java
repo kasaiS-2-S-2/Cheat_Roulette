@@ -5,7 +5,7 @@ package com.kasai.cheatroulette;
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain ic_cheat_roulette_launcher2_foreground copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -24,9 +24,9 @@ import androidx.room.PrimaryKey;
 import java.util.ArrayList;
 
 /**
- * A basic class representing an entity that is a row in a one-column database table.
+ * A basic class representing an entity that is ic_cheat_roulette_launcher2_foreground row in ic_cheat_roulette_launcher2_foreground one-column database table.
  *
- * @ Entity - You must annotate the class as an entity and supply a table name if not class name.
+ * @ Entity - You must annotate the class as an entity and supply ic_cheat_roulette_launcher2_foreground table name if not class name.
  * @ PrimaryKey - You must identify the primary key.
  * @ ColumnInfo - You must supply the column name if it is different from the variable name.
  *
