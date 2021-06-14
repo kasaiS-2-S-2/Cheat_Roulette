@@ -47,6 +47,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
@@ -441,7 +442,8 @@ public class MainActivity extends AppCompatActivity {
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-        //getReviewInfo();
+
+        getReviewInfo();
 
 
         //final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
@@ -715,8 +717,13 @@ public class MainActivity extends AppCompatActivity {
                         //startActivity(toMyRouletteIntent);
                         break;
                     case R.id.nav_review_app:
-                        getReviewInfo();
+                        //getReviewInfo();
                         startReviewFlow();
+                        break;
+                    case R.id.nav_licenses:
+                        Intent toLicensesIntent = new Intent(getApplicationContext(), OssLicensesMenuActivity.class);
+                        //toLicensesIntent.putExtra("title", "ライセンス");
+                        startActivity(toLicensesIntent);
                         break;
                 }
                 return true;

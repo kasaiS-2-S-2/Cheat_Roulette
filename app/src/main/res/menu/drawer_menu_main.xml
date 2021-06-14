@@ -82,84 +82,13 @@
                     android:id="@+id/nav_review_app"
                     android:title="@string/review_app"
                     android:icon="@drawable/ic_baseline_star_border_24"/>
+                <item
+                    android:id="@+id/nav_licenses"
+                    android:title="@string/licenses"
+                    android:icon="@drawable/ic_baseline_list_alt_24"/>
             </menu>
 
         </item>
     </group>
-
-
-    <group android:checkableBehavior="single">
-
-        <item
-            android:title="profile">
-
-            <menu>
-            <item
-                android:id="@+id/nav_logina"
-                android:title="login"
-                android:icon="@drawable/ic_baseline_refresh_100"/>
-
-                <item
-                    android:id="@+id/nav_loga"
-                    android:title="log1" />
-
-            </menu>
-        </item>
-    </group>
-
-    <item android:title="commute" >
-
-        <menu>
-
-            <item
-                android:id="@+id/nav_la"
-                android:title="log2"
-                android:icon="@drawable/ic_baseline_menu_24"/>
-
-            <item
-                android:id="@+id/nav_ga"
-                android:title="log3"
-                android:icon="@drawable/ic_baseline_menu_24"/>
-
-        </menu>
-
-    </item>
-
-    <group android:checkableBehavior="single">
-
-        <item
-            android:title="profile">
-
-            <menu>
-                <item
-                    android:id="@+id/nav_login"
-                    android:title="login"
-                    android:icon="@drawable/ic_baseline_refresh_100"/>
-
-                <item
-                    android:id="@+id/nav_log"
-                    android:title="log1" />
-
-            </menu>
-        </item>
-    </group>
-
-    <item android:title="commute" >
-
-        <menu>
-
-            <item
-                android:id="@+id/nav_l"
-                android:title="log2"
-                android:icon="@drawable/ic_baseline_menu_24"/>
-
-            <item
-                android:id="@+id/nav_g"
-                android:title="log3"
-                android:icon="@drawable/ic_baseline_menu_24"/>
-
-        </menu>
-
-    </item>
 
 </menu>
