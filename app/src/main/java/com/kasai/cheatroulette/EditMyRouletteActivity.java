@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -598,6 +599,10 @@ public class EditMyRouletteActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu_roulette_create, menu);
+        SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(EditMyRouletteActivity.this);
+        if (!(defaultPref.getBoolean(getString(R.string.saved_tutorial_appear_key), true))) {
+            menu.setGroupVisible(R.id.roulette_create_toolbar_menu_group, false);
+        }
         return true;
     }
 

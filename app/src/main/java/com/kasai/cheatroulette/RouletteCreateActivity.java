@@ -118,6 +118,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         rouletteCreateLayout = findViewById(R.id.roulette_create_layout);
 
         rouletteItemList = findViewById(R.id.roulette_item_list);
@@ -911,6 +912,10 @@ public class RouletteCreateActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu_roulette_create, menu);
+        SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(RouletteCreateActivity.this);
+        if (!(defaultPref.getBoolean(getString(R.string.saved_tutorial_appear_key), true))) {
+            menu.setGroupVisible(R.id.roulette_create_toolbar_menu_group, false);
+        }
         return true;
     }
 
