@@ -734,7 +734,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         fabsMenu = findViewById(R.id.fabs_menu);
-        Log.d("ああああああああああああああああああああ", String.valueOf(fabsMenu.isExpanded()));
         fabsMenu.setMenuUpdateListener(new FABsMenuListener() {
             // You don't need to override all methods. Just the ones you want.
 
