@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -36,6 +37,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
@@ -1430,9 +1432,28 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.tutorial:
-                MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.main_tutorial_id));
-                isTutorialState = true;
-                tutorial();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("チュートリアルを開始しますか？")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.main_tutorial_id));
+                                isTutorialState = true;
+                                tutorial();
+                            }
+                        })
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        })
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                // ダイアログがキャンセルされた際の処理
+                            }
+                        })
+                        .create()
+                        .show();
 
                 return true;
         }

@@ -348,17 +348,25 @@ public class RouletteCreateActivity extends AppCompatActivity {
             // @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                boolean hasProblem = false;
+                String problemContent = "内容を変更してください";
 
                 int switch100PositiveCount = 0;
                 int switch0PositiveCount = 0;
                 RouletteItemListInfo rouletteItemDataSet = rouletteItemListAdapter.getRouletteItemDataSet();
-                int rouletteItemCount = rouletteItemDataSet.getColors().size();
+                int rouletteItemCount = rouletteItemListAdapter.getItemCount();
                 //ルーレットの項目別の当選確率のリスト
                 ArrayList<Float> itemProbabilities = new ArrayList<Float>();
                 //必中スイッチのONOFF情報（データベースに保存するためboolean から Integerに変換）
                 ArrayList<Integer> OnOffOfSwitch100 = new ArrayList<Integer>();
                 //絶対ハズレスイッチのONOFF情報（データベースに保存するためboolean から Integerに変換）
                 ArrayList<Integer> OnOffOfSwitch0 = new ArrayList<Integer>();
+
+                //作成ボタンが押された場合、キーボードを隠す
+                if (getCurrentFocus() != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
 
                 for (int i = 0; i < rouletteItemCount; i++) {
                     //switch100, switch0 それぞれのONOFF情報を追加
@@ -376,6 +384,25 @@ public class RouletteCreateActivity extends AppCompatActivity {
                     }
                 }
 
+                if (switch0PositiveCount >= 1 && switch100PositiveCount >= 1) {
+                    hasProblem = true;
+                    problemContent = "必中スイッチと絶対ハズレスイッチがどちらONになっています。\nどちらかをOFFにしてください。";
+                }
+
+                if (switch0PositiveCount == rouletteItemCount) {
+                    hasProblem = true;
+                    problemContent = "全ての絶対ハズレスイッチをONにすることはできません。\nどれかをOFFにしてください。";
+                }
+
+                ArrayList<Integer> itemRatioArrayList = rouletteItemDataSet.getItemRatios();
+                for (int i=0; i < itemRatioArrayList.size(); i++) {
+                    int ratio = itemRatioArrayList.get(i);
+                    if (ratio < 1 || ratio > 99) {
+                        hasProblem = true;
+                        problemContent = "面積比の値が不正です。\n1~99の値を入れてください。";
+                        break;
+                    }
+                }
 
                 if (switch100PositiveCount >= 1) {
                     for (int i = 0; i < rouletteItemCount; i++) {
@@ -444,87 +471,126 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
                 Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
 
-                if (!isTutorialState) {
-                    SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(RouletteCreateActivity.this);
-                    if (!(defaultPref.getBoolean(getString(R.string.saved_auto_save_created_roulette_key), false))) {
-                        // 保存するかどうかをアラートダイアログで確認する場合
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
-                        builder.setMessage("Myルーレットに保存しますか？")
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                if (hasProblem) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
+                    builder.setTitle("ルーレット内容が不正です。")
+                            .setMessage(problemContent)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            })
+                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    // ダイアログがキャンセルされた際の処理
+                                }
+                            })
+                            .create()
+                            .show();
+                } else {
 
-                                        int myRouletteItemCount = MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().size();
-                                        if (myRouletteItemCount < 50) {
-                                            //保存個数上限未満なら保存
-                                            MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
-                                                    rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                                                    rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                                            //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
-                                            MainActivity.mMyRouletteViewModel.insert(myRoulette);
-                                        } else {
-                                            Toast.makeText(RouletteCreateActivity.this, getString(R.string.notificatoin_myRoulettes_are_max), Toast.LENGTH_SHORT).show();
+                    if (!isTutorialState) {
+                        SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(RouletteCreateActivity.this);
+                        if (!(defaultPref.getBoolean(getString(R.string.saved_auto_save_created_roulette_key), false))) {
+                            // 保存するかどうかをアラートダイアログで確認する場合
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);
+                            builder.setMessage("Myルーレットに保存しますか？")
+                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+                                            int myRouletteItemCount = MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().size();
+                                            if (myRouletteItemCount < 50) {
+                                                //保存個数上限未満なら保存
+                                                MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                                                        rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                                                        rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                                                //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+                                                MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                                            } else {
+                                                Toast.makeText(RouletteCreateActivity.this, getString(R.string.notificatoin_myRoulettes_are_max), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                            fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                                            fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                                            fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                                            //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                                            fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+
+                                            setResult(RESULT_OK, fromRouletteCreateIntent);
+
+                                            RouletteCreateActivity.this.finish();
                                         }
+                                    })
+                                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                                        fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
-                                        fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                                        fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                                        //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                                        fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+                                            //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                            fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                                            fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                                            fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                                            fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                                            //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                                            fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
 
-                                        setResult(RESULT_OK, fromRouletteCreateIntent);
+                                            setResult(RESULT_OK, fromRouletteCreateIntent);
 
-                                        RouletteCreateActivity.this.finish();
-                                    }
-                                })
-                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                        //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                                        fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
-                                        fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                                        fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                                        fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                                        //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                                        fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
-
-                                        setResult(RESULT_OK, fromRouletteCreateIntent);
-
-                                        RouletteCreateActivity.this.finish();
-                                    }
-                                })
-                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialog) {
-                                        // ダイアログがキャンセルされた際の処理
-                                    }
-                                })
-                                .create()
-                                .show();
-                    } else {
-                        //確認しない場合（自動保存）
-
-                        int myRouletteItemCount = MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().size();
-                        if (myRouletteItemCount < 50) {
-                            //保存個数上限未満なら保存
-                            MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
-                                    rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                                    rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                            //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
-                            MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                                            RouletteCreateActivity.this.finish();
+                                        }
+                                    })
+                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                        @Override
+                                        public void onCancel(DialogInterface dialog) {
+                                            // ダイアログがキャンセルされた際の処理
+                                        }
+                                    })
+                                    .create()
+                                    .show();
                         } else {
-                            Toast.makeText(RouletteCreateActivity.this, getString(R.string.notificatoin_myRoulettes_are_max), Toast.LENGTH_SHORT).show();
+                            //確認しない場合（自動保存）
+
+                            int myRouletteItemCount = MainActivity.mMyRouletteViewModel.getAllMyRoulette().getValue().size();
+                            if (myRouletteItemCount < 50) {
+                                //保存個数上限未満なら保存
+                                MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                                        rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                                        rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                                //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
+                                MainActivity.mMyRouletteViewModel.insert(myRoulette);
+                            } else {
+                                Toast.makeText(RouletteCreateActivity.this, getString(R.string.notificatoin_myRoulettes_are_max), Toast.LENGTH_SHORT).show();
+                            }
+
+                            //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                            fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                            fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
+                            fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
+                            fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
+                            fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
+                            fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
+                            fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
+                            //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
+                            fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
+
+                            setResult(RESULT_OK, fromRouletteCreateIntent);
+
+                            RouletteCreateActivity.this.finish();
                         }
 
+//                startActivity(rouletteCreateIntent);
+
+                        //finish();
+
+                    } else {
                         //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                        fromRouletteCreateIntent.putExtra("isTutorialState", isTutorialState);
+                        fromRouletteCreateIntent.putExtra("isTutorialContinue", isTutorialState);
                         fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
                         fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
                         fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
@@ -536,28 +602,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
                         setResult(RESULT_OK, fromRouletteCreateIntent);
 
-                        RouletteCreateActivity.this.finish();
-                    }
-
-//                startActivity(rouletteCreateIntent);
-
-                    //finish();
-
-                } else {
-                    //Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                    fromRouletteCreateIntent.putExtra("isTutorialContinue", isTutorialState);
-                    fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                    fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                    fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                    fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                    fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                    //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                    fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
-
-                    setResult(RESULT_OK, fromRouletteCreateIntent);
-
-                    isTutorialState = false;
+                        isTutorialState = false;
                     /*
                     //最初のチュートリアルが終わったら、そのことを保存しておく
                     SharedPreferences sharedPref = RouletteCreateActivity.this.getPreferences(Context.MODE_PRIVATE);
@@ -567,7 +612,9 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
                      */
 
-                    RouletteCreateActivity.this.finish();
+                        RouletteCreateActivity.this.finish();
+                    }
+
                 }
 
             }
@@ -605,9 +652,115 @@ public class RouletteCreateActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), true);
             editor.apply();
 
-            tutorial();
+            firstTutorial();
             //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
         }
+    }
+
+    private void firstTutorial() {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100);
+        config.setRenderOverNavigationBar(true);
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.roulette_create_first_tutorial_id));
+
+        /*
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+
+        sequence.setConfig(config);
+
+        sequence.singleUse(getString(R.string.roulette_create_first_tutorial_id));
+
+        /*
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(rouletteCreateLayout)
+                        .setContentText("ここではルーレットの作成を行うことができます。")
+                        //.setToolTip(itemNameToolTip)
+                        //.setTargetTouchable(true)
+                        //.setDismissOnTargetTouch(true)
+                        .setDismissOnTouch(true)
+                        .withoutShape()
+                        .build()
+        );
+
+         */
+
+        ShowcaseTooltip itemAddToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("ここでルーレットの項目を１つずつ追加できます。<br><br>タップして追加してみましょう。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(itemAddButton)
+                        //.setContentText("ここでルーレットの項目を１つずつ追加できます。")
+                        .setToolTip(itemAddToolTip)
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .withRectangleShape()
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .build()
+        );
+
+        ShowcaseTooltip cheatAppearToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("イカサマをするには、この隠しボタンを押す必要があります。<br><br>タップしてみましょう。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(cheatButton)
+                        .setToolTip(cheatAppearToolTip)
+                        //.setContentText("イカサマをするには、この隠しボタンを押す必要があります。\n\nタップしてみましょう。")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withRectangleShape()
+                        .build()
+        );
+
+        /*
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForAdapterPosition(1)).getLinearLayout2())
+                        .setContentText("This is button three")
+                        .withRectangleShape()
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(cheatButton)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(createFinishFab)
+                        .setContentText("This is button two")
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .build()
+        );
+
+         */
+
+        Log.d("あああああああああああああ", "firstTutorial()");
+        sequence.start();
     }
 
     private void tutorial() {
@@ -708,7 +861,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("ルーレット項目の面積比を、０〜９９の数値で設定できます。");
+                .text("ルーレット項目の面積比を、1~99の数値で設定できます。");
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -878,7 +1031,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("ここでルーレットの作成を完了します。");
+                .text("ここでルーレットの作成を完了します。<br><br>チュートリアルは右上のアイコンからいつでも見ることができます。");
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)

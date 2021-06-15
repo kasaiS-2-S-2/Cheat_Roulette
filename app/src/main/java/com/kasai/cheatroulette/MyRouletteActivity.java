@@ -267,6 +267,8 @@ public class MyRouletteActivity extends AppCompatActivity {
         MainActivity.mMyRouletteViewModel.delete(primaryKey);
     }
 
+
+
     private void tutorial() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(100);
@@ -431,8 +433,27 @@ public class MyRouletteActivity extends AppCompatActivity {
                 return true;
             case R.id.tutorial:
                 // ボタンをタップした際の処理を記述
-                MaterialShowcaseView.resetSingleUse(MyRouletteActivity.this, getString(R.string.myRoulette_tutorial_id));
-                tutorial();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyRouletteActivity.this);
+                builder.setTitle("チュートリアルを開始しますか？")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                MaterialShowcaseView.resetSingleUse(MyRouletteActivity.this, getString(R.string.myRoulette_tutorial_id));
+                                tutorial();
+                            }
+                        })
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        })
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                // ダイアログがキャンセルされた際の処理
+                            }
+                        })
+                        .create()
+                        .show();
 
                 return true;
         }

@@ -74,5 +74,6 @@
     <string name="notificatoin_myRoulettes_are_max">保存可能個数の上限を超えているため保存できません。Myルーレットを削除してください。</string>
     <string name="review_app">評価する</string>
     <string name="licenses">ライセンス</string>
+    <string name="roulette_create_first_tutorial_id">roulette_create_first_tutorial</string>
 
 </resources>

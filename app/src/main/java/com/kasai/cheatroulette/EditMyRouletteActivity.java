@@ -303,6 +303,8 @@ public class EditMyRouletteActivity extends AppCompatActivity {
             // @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                boolean hasProblem = false;
+                String problemContent = "内容を変更してください";
 
                 int switch100PositiveCount = 0;
                 int switch0PositiveCount = 0;
@@ -314,6 +316,12 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                 ArrayList<Integer> OnOffOfSwitch100 = new ArrayList<Integer>();
                 //絶対ハズレスイッチのONOFF情報（データベースに保存するためboolean から Integerに変換）
                 ArrayList<Integer> OnOffOfSwitch0 = new ArrayList<Integer>();
+
+                //作成ボタンが押された場合、キーボードを隠す
+                if (getCurrentFocus() != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
 
                 for (int i=0; i < rouletteItemCount; i++) {
                     //switch100, switch0 それぞれのONOFF情報を追加
@@ -328,6 +336,26 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                     } else {
                         OnOffOfSwitch100.add(0); // 0 = OFF
                         OnOffOfSwitch0.add(0); // 0 = OFF
+                    }
+                }
+
+                if (switch0PositiveCount >= 1 && switch100PositiveCount >= 1) {
+                    hasProblem = true;
+                    problemContent = "必中スイッチと絶対ハズレスイッチがどちらONになっています。\nどちらかをOFFにしてください。";
+                }
+
+                if (switch0PositiveCount == rouletteItemCount) {
+                    hasProblem = true;
+                    problemContent = "全ての絶対ハズレスイッチをONにすることはできません。\nどれかをOFFにしてください。";
+                }
+
+                ArrayList<Integer> itemRatioArrayList = rouletteItemDataSet.getItemRatios();
+                for (int i=0; i < itemRatioArrayList.size(); i++) {
+                    int ratio = itemRatioArrayList.get(i);
+                    if (ratio < 1 || ratio > 99) {
+                        hasProblem = true;
+                        problemContent = "面積比の値が不正です。\n1~99の値を入れてください。";
+                        break;
                     }
                 }
 
@@ -369,13 +397,31 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                     itemProbabilityArray[i] = itemProbabilities.get(i);
                 }
 
-                MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
-                        rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                        rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                myRoulette.setId(rouletteIdFromMyRoulette);
-                MainActivity.mMyRouletteViewModel.update(myRoulette);
-                //MainActivity.adapter.notifyItemChanged(editItemPosition);
-                //MyRouletteActivity.recyclerView.getAdapter().notifyItemChanged(editItemPosition);
+                if (hasProblem) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditMyRouletteActivity.this);
+                    builder.setTitle("ルーレット内容が不正です。")
+                            .setMessage(problemContent)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            })
+                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    // ダイアログがキャンセルされた際の処理
+                                }
+                            })
+                            .create()
+                            .show();
+                } else {
+
+                    MyRoulette myRoulette = new MyRoulette(rouletteName.getText().toString(), getNowDate(),
+                            rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
+                            rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
+                    myRoulette.setId(rouletteIdFromMyRoulette);
+                    MainActivity.mMyRouletteViewModel.update(myRoulette);
+                    //MainActivity.adapter.notifyItemChanged(editItemPosition);
+                    //MyRouletteActivity.recyclerView.getAdapter().notifyItemChanged(editItemPosition);
 
 
                 /*
@@ -384,7 +430,8 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                 finish();
 
                  */
-                finish();
+                    finish();
+                }
 
                 //保存するかどうかをチェックボックスで確認する場合
                 /*
@@ -620,8 +667,27 @@ public class EditMyRouletteActivity extends AppCompatActivity {
                 return true;
             case R.id.tutorial:
                 // ボタンをタップした際の処理を記述
-                MaterialShowcaseView.resetSingleUse(EditMyRouletteActivity.this, getString(R.string.edit_myRoulette_tutorial_id));
-                tutorial();
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditMyRouletteActivity.this);
+                builder.setTitle("チュートリアルを開始しますか？")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                MaterialShowcaseView.resetSingleUse(EditMyRouletteActivity.this, getString(R.string.edit_myRoulette_tutorial_id));
+                                tutorial();
+                            }
+                        })
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        })
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                // ダイアログがキャンセルされた際の処理
+                            }
+                        })
+                        .create()
+                        .show();
 
                 return true;
         }
