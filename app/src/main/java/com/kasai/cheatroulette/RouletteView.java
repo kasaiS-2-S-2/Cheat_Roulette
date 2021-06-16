@@ -2,14 +2,11 @@ package com.kasai.cheatroulette;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
@@ -17,100 +14,57 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import java.util.ArrayList;
 
 public class RouletteView extends View {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isAnimation;
-
-    //Bitmap rotateIcon, rotateIcon2;
-
     VectorDrawableCompat rotateIcon;
-
     //各ルーレット情報の主キー
     private int id;
-
     //分割数
     private int splitCount = 1;
-
     //ルーレットの名前
     private String rouletteName;
-
     //ルーレットの色のリスト
     private ArrayList<Integer> colors = new ArrayList<Integer>();
-
     //ルーレットの文字列のリスト
     private ArrayList<String> itemNames = new ArrayList<String>();
-
     //ルーレットの項目比率のリスト
     private ArrayList<Integer> itemRatios = new ArrayList<Integer>();
-
     //必中スイッチのONOFF情報
     private ArrayList<Integer> OnOffInfoOfSwitch100 = new ArrayList<Integer>();
-
     //絶対ハズレスイッチのONOFF情報
     private ArrayList<Integer> OnOffInfoOfSwitch0 = new ArrayList<Integer>();
-
     //ルーレットの項目別の当選確率のリスト
     private ArrayList<Float> itemProbabilities = new ArrayList<Float>();
 
-
     // Canvas 中心点
-    float xc = 0.0f;//int →　float
-    float yc = 0.0f;//int →　float
-
+    float xc = 0.0f;
+    float yc = 0.0f;
     private RectF rectF = null;
-////////////////////////////////////////////////////////////////////////////////////////////////////
     Paint colorPaint, startButtonPaint, startButtonBelowPaint, firstColorPaint, edgePaint, shadowPaint;
-
     Paint textPaint;
-
-    float angle;//int → float
-
+    float angle;
     int num;
-
     int sumOfItemRatio = 0;
-
     int angleCount = 0;
-
     float sumOfAngle = 0;
-
     float pos = 0;
-
-    int init = 0;
-
     boolean isStateNoRoulette = true;
-
-    Bitmap icLauncherBitmap;
-    Matrix matrix;
 
 
     public RouletteView(Context context, AttributeSet attrs) { //クラスRouletteViewのコンストラクタ
         super(context, attrs);
 
-        //icLauncherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
-        //Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.mipmap.ic_launcher, null);
-        //icLauncherBitmap = ResourceUtil.drawableToBitmap(drawable);
-        //行列を作成する。
-        //matrix = new Matrix();
-        //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_100);
         rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_100, null);
         rotateIcon.setTint(getResources().getColor(R.color.roulette_start_icon));
-        //float strokeWidth = 400.0f;///////////////////////////////////////////
-        colorPaint = new Paint();//////////////////////////////////////////////////
-        colorPaint.setAntiAlias(true);/////////////////////////////////////////////
+        colorPaint = new Paint();
+        colorPaint.setAntiAlias(true);
         setLayerType(LAYER_TYPE_HARDWARE, colorPaint);
-        //paint.setStyle(Paint.Style.STROKE);///////////////////////////////////
-        //paint.setStrokeWidth(strokeWidth);////////////////////////////////////
-
-//            paint = new Paint();
-        //          paint.setAntiAlias(true);
 
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
-        //textPaint.setTextSize(45);
         textPaint.setAntiAlias(true);
         setLayerType(LAYER_TYPE_HARDWARE, textPaint);
 
-        startButtonPaint = new Paint();/////////////////////////////////////////////
-        startButtonPaint.setColor(getResources().getColor(R.color.roulette_start_button));///////////////////////////////////////
+        startButtonPaint = new Paint();
+        startButtonPaint.setColor(getResources().getColor(R.color.roulette_start_button));
         startButtonPaint.setAntiAlias(true);
         setLayerType(LAYER_TYPE_SOFTWARE, startButtonPaint);
 
@@ -127,7 +81,6 @@ public class RouletteView extends View {
         //枠線の描画
         edgePaint = new Paint();
         edgePaint.setColor(Color.parseColor("#50FFFFFF"));
-        //edgePaint.setColor(Color.RED);
         edgePaint.setAntiAlias(true);
         edgePaint.setStyle(Paint.Style.STROKE);
         setLayerType(LAYER_TYPE_HARDWARE, edgePaint);
@@ -136,17 +89,11 @@ public class RouletteView extends View {
         shadowPaint.setAntiAlias(true);
         //ソフトウェアレイアーを使う　→　影をうまく表示できないため
         setLayerType(LAYER_TYPE_SOFTWARE, shadowPaint);
-        //shadowPaint.setColor(Color.parseColor("#00000000"));
-
-        //edgePaint.setStrokeWidth(48);
-
-        //this.num = colors.size();
-        //angle = (float) 360 / num;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);///////////////////////////////////////////////
+        super.onDraw(canvas);
 
         canvas.save();
 
@@ -160,11 +107,8 @@ public class RouletteView extends View {
 
             float rouletteRadius = (getWidth()/2f) * (15f/16f);
 
-            //shadowPaint.setShadowLayer((getWidth()/2f)+(getWidth()/64f), 0,0, Color.BLACK);
-            //shadowPaint.setShadowLayer((rouletteRadius/2f), 0,0, Color.BLACK);
             shadowPaint.setShadowLayer(rouletteRadius/18f, 0, 0, Color.DKGRAY);
-            //setLayerType(LAYER_TYPE_SOFTWARE, shadowPaint);
-            //setLayerType(LAYER_TYPE_HARDWARE, shadowPaint);
+
             canvas.drawCircle(xc, yc, rouletteRadius, shadowPaint);
 
             sumOfItemRatio = 0;
@@ -174,25 +118,7 @@ public class RouletteView extends View {
             this.num = colors.size();
             angle = (float) 360 / (sumOfItemRatio * splitCount);
 
-
-            // 背景
-            //canvas.drawColor(Color.WHITE);
-            //canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);//これ以前に描いたこと全部を透明にするコード
-
-            //if(init == 0) {
-            // Canvas 中心点
-            //if(xc == 0.0f) xc = (float)canvas.getWidth() / 2;
-            //if(yc == 0.0f) yc = (float)canvas.getHeight() / 2;
-
-            // 画面の中心から横幅に合わせた正方形を作る
-            //if(rectF == null) rectF = new RectF(xc - yc/2, yc - yc/2, xc + yc/2, yc + yc/2);//
-
-            //Log.d("ああああああああああああああああああああ", " " + 0.0f + " " + (yc - xc) + " " + getWidth() +  " " +(yc + xc));
-            //Log.d("ああああああああああああああああああああ", " " + (getWidth()/32f) + " " + (yc - rouletteRadius) + " " + (getWidth() - (getWidth()/32f)) + " " + (yc + rouletteRadius));
-            //rectF = new RectF(getWidth()/8f, yc - rouletteDiameter, getWidth() - (getWidth()/8f), yc + rouletteDiameter);///////////////////////////////////////
-            if (rectF == null) rectF = new RectF(getWidth()/32f, yc - rouletteRadius, getWidth() - getWidth()/32f, yc + rouletteRadius);///////////////////////////////////////
-            //init = 1;
-            //}
+            if (rectF == null) rectF = new RectF(getWidth()/32f, yc - rouletteRadius, getWidth() - getWidth()/32f, yc + rouletteRadius);
 
             canvas.rotate(270, xc, yc); //項目順になるようにルーレットの初期位置を設定
 
@@ -202,26 +128,19 @@ public class RouletteView extends View {
             for (int k = 0; k < splitCount; k++) {
                 // パネルの描画
                 for (int i = 0; i < num; i++) {
-                    //paint.setColor(colors[i]);
-                    colorPaint.setColor(colors.get(i));//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった →　検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+                    colorPaint.setColor(colors.get(i));
                     canvas.drawArc(rectF, sumOfAngle + pos, angle * itemRatios.get(i), true, colorPaint);
-                    //枠線描画
-                    //canvas.drawArc(rectF, sumOfAngle + pos, angle * itemRatios.get(i), true, edgePaint);
                     sumOfAngle += angle * itemRatios.get(i);
                     angleCount++;
                 }
             }
 
             canvas.rotate(90, xc, yc);
-            //canvas.drawBitmap(rotateIcon, xc - rotateIcon.getWidth()/2f, yc - rotateIcon.getHeight()/2f, null);
-
-            //rotateIcon.setBounds((int)(xc - rotateIcon.getIntrinsicWidth()/2), (int)(yc - rotateIcon.getIntrinsicHeight()/2),(int)xc + rotateIcon.getIntrinsicWidth()/2, (int)yc + rotateIcon.getIntrinsicHeight()/2);
             rotateIcon.setBounds((int)(xc - getWidth()/8), (int)(yc - getWidth()/8),
                     (int)xc + getWidth()/8, (int)yc + getWidth()/8);
             canvas.drawCircle(xc, yc, getWidth()/5.4f ,startButtonBelowPaint);
             startButtonPaint.setShadowLayer(rouletteRadius/30f, 0, 0, Color.BLACK);
             canvas.drawCircle(xc, yc, (getWidth()/7.1f) * 0.9f ,startButtonPaint);
-            //canvas.drawCircle(xc, yc, getWidth()/7f, paint4);
             rotateIcon.draw(canvas);
 
             canvas.rotate(-90, xc, yc);
@@ -232,22 +151,20 @@ public class RouletteView extends View {
                 for (int j = 0; j < num; j++) {
                     float textAngle = 0;
                     if ((k == 0) && (j == 0)) {//一回目のみこの処理
-                        //textAngle = angle + pos;
                         textAngle = (angle * itemRatios.get(j)) / 2 + pos;
                     } else if (j == 0) {
                         textAngle = ((angle * itemRatios.get(colors.size() - 1)) / 2) + ((angle * itemRatios.get(j)) / 2);
                     } else {
                         textAngle = ((angle * itemRatios.get(j - 1)) / 2) + ((angle * itemRatios.get(j)) / 2);
                     }
-                    canvas.rotate(textAngle, xc, yc);//rotateすると、canvasごと回る。
+                    canvas.rotate(textAngle, xc, yc);
 
                     //色の明暗の判定
                     if (isColorDark(colors.get(j))) {
                         textPaint.setColor(Color.WHITE);
-                        //canvas.drawText(textStrings.get(j), xc + getWidth() / 5.5f, yc + getWidth() / 68f, textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
+
                     } else {
                         textPaint.setColor(Color.BLACK);
-                        //canvas.drawText(textStrings.get(j), xc + getWidth() / 5.5f, yc + getWidth() / 68f, textPaint);//get(i % colors.size())でやったらめちゃめちゃ処理が遅くなった　→ 検証したら、多分.size()ってより剰余の計算量がでかいっぽい
                     }
 
                     //描く文字列
@@ -257,9 +174,7 @@ public class RouletteView extends View {
                     //文字列の左端位置
                     float textEdgeLeft = xc + (getWidth()/5f);
                     //文字列の最大幅
-                    //float maxTextWidth = (getWidth() - (getWidth()/16f)) - (xc + (getWidth()/6f));
                     float maxTextWidth = textEdgeRight - textEdgeLeft;
-                    Log.d("ああああああああああああああああ", String.valueOf(maxTextWidth));
                     //最大幅を文字列幅が超えていたら、省略して表示
                     if (textPaint.measureText(willDrawText) >= maxTextWidth) {
                         int countIndex = 1;
@@ -274,34 +189,10 @@ public class RouletteView extends View {
                     }
                 }
             }
-
-
-            //VectorDrawableCompat rotateIcon = VectorDrawableCompat.create(getContext().getResources(), R.drawable.ic_baseline_refresh_100, null);
-            //rotateIcon.setBounds(0, 0, rotateIcon.getIntrinsicWidth(), rotateIcon.getIntrinsicHeight());
-            //rotateIcon.draw(canvas);
-
-            //rotateIcon = ResourceUtil.getBitmap(getContext(), R.drawable.ic_baseline_refresh_100);
-
-
-
-            //x方向に2倍拡大する,y方向に0.5倍に縮小する。
-            //matrix.postScale(2,0.5f);
-            //Bitmapの中央を起点に90度回転する。
-            //matrix.postRotate(90,xc , yc);
-            //x方向に50,y方向に1500移動する。
-            //matrix.postTranslate(xc,yc);
-
-           // canvas.drawBitmap(icLauncherBitmap,0,0,null);
-            //canvas.drawBitmap(rotateIcon , matrix , paint3);
-
-
             //枠線描画
             float edgeWidth = getWidth()/32f;
             edgePaint.setStrokeWidth(edgeWidth);
             canvas.drawCircle(xc, yc, rouletteRadius - edgeWidth/2f , edgePaint);
-            //中心の白い円の描画
-            //canvas.drawCircle(xc, yc, 200, paint2)
-
         }
     }
 
@@ -377,8 +268,6 @@ public class RouletteView extends View {
         this.OnOffInfoOfSwitch0 = OnOffOfSwitch0Info;
         //ルーレットの項目別の当選確率のリスト
         this.itemProbabilities = itemProbabilitiesInfo;
-
-        //invalidate(); //上記の情報を更新したら勝手に再描画されるから、これは呼ばなくて良い？（setWillNotDrawみたいなやつが関係している？)
     }
 
     public float getxc() {

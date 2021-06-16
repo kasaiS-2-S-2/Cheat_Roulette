@@ -43,10 +43,12 @@
 
         <activity
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity" />
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

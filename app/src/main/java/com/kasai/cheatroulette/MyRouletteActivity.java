@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,15 +38,10 @@ public class MyRouletteActivity extends AppCompatActivity {
 
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
-    //private WordViewModel mWordViewModel;
-
-    //private ConstraintLayout constraintLayout;
     public RecyclerView myRouletteList;
     private ConstraintLayout myRouletteConstrainLayout;
     private Button returnButton;
     private Toolbar toolbar;
-
-    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +84,8 @@ public class MyRouletteActivity extends AppCompatActivity {
                 return false;
             }
 
-            // Called when ic_cheat_roulette_launcher2_foreground user swipes left or right on ic_cheat_roulette_launcher2_foreground ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
                 int myRouletteItemCount = myRouletteList.getAdapter().getItemCount();
                 if (myRouletteItemCount >= 3) {
                     SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MyRouletteActivity.this);
@@ -107,8 +99,7 @@ public class MyRouletteActivity extends AppCompatActivity {
                                 })
                                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        // User cancelled the dialog,
-                                        // so we will refresh the adapter to prevent hiding the item from UI
+
                                         myRouletteList.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
                                     }
                                 })
@@ -129,127 +120,20 @@ public class MyRouletteActivity extends AppCompatActivity {
                 }
             }
         }).attachToRecyclerView(myRouletteList);
-
-
-
-
-
-/*
-        //スワイプ削除時にアラートダイアログ出せないバージョン
-        ItemTouchHelper mIth  = new ItemTouchHelper(
-
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN ,
-                        ItemTouchHelper.LEFT) {
-
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView,
-                                          @NonNull RecyclerView.ViewHolder viewHolder,
-                                          @NonNull RecyclerView.ViewHolder target) {
-                        final int fromPos = viewHolder.getAdapterPosition();
-                        final int toPos = target.getAdapterPosition();
-                        adapter.notifyItemMoved(fromPos, toPos);
-                        return true;// true if moved, false otherwise
-                    }
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-                        //スワイプされた箇所のデータベースのprimarykeyを取得
-                        int primaryKey = ((WordViewHolder)viewHolder).getRouletteView().getId();
-                        //取得したprimarykeyの所のデータを消去
-                        MainActivity.mWordViewModel.delete(primaryKey);
-                        //スワイプされたList<word>の項目をList<word>から削除
-                        MainActivity.mWordViewModel.getAllWords().getValue().remove(viewHolder.getAdapterPosition());
-                        //List<word>から削除されたことを通知（viewHolderにそのことを反映している？）
-                        recyclerView.getAdapter().notifyItemRemoved(viewHolder.getAdapterPosition());
-
-
-                    }
-                });
-        mIth.attachToRecyclerView(recyclerView);
-
- */
-
-        /*
-        // Get ic_cheat_roulette_launcher2_foreground new or existing ViewModel from the ViewModelProvider.
-        mWordViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(WordViewModel.class);
-
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-        // ここで、recyclerViewにDBのデータを表示する。無いと何も表示されない（recyclerViewがあり、DBも更新されているが、見た目のみ反映できない
-
-
-         */
-
-        //mWordViewModel.getAllWords().observe(this, words -> {
-
-            /*
-            ラムダ式でなければ、
-           mWordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-                @Override
-                public void onChanged(List<Word> words) {
-                    adapter.submitList(words);
-                }
-           });
-            的な感じ？ 参考（onClickListenerの無名クラスの形での実装コード, https://qiita.com/sano1202/items/64593e8e981e8d6439d3#3-%E3%83%A9%E3%83%A0%E3%83%80%E5%BC%8F%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9, 1-2.無名クラス)
-            無名クラスは、インターフェースをimplementの記述なしで実装できる！みたいな書き方ができる。ラムダ式はその無名クラスをさらに簡略化して書ける！
-            wordsはObserverインターフェースのonChange abstractメソッドの引数
-            */
-
-            // Update the cached copy of the words in the adapter.
-          //  adapter.submitList(words);
-        //});
-
-        /*
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
-            startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
-        });
-        */
-
-        Log.d("あああああああああああXXXXXXXXX", String.valueOf(myRouletteList.getChildCount()));
-        Log.d("あああああああああああXXXXXXXXX", String.valueOf(myRouletteList.getChildAt(0)));
-        Log.d("あああああああああああXXXXXXXXX", String.valueOf(myRouletteList.getChildAt(1)));
-
-        /*
-        SharedPreferences sharedPref = MyRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
-        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), false);
-        if (!isFirstTutorialDone) {
-            //isTutorialState = true;
-            tutorial();
-            //最初のチュートリアルが終わったら、そのことを保存しておく
-            //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), true);
-            editor.apply();
-            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
-        }
-
-         */
-
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.Q)
     public void onWindowFocusChanged(boolean hasFocus) {
-        //public void onResume() {
-        //super.onRestart();
-        //super.onStart();
-        //super.onResume();
 
         super.onWindowFocusChanged(hasFocus);
 
         SharedPreferences sharedPref = MyRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), false);
         if (!isFirstTutorialDone) {
-            //isTutorialState = true;
             tutorial();
             //最初のチュートリアルが終わったら、そのことを保存しておく
-            //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), true);
             editor.apply();
-            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
         }
     }
 
@@ -276,15 +160,6 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.myRoulette_tutorial_id));
 
-        /*
-        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
-            @Override
-            public void onShow(MaterialShowcaseView itemView, int position) {
-                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
-
         sequence.setConfig(config);
 
         sequence.singleUse(getString(R.string.myRoulette_tutorial_id));
@@ -296,9 +171,6 @@ public class MyRouletteActivity extends AppCompatActivity {
                         .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
                         .setGravity(16)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
-                        //.setToolTip(itemNameToolTip)
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
                         .setDismissOnTouch(true)
                         .withoutShape()
                         .build()
@@ -312,12 +184,8 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
-                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getCardView().findViewById(R.id.roulette_name))
                         .setTarget(myRouletteList.getChildAt(1).findViewById(R.id.roulette_name))
                         .setToolTip(myRouletteNameToolTip)
-                        //.setContentText("ここでルーレットの作成を完了します。")
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
                         .setDismissOnTouch(true)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
                         .withRectangleShape()
@@ -332,12 +200,8 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
-                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getEditMyRouletteButton())
                         .setTarget(myRouletteList.getChildAt(1).findViewById(R.id.edit_myRoulette))
                         .setToolTip(editMyRouletteToolTip)
-                        //.setContentText("ここでルーレットの作成を完了します。")
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
                         .setDismissOnTouch(true)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
                         .withRectangleShape()
@@ -352,12 +216,8 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
-                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getDeleteMyRouletteButton())
                         .setTarget(myRouletteList.getChildAt(1).findViewById(R.id.delete_myRoulette))
                         .setToolTip(deleteMyRouletteToolTip)
-                        //.setContentText("ここでルーレットの作成を完了します。")
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
                         .setDismissOnTouch(true)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
                         .withRectangleShape()
@@ -372,50 +232,13 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
-                        //.setTarget(((MyRouletteViewHolder)myRouletteList.findViewHolderForLayoutPosition(1)).getCardView())
                         .setTarget(myRouletteList.getChildAt(1))
                         .setToolTip(myRouletteItemToolTip)
-                        //.setContentText("ここでルーレットの作成を完了します。")
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
                         .setDismissOnTouch(true)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
                         .withRectangleShape()
                         .build()
         );
-
-        /*
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForAdapterPosition(1)).getLinearLayout2())
-                        .setContentText("This is button three")
-                        .withRectangleShape()
-                        .setTargetTouchable(true)
-                        .setDismissOnTargetTouch(true)
-                        .build()
-        );
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(cheatButton)
-                        .setContentText("This is button two")
-                        .setTargetTouchable(true)
-                        .setDismissOnTargetTouch(true)
-                        .build()
-        );
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(createFinishFab)
-                        .setContentText("This is button two")
-                        .setTargetTouchable(true)
-                        .setDismissOnTargetTouch(true)
-                        .build()
-        );
-
-         */
-
-        Log.d("あああああああああああああ", "firstTutorial()");
         sequence.start();
     }
 
@@ -474,12 +297,8 @@ public class MyRouletteActivity extends AppCompatActivity {
         //constrainLayoutの中のRouletteView
         RouletteView selectedRouletteView = viewGroup.findViewById(R.id.myRoulette);
 
-        //Uri uri = null;
-        //Intent fromMyRouletteToMain = new Intent("SET_MYROULETTE", uri, getApplicationContext(), MainActivity.class);
-        //Intent fromMyRouletteToMain = new Intent("SET_MYROULETTE");
         Intent fromMyRouletteToMain = new Intent();
 
-        //Intent fromMyRouletteToMain = new Intent(getApplicationContext(), MainActivity.class);
         fromMyRouletteToMain.putExtra("rouletteName", selectedRouletteView.getRouletteName());
         fromMyRouletteToMain.putIntegerArrayListExtra("colors", selectedRouletteView.getColors());
         fromMyRouletteToMain.putStringArrayListExtra("textStrings", selectedRouletteView.getItemNames());
@@ -494,11 +313,6 @@ public class MyRouletteActivity extends AppCompatActivity {
         fromMyRouletteToMain.putExtra("itemProbability", itemProbabilityArray);
         setResult(RESULT_OK, fromMyRouletteToMain);
         finish();
-        /*
-        startActivity(fromMyRouletteToMain);
-        finish();
-
-         */
     }
 
     public void onEditMyRoulette(View view) {
@@ -506,10 +320,8 @@ public class MyRouletteActivity extends AppCompatActivity {
         ViewGroup viewGroup = (ViewGroup)view.getParent().getParent();
         //constrainLayoutの中のRouletteView
         RouletteView selectedRouletteView = viewGroup.findViewById(R.id.myRoulette);
-        //RouletteView selectedRouletteView = myRouletteConstrainLayout.findViewById(R.id.myRoulette);
 
         Intent fromMyRouletteToEditMyRoulette = new Intent(getApplicationContext(), EditMyRouletteActivity.class);
-        //fromMyRouletteToEditMyRoulette.putExtra("editItemPosition", recyclerView.getChildAdapterPosition((View)viewGroup.getParent()));
         fromMyRouletteToEditMyRoulette.putExtra("rouletteId", selectedRouletteView.getId());
         fromMyRouletteToEditMyRoulette.putExtra("rouletteName", selectedRouletteView.getRouletteName());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("colors", selectedRouletteView.getColors());
@@ -518,84 +330,6 @@ public class MyRouletteActivity extends AppCompatActivity {
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch100", selectedRouletteView.getOnOffInfoOfSwitch100());
         fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch0", selectedRouletteView.getOnOffInfoOfSwitch0());
 
-        //setResult(RESULT_OK, fromMyRouletteToEditMyRoulette);
-
         startActivity(fromMyRouletteToEditMyRoulette);
-        //finish();
     }
-
-/*
-    public void onDeleteMyRoulette(View view) {
-        //deleteボタンの親view(constrainLayout)
-        ViewGroup viewGroup = (ViewGroup)view.getParent().get;
-        //constrainLayoutの中のRouletteView
-        RouletteView selectedRouletteView = viewGroup.findViewById(R.id.myRoulette);
-
-
-        class DeleteMyRouletteFragmentDialog extends DialogFragment {
-            @Override
-            public Dialog onCreateDialog(Bundle savedInstanceState) {
-                // Use the Builder class for convenient dialog construction
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("削除してもよろしいですか？")
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                //スワイプされたList<word>の項目をList<word>から削除
-                                MainActivity.mWordViewModel.getAllWords().getValue().remove(getAdapterPosition());
-                                //List<word>から削除されたことを通知（viewHolderにそのことを反映している？）
-                                recyclerView.getAdapter().notifyItemRemoved(recyclerView.ViewHolder.getAdapterPosition());
-                                //スワイプされた箇所のデータベースのprimarykeyを取得
-                                int primaryKey = ((WordViewHolder)viewHolder).getRouletteView().getId();
-                                //取得したprimarykeyの所のデータを消去
-                                MainActivity.mWordViewModel.delete(id);
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
-                        });
-                // Create the AlertDialog object and return it
-                return builder.create();
-            }
-        }
-    }
-
-
- */
-
-    /*
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            String string = data.getStringExtra("word");
-            ArrayList<String> words = data.getStringArrayListExtra(NewWordActivity.EXTRA_REPLY);
-            ArrayList<Integer> colorsInfo = data.getIntegerArrayListExtra("colors");
-            ArrayList<String> textStringsInfo = data.getStringArrayListExtra("textStrings");
-            ArrayList<Integer> itemRatiosInfo = data.getIntegerArrayListExtra("itemRatio");
-            ArrayList<Integer> OnOffOfSwitch100Info = data.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
-            ArrayList<Integer> OnOffOfSwitch0Info = data.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
-            //rouletteView.itemProbabilities.clear();
-            ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
-            //int itemProbabilitySize = intent.getIntExtra("itemProbabilitySize", 0);
-            float itemProbabilityArray[] = data.getFloatArrayExtra("itemProbability");
-            for (int i = 0; i < itemProbabilityArray.length; i++) {
-                itemProbabilitiesInfo.add(itemProbabilityArray[i]);
-            }
-
-            //rouletteView.setRouletteContents(colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
-
-            Word word = new Word(string, colorsInfo, textStringsInfo, itemRatiosInfo, OnOffOfSwitch100Info, OnOffOfSwitch0Info, itemProbabilitiesInfo);
-            mWordViewModel.insert(word);
-        } else {
-            Toast.makeText(
-                    getApplicationContext(),
-                    R.string.empty_not_saved,
-                    Toast.LENGTH_LONG).show();
-        }
-    }
-
-     */
-
 }

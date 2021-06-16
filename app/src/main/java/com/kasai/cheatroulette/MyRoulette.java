@@ -23,17 +23,6 @@ import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 
-/**
- * A basic class representing an entity that is ic_cheat_roulette_launcher2_foreground row in ic_cheat_roulette_launcher2_foreground one-column database table.
- *
- * @ Entity - You must annotate the class as an entity and supply ic_cheat_roulette_launcher2_foreground table name if not class name.
- * @ PrimaryKey - You must identify the primary key.
- * @ ColumnInfo - You must supply the column name if it is different from the variable name.
- *
- * See the documentation for the full rich set of annotations.
- * https://developer.android.com/topic/libraries/architecture/room.html
- */
-
 @Entity(tableName = "myRoulette_table")
 public class MyRoulette {
 
@@ -44,43 +33,37 @@ public class MyRoulette {
     @NonNull
     @ColumnInfo(name = "rouletteName")
     private String rouletteName;
-
-    /*
-    @NonNull
-    @ColumnInfo(name = "words")
-    private ArrayList<String> mWords;
-
-     */
+    //作成日
     @NonNull
     @ColumnInfo(name = "date")
     private String date;
-
+    //ルーレットの色情報
     @NonNull
     @ColumnInfo(name = "colorsInfo")
     private ArrayList<Integer> colorsInfo;
-
+    //ルーレットの項目名
     @NonNull
     @ColumnInfo(name = "itemNamesInfo")
     private ArrayList<String> itemNamesInfo;
-
+    //項目の面積比
     @NonNull
     @ColumnInfo(name = "itemRatiosInfo")
     private ArrayList<Integer> itemRatiosInfo;
-
+    //必中スイッチのONOFF情報
     @NonNull
     @ColumnInfo(name = "OnOffOfSwitch100Info")
     private ArrayList<Integer> OnOffOfSwitch100Info;
-
+    //絶対ハズレスイッチのONOFF情報
     @NonNull
     @ColumnInfo(name = "OnOffOfSwitch0Info")
     private ArrayList<Integer> OnOffOfSwitch0Info;
-
+    //各項目の当たる確率
     @NonNull
     @ColumnInfo(name = "itemProbabilitiesInfo")
     private ArrayList<Float> itemProbabilitiesInfo;
 
 
-//コンストラクタで貰う引数名は、対応するカラムの名前と同じにしなければならないっぽい
+//コンストラクタで貰う引数名は、対応するカラムの名前と同じにしなければならない？
     public MyRoulette(@NonNull String rouletteName,
                 @NonNull String date,
                 @NonNull ArrayList<Integer> colorsInfo,
@@ -91,7 +74,6 @@ public class MyRoulette {
                 @NonNull ArrayList<Float> itemProbabilitiesInfo) {
 
         this.rouletteName = rouletteName;
-        //this.mWords = mWords;
 
         //ルーレットの作成日時
         this.date = date;
@@ -113,9 +95,6 @@ public class MyRoulette {
         this.id = id;
     }
 
-    //各カラムのgetterは必ず存在しなければならない
-    //getterの名前もなにか制約があるっぽいが、そのルールがわからん
-
     @NonNull
     public int getId() { return this.id; }
 
@@ -123,14 +102,6 @@ public class MyRoulette {
     public String getRouletteName() {
         return this.rouletteName;
     }
-
-    /*
-    @NonNull
-    public ArrayList<String> getWords() {
-        return this.mWords;
-    }
-
-     */
 
     @NonNull
     public String getDate() { return this.date; }

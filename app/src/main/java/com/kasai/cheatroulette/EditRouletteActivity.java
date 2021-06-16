@@ -1,9 +1,5 @@
 package com.kasai.cheatroulette;
 
-//import android.annotation.SuppressLint;
-
-//import android.annotation.SuppressLint;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -54,29 +48,19 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import uk.co.deanwild.materialshowcaseview.ShowcaseTooltip;
 
-//import androidx.annotation.RequiresApi;
-/*
-今はゴリゴリレイアウト書いてるけど、ホントは,リストviewとか、adapterとか使ったほうが良さそう。
- */
-
 public class EditRouletteActivity extends AppCompatActivity {
 
-    //public int rouletteCount;
     private ConstraintLayout editRouletteLayout;
-    private CheckBox checkBox;
     private EditText rouletteName;
     private Toolbar toolbar;
     private Button itemAddButton;
     private Button cheatButton;
     private FloatingActionButton editFinishFab;
-    //private EditText editText, editText2;
     //ルーレットの項目リストの情報を保持するもの
     private RouletteItemListInfo rouletteItemListInfo = new RouletteItemListInfo(
             new ArrayList<Integer>(), new ArrayList<String>(), new ArrayList<Integer>(), new ArrayList<Boolean>(), new ArrayList<Boolean>());
     private RecyclerView rouletteItemList;
     private EditRouletteAdapter rouletteItemListAdapter;
-    //private EditRouletteAdapter rouletteItemListAdapter = new EditRouletteAdapter(rouletteItemList,rouletteItemListInfo);
-    //private RouletteItemListInfo rouletteItemListInfo;
 
     public static boolean visibleFlag = false;
 
@@ -92,21 +76,7 @@ public class EditRouletteActivity extends AppCompatActivity {
     ArrayList<Integer> Switch0InfoFromMain;
     ArrayList<Boolean> Switch0InfoFromMainBoolean = new ArrayList<Boolean>();
 
-    //private int rouletteCount = 0;
-
-
-    /*
-        //ルーレットの色のリスト
-        private static ArrayList<Integer> colors = new ArrayList<Integer>();
-        //ルーレットの文字列のリスト
-        private static ArrayList<String> textString = new ArrayList<String>();
-        //ルーレットの項目比率のリスト
-        private static ArrayList<String> itemRatio = new ArrayList<String>();
-
-
-     */
     @SuppressLint({"WrongConstant", "SetTextI18n"})
-    //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,13 +119,11 @@ public class EditRouletteActivity extends AppCompatActivity {
                 return false;
             }
 
-            // Called when ic_cheat_roulette_launcher2_foreground user swipes left or right on ic_cheat_roulette_launcher2_foreground ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
 
                 if (!(rouletteItemListAdapter.getItemCount() <= 2)) {
-                    // Here is where you'll implement swipe to delete
                     rouletteItemListAdapter.getRouletteItemDataSet().getColors().remove(position);
                     rouletteItemListAdapter.getRouletteItemDataSet().getItemNames().remove(position);
                     rouletteItemListAdapter.getRouletteItemDataSet().getItemRatios().remove(position);
@@ -172,24 +140,16 @@ public class EditRouletteActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(rouletteItemList);
 
-        //RouletteItemListInfo rouletteItemListInfo;
-        //RouletteItemListAdapter rouletteItemListAdapter;
-
         rouletteName = findViewById(R.id.rouletteName);
 
-        //checkBox.setChecked(false);
-
-        Intent fromMainIntent = getIntent(); //Mainでedit_Buttonを押した時の遷移
+        Intent fromMainIntent = getIntent();
         //セットしてあるルーレットを編集する場合
         rouletteNameFromMain = fromMainIntent.getStringExtra("editInfoOfRouletteName");
         colorsFromMain = fromMainIntent.getIntegerArrayListExtra("editInfoOfColors");
         itemNamesFromMain = fromMainIntent.getStringArrayListExtra("editInfoOfTextStrings");
         itemRatiosFromMain = fromMainIntent.getIntegerArrayListExtra("editInfoOfItemRatio");
         Switch100InfoFromMain = fromMainIntent.getIntegerArrayListExtra("editInfoOfSwitch100");
-        //ArrayList<Boolean> Switch100InfoFromMainBoolean = new ArrayList<Boolean>();
         Switch0InfoFromMain = fromMainIntent.getIntegerArrayListExtra("editInfoOfSwitch0");
-        //ArrayList<Boolean> Switch0InfoFromMainBoolean = new ArrayList<Boolean>();
-
 
         for (int i=0; i<Switch100InfoFromMain.size(); i++) {
             if (Switch100InfoFromMain.get(i) == 1) {
@@ -205,7 +165,7 @@ public class EditRouletteActivity extends AppCompatActivity {
             }
         }
 
-        rouletteName.setText(rouletteNameFromMain);//ルーレット名の項目に設定
+        rouletteName.setText(rouletteNameFromMain);
 
         rouletteItemListInfo.setColors(colorsFromMain);
         rouletteItemListInfo.setItemNames(itemNamesFromMain);
@@ -215,12 +175,9 @@ public class EditRouletteActivity extends AppCompatActivity {
 
         rouletteItemListAdapter.notifyDataSetChanged();
 
-
-        //************* ボタンの設定 *************/
         itemAddButton = findViewById(R.id.item_add_button);
         // リスナーをボタンに登録, lambda
         itemAddButton.setOnClickListener(new View.OnClickListener() {
-            //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 if (rouletteItemListAdapter.getItemCount() >= 300) {
@@ -228,9 +185,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                     mToast = Toast.makeText(getApplicationContext(), R.string.notice_item_is_max, Toast.LENGTH_SHORT);
                     mToast.show();
                 } else {
-                    //addEditView(layout, scale, margins);
-                    //rouletteItemListAdapter.addItem(generateColor(), "", 1, 0, 0);
-
                     //項目が追加された場合は、キーボードを隠す
                     if (getCurrentFocus() != null) {
                         InputMethodManager inputMethodManager = (InputMethodManager) MyApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -240,11 +194,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                     rouletteItemListAdapter.addItem(generateColor(), "", 1, false, false);
                     //新しいルーレット項目が追加された時、recyclerViewを一番下に自動スクロールする
                     rouletteItemList.scrollToPosition(rouletteItemListAdapter.getItemCount() - 1);
-                /*
-                hueLevel++;
-                if (hueLevel >= 12) { hueLevel = 0; }
-
-                 */
                 }
             }
         });
@@ -259,28 +208,20 @@ public class EditRouletteActivity extends AppCompatActivity {
                     //trueの場合は、イカサマスイッチを隠す
                     for (int i = 0; i < rouletteItemList.getChildCount(); i++) {
                         rouletteItemList.getChildAt(i).findViewById(R.id.LinearLayout2).setVisibility(View.GONE);
-                        //((ViewGroup) layout.getChildAt(i)).getChildAt(1).setVisibility(View.GONE);
-                        //rouletteItemListAdapter.notifyItemChanged(i);
                     }
                     rouletteItemListAdapter.notifyDataSetChanged();
-                    //rouletteItemListAdapter.notifyItemRangeChanged(0, rouletteItemList.getChildCount());
 
                     visibleFlag = false;
-                    //cheatButton.setVisibility(View.INVISIBLE);
                     cheatButton.setText("");
                     cheatButton.setBackgroundColor(Color.TRANSPARENT);
                 } else {
                     // falseの場合は、イカサマスイッチを表示
                     for (int i = 0; i < rouletteItemList.getChildCount(); i++) {
                         rouletteItemList.getChildAt(i).findViewById(R.id.LinearLayout2).setVisibility(View.VISIBLE);
-                        //((ViewGroup) layout.getChildAt(i)).getChildAt(1).setVisibility(View.VISIBLE);
-                        //rouletteItemListAdapter.notifyItemChanged(i);
                     }
                     rouletteItemListAdapter.notifyDataSetChanged();
-                    //rouletteItemListAdapter.notifyItemRangeChanged(0, rouletteItemList.getChildCount());
 
                     visibleFlag = true;
-                    //cheatButton.setVisibility(View.VISIBLE);
                     cheatButton.setText(R.string.hide_cheat);
                     cheatButton.setBackgroundColor(Color.RED);
                 }
@@ -294,7 +235,6 @@ public class EditRouletteActivity extends AppCompatActivity {
 
         editFinishFab = findViewById(R.id.create_finish_fab);
         editFinishFab.setOnClickListener(new View.OnClickListener() {
-            // @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 boolean hasProblem = false;
@@ -360,11 +300,9 @@ public class EditRouletteActivity extends AppCompatActivity {
                         //switch100がONだったら
                         if (rouletteItemDataSet.getOnOffInfoOfSwitch100().get(i)) {
                             //そこの項目に当たる確率を付与する
-                            //itemProbabilityArray[i] = 1f / switch100PositiveCount;
                             itemProbabilities.add(1f/switch100PositiveCount);
                         } else {
                             //ONになっていない項目には０％を付与
-                            //itemProbabilityArray[i] = 0f;
                             itemProbabilities.add(0f);
                         }
                     }
@@ -376,11 +314,9 @@ public class EditRouletteActivity extends AppCompatActivity {
                         //switch0がONだったら
                         if (rouletteItemDataSet.getOnOffInfoOfSwitch0().get(i)) {
                             //そこの項目に０％を付与する
-                            //itemProbabilityArray[i] = 0f;
                             itemProbabilities.add(0f);
                         } else {
                             //ONになっていない項目は均等に確率を付与する
-                            //itemProbabilityArray[i] = 1f / (rouletteItemCount - switch0PositiveCount);
                             itemProbabilities.add(1f / (rouletteItemCount - switch0PositiveCount));
                         }
                     }
@@ -391,34 +327,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                 for (int i=0; i<itemProbabilities.size(); i++) {
                     itemProbabilityArray[i] = itemProbabilities.get(i);
                 }
-
-                //保存するかどうかをチェックボックスで確認する場合
-                /*
-                if (checkBox.isChecked()) {
-                    Word word = new Word(rouletteName.getText().toString(), getNowDate(),
-                            rouletteItemDataSet.getColors(), rouletteItemDataSet.getItemNames(),
-                            rouletteItemDataSet.getItemRatios(), OnOffOfSwitch100, OnOffOfSwitch0, itemProbabilities);
-                    //データベースにinsertされて初めて、primaryKeyがautoGenerateされる
-                    MainActivity.mWordViewModel.insert(word);
-
-                    //Log.d("うううううううううううううう", String.valueOf(mainActivity.mWordViewModel.getAllWords().getValue().get(mainActivity.mWordViewModel.getAllWords().getValue().size() - 1).getId()));
-                }
-
-                Intent fromRouletteCreateIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
-                fromRouletteCreateIntent.putExtra("rouletteName", rouletteName.getText().toString());
-                fromRouletteCreateIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
-                fromRouletteCreateIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                fromRouletteCreateIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
-                fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
-                fromRouletteCreateIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
-                fromRouletteCreateIntent.putExtra("itemProbability", itemProbabilityArray);
-
-                setResult(RESULT_OK, fromRouletteCreateIntent);
-
-                finish();
-
-                 */
 
                 if (hasProblem) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditRouletteActivity.this);
@@ -455,15 +363,13 @@ public class EditRouletteActivity extends AppCompatActivity {
                                         Toast.makeText(EditRouletteActivity.this, getString(R.string.notificatoin_myRoulettes_are_max), Toast.LENGTH_SHORT).show();
                                     }
 
-                                    Intent fromEditRouletteIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                    Intent fromEditRouletteIntent = new Intent();
                                     fromEditRouletteIntent.putExtra("rouletteName", rouletteName.getText().toString());
                                     fromEditRouletteIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
                                     fromEditRouletteIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
-                                    //fromEditRouletteIntent.putStringArrayListExtra("textStrings", itemNamesFromMain);
                                     fromEditRouletteIntent.putIntegerArrayListExtra("itemRatios", rouletteItemDataSet.getItemRatios());
                                     fromEditRouletteIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch100", OnOffOfSwitch100);
                                     fromEditRouletteIntent.putIntegerArrayListExtra("OnOffInfoOfSwitch0", OnOffOfSwitch0);
-                                    //rouletteCreateIntent.putExtra("itemProbabilitySize", itemProbability.size());
                                     fromEditRouletteIntent.putExtra("itemProbability", itemProbabilityArray);
 
                                     setResult(RESULT_OK, fromEditRouletteIntent);
@@ -473,8 +379,7 @@ public class EditRouletteActivity extends AppCompatActivity {
                             })
                             .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-
-                                    Intent fromEditRouletteIntent = new Intent();//引数いれるなら、遷移先のアクティビティクラスを入れる？？
+                                    Intent fromEditRouletteIntent = new Intent();
                                     fromEditRouletteIntent.putExtra("rouletteName", rouletteName.getText().toString());
                                     fromEditRouletteIntent.putIntegerArrayListExtra("colors", rouletteItemDataSet.getColors());
                                     fromEditRouletteIntent.putStringArrayListExtra("textStrings", rouletteItemDataSet.getItemNames());
@@ -497,10 +402,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                             })
                             .create()
                             .show();
-
-//                startActivity(rouletteCreateIntent);
-
-                    //finish();
                 }
             }
         });
@@ -508,14 +409,11 @@ public class EditRouletteActivity extends AppCompatActivity {
         SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_edit_roulette_first_tutorial_done_key), false);
         if (!isFirstTutorialDone) {
-            //isTutorialState = true;
             tutorial();
             //最初のチュートリアルが終わったら、そのことを保存しておく
-            //SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(getString(R.string.saved_edit_roulette_first_tutorial_done_key), true);
             editor.apply();
-            //MaterialShowcaseView.resetSingleUse(this, getString(R.string.roulette_create_first_tutorial_id));//////////////////////////////////////////////////////
         }
     }
 
@@ -525,15 +423,6 @@ public class EditRouletteActivity extends AppCompatActivity {
         config.setRenderOverNavigationBar(true);
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.edit_roulette_tutorial_id));
-
-        /*
-        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
-            @Override
-            public void onShow(MaterialShowcaseView itemView, int position) {
-                Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
 
         sequence.setConfig(config);
 
@@ -546,9 +435,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                         .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
                         .setGravity(16)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
-                        //.setToolTip(itemNameToolTip)
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
                         .setDismissOnTouch(true)
                         .withoutShape()
                         .build()
@@ -564,48 +450,12 @@ public class EditRouletteActivity extends AppCompatActivity {
                 new MaterialShowcaseView.Builder(this)
                         .setTarget(editFinishFab)
                         .setToolTip(editFinishToolTip)
-                        //.setContentText("ここでルーレットの作成を完了します。")
-                        //.setTargetTouchable(true)
-                        //.setDismissOnTargetTouch(true)
                         .setDismissOnTouch(true)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
                         .withCircleShape()
                         .setShapePadding(50)
                         .build()
         );
-
-        /*
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(((RouletteItemListAdapter.ViewHolder)rouletteItemList.findViewHolderForAdapterPosition(1)).getLinearLayout2())
-                        .setContentText("This is button three")
-                        .withRectangleShape()
-                        .setTargetTouchable(true)
-                        .setDismissOnTargetTouch(true)
-                        .build()
-        );
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(cheatButton)
-                        .setContentText("This is button two")
-                        .setTargetTouchable(true)
-                        .setDismissOnTargetTouch(true)
-                        .build()
-        );
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(createFinishFab)
-                        .setContentText("This is button two")
-                        .setTargetTouchable(true)
-                        .setDismissOnTargetTouch(true)
-                        .build()
-        );
-
-         */
-
-        Log.d("あああああああああああああ", "firstTutorial()");
         sequence.start();
     }
 
@@ -682,78 +532,6 @@ public class EditRouletteActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-    //バックキーを押すと、内容に変更があった場合にアラートダイアログを出す処理
-    //うまくいかない
-    /*
-    @Override
-    public void onBackPressed() {
-        Log.d("あああああああああああああああああああ3", String.valueOf(getIntent().getStringArrayListExtra("editInfoOfTextStrings")));
-
-        RouletteItemListInfo rouletteItemDataSet = rouletteItemListAdapter.getRouletteItemDataSet();
-
-        Log.d("あああああああああああああああああああ1", String.valueOf((rouletteName.getText().toString()).equals(rouletteNameFromMain)));
-        Log.d("あああああああああああああああああああ2", String.valueOf((rouletteItemDataSet.getColors()).equals(colorsFromMain)));
-        Log.d("あああああああああああああああああああ3", String.valueOf((rouletteItemDataSet.getItemNames()).equals(itemNamesFromMain)));
-        Log.d("あああああああああああああああああああ3", String.valueOf((rouletteItemDataSet.getItemNames())));
-        Log.d("あああああああああああああああああああ3", String.valueOf(itemNamesFromMain));
-
-        Log.d("あああああああああああああああああああ4", String.valueOf((rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMain)));
-        Log.d("あああああああああああああああああああ5", String.valueOf((rouletteItemDataSet.getOnOffInfoOfSwitch100()).equals(Switch100InfoFromMainBoolean)));
-        Log.d("あああああああああああああああああああ6", String.valueOf((rouletteItemDataSet.getOnOffInfoOfSwitch0().equals(Switch0InfoFromMainBoolean))));
-
-        Log.d("あああああああああああああああああああ7", String.valueOf(! (rouletteName.getText().toString()).equals(rouletteNameFromMain) &&
-                (rouletteItemDataSet.getColors()).equals(colorsFromMain) &&
-                (rouletteItemDataSet.getItemNames()).equals(itemNamesFromMain) &&
-                (rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMain) &&
-                (rouletteItemDataSet.getOnOffInfoOfSwitch100()).equals(Switch100InfoFromMainBoolean) &&
-                (rouletteItemDataSet.getOnOffInfoOfSwitch0().equals(Switch0InfoFromMainBoolean))));
-
-        Log.d("あああああああああああああああああああ8", String.valueOf(!( (rouletteName.getText().toString()).equals(rouletteNameFromMain) &&
-                (rouletteItemDataSet.getColors()).equals(colorsFromMain) &&
-                (rouletteItemDataSet.getItemNames()).equals(itemNamesFromMain) &&
-                (rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMain) &&
-                (rouletteItemDataSet.getOnOffInfoOfSwitch100()).equals(Switch100InfoFromMainBoolean) &&
-                (rouletteItemDataSet.getOnOffInfoOfSwitch0().equals(Switch0InfoFromMainBoolean)))));
-
-
-
-        //~FromMainが勝手に更新されるから、全部trueになって絶対if文通らない
-        if (! (rouletteName.getText().toString()).equals(rouletteNameFromMain) &&
-                (rouletteItemDataSet.getColors()).equals(colorsFromMain) &&
-                (rouletteItemDataSet.getItemNames()).equals(itemNamesFromMain) &&
-                (rouletteItemDataSet.getItemRatios()).equals(itemRatiosFromMain) &&
-                (rouletteItemDataSet.getOnOffInfoOfSwitch100()).equals(Switch100InfoFromMainBoolean) &&
-                (rouletteItemDataSet.getOnOffInfoOfSwitch0().equals(Switch0InfoFromMainBoolean)) ) {
-
-
-            // 内容更新が合った場合にそれを破棄するかどうかをアラートダイアログで確認
-            AlertDialog.Builder builder = new AlertDialog.Builder(EditRouletteActivity.this);
-            builder.setMessage("編集内容を破棄しますか？")
-                    .setPositiveButton("破棄する", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            EditRouletteActivity.this.finish();
-                        }
-                    })
-                    .setNegativeButton("編集を続行する", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    })
-                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            // ダイアログがキャンセルされた際の処理
-                        }
-                    })
-                    .create()
-                    .show();
-        } else {
-            EditRouletteActivity.this.finish();
-        }
-
-    }
-
-     */
-
     public void onClickColorButton(View colorButton) {
         //ColorPickDialogを開始する
         AlertDialog.Builder colorPickAlert = new AlertDialog.Builder(EditRouletteActivity.this);
@@ -789,7 +567,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                         int position = rouletteItemList.getLayoutManager().getPosition((View)colorButton.getParent().getParent().getParent());
                         //色の変更を適応
                         ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setColor(position, colorPickerView.getSelectedColor());
-                        //colorButton.setBackgroundColor(picker.getColor());
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -825,8 +602,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                 itemDataSet.setOnOffInfoOfSwitch0Partially(i, false);
             }
             rouletteItemListAdapter.notifyDataSetChanged();
-        } else {
-            // The toggle is disabled
         }
     }
 
@@ -836,14 +611,10 @@ public class EditRouletteActivity extends AppCompatActivity {
         SwitchCompat clickedSwitch = (SwitchCompat) view;
 
         if (clickedSwitch.isChecked()) {
-            // The toggle is enabled
-            Boolean containSwitch0False = false;
-            //int itemCount = rouletteItemList.getChildCount();
+            boolean containSwitch0False = false;
             int itemCount = ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().getOnOffInfoOfSwitch100().size();
 
             for (int i = 0; i < itemCount; i++) {
-                //ViewGroup layout2 = rouletteItemList.getChildAt(i).findViewById(R.id.LinearLayout2);
-                //((SwitchCompat) layout2.findViewById(R.id.switch100)).setChecked(false);
                 RouletteItemListInfo itemDataSet = rouletteItemListAdapter.getRouletteItemDataSet();
                 itemDataSet.setOnOffInfoOfSwitch100Partially(i, false);
                 //他のswitch0が全てONになっているか確認　→　ひとつでもOFFがあったらflag = 1
@@ -856,8 +627,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                 clickedSwitch.setChecked(false);
             }
             rouletteItemListAdapter.notifyDataSetChanged();
-        } else {
-            // The toggle is disabled
         }
     }
 
@@ -873,6 +642,4 @@ public class EditRouletteActivity extends AppCompatActivity {
         final Date date = new Date(System.currentTimeMillis());
         return df.format(date);
     }
-
-    //public static int getRouletteCount() { return rouletteCount; }
 }

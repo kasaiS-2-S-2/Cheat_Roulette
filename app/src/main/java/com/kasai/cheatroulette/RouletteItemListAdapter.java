@@ -23,15 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemListAdapter.ViewHolder> {
 
-    //private ArrayList<RouletteItemListInfo> rouletteItemDataSet;
     private RecyclerView rouletteItemList;
     private RouletteItemListInfo rouletteItemDataSet;
-    /**
-     * Initialize the dataset of the Adapter.
-     *
-     * @param dataSet String[] containing the data to populate views to be used
-     * by RecyclerView.
-     */
+
     public RouletteItemListAdapter(RecyclerView recyclerView, RouletteItemListInfo dataSet) {
         this.rouletteItemList = recyclerView;
         this.rouletteItemDataSet = dataSet;
@@ -41,7 +35,6 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Log.d("ああああああああああああああああああ", "onCreateViewHolder");
-        // Create ic_cheat_roulette_launcher2_foreground new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.rouletteitemlist_item, viewGroup, false);
 
@@ -53,7 +46,6 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        Log.d("ああああああああああああああああああ", "onBindViewHolder");
 
         //visibleFlagがfalseの時は、switch100, switch0 を非表示にする
         if (!RouletteCreateActivity.visibleFlag) {
@@ -84,32 +76,9 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
 
         viewHolder.switch100OnCheckedChangeListener.updatePosition(viewHolder.getAdapterPosition());
         viewHolder.getSwitch100().setChecked(rouletteItemDataSet.getOnOffInfoOfSwitch100().get(viewHolder.getAdapterPosition()));
-        /*
-        viewHolder.getSwitch100().setOnCheckedChangeListener(null);
-        viewHolder.getSwitch100().setChecked(rouletteItemDataSet.getOnOffInfoOfSwitch100().get(position));
-        viewHolder.getSwitch100().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rouletteItemDataSet.setOnOffInfoOfSwitch100Partially(position, isChecked);
-            }
-        });
-
-         */
 
         viewHolder.switch0OnCheckedChangeListener.updatePosition(viewHolder.getAdapterPosition());
         viewHolder.getSwitch0().setChecked(rouletteItemDataSet.getOnOffInfoOfSwitch0().get(viewHolder.getAdapterPosition()));
-        /*
-        viewHolder.getSwitch0().setOnCheckedChangeListener(null);
-        viewHolder.getSwitch0().setChecked(rouletteItemDataSet.getOnOffInfoOfSwitch0().get(position));
-
-        viewHolder.getSwitch0().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rouletteItemDataSet.setOnOffInfoOfSwitch0Partially(position, isChecked);
-            }
-        });
-
-         */
     }
 
     protected void setFocusItemName(int position) {
@@ -134,7 +103,6 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         rouletteItemDataSet.getOnOffInfoOfSwitch0().remove(position);
 
         notifyItemRemoved(position);
-        //notifyDataSetChanged();
         //削除しただけではデータがリバインドされないので、以下のメソッドでリバインドさせる
         notifyItemRangeChanged(position, getItemCount() - position);
     }
@@ -148,20 +116,8 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         rouletteItemDataSet.getOnOffInfoOfSwitch0().add(OnOffInfoOfSwitch0);
         //挿入した位置を指定して、notifyする（getItemCount()-1 がrouletteItemListの末尾のインデックス）
         notifyItemInserted(getItemCount() - 1);
-        //新しいルーレット項目が追加された時、recyclerViewを一番下に自動スクロールする
-        //rouletteItemList.scrollToPosition(getItemCount() - 1);
-        //ViewHolder holder = (ViewHolder) rouletteItemList.findViewHolderForLayoutPosition(getItemCount());
-        //CardView cardView = (CardView)rouletteItemList.getLayoutManager().getChildAt(getItemCount() - 1);
-        //if (cardView != null) {
-        //    cardView.findViewById(R.id.itemName).requestFocus();
-        //}
     }
 
-
-    /**
-     * Provide ic_cheat_roulette_launcher2_foreground reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     //なんかstaticになってた。理由不明　5/26 →　公式ドキュメントでなんかstaticにしている。なんでだろ？
         //→　https://stackoverflow.com/questions/31302341/what-difference-between-static-and-non-static-viewholder-in-recyclerview-adapter
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -179,9 +135,6 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
         protected final Switch100OnCheckedChangeListener switch100OnCheckedChangeListener;
         protected final Switch0OnCheckedChangeListener switch0OnCheckedChangeListener;
         protected final EditTextFocusChangeListener editTextFocusChangeListener;
-
-        int holderIndex;
-
 
         protected void focusNextItemName() {
             int position = getAdapterPosition() + 1;
@@ -418,20 +371,12 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
 
     //edittextのフォーカスのリスナー
     protected class EditTextFocusChangeListener implements View.OnFocusChangeListener {
-
-        private int position;
-
-        public void updatePosition(int position) {
-            this.position = position;
-        }
-
         @Override
         public void onFocusChange(View view, boolean isFocused) {
             if (isFocused) {
                 EditText editText = (EditText)view;
                 //フォーカスがあたった時、文字列の最後にフォーカスが当たるようにする
                 editText.setSelection((editText.getText().length()));
-                //editText.setNextFocusDownId(R.id.itemName);
             }
         }
     }

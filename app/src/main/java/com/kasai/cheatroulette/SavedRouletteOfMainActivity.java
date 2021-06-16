@@ -2,7 +2,7 @@ package com.kasai.cheatroulette;
 
 import java.util.ArrayList;
 
-// セットしてあるルーレットがあれば、保存し、情報の取り出しも行うクラス
+// セットしてあるルーレットがあれば、そのルーレット情報を保存するためのクラス
 public class SavedRouletteOfMainActivity {
     private int splitCount;
     private String rouletteName;
@@ -12,27 +12,6 @@ public class SavedRouletteOfMainActivity {
     private ArrayList<Integer> OnOffOfSwitch100;
     private ArrayList<Integer> OnOffOfSwitch0;
     private ArrayList<Float> itemProbabilities;
-
-    /*
-    // 保存情報取得メソッド
-    public static SavedRouletteOfMainActivity getInstance(Context context) {
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences sharedPref = context.getPreferences(Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String savedRouletteString = prefs.getString(context.getResources().getString(R.string.saved_roulette_key), "");
-
-        SavedRouletteOfMainActivity instance;
-        // 保存したオブジェクトを取得
-        if( !TextUtils.isEmpty(savedRouletteString)) {
-            instance = gson.fromJson(savedRouletteString, SavedRouletteOfMainActivity.class);
-        }else {
-            // 何も保存されてない 初期時点 この時はデフォルト値を入れて上げる
-            instance = getDefaultInstance();
-        }
-        return instance;
-    }
-
-     */
 
     // デフォルト値の入ったオブジェクトを返す
     public static SavedRouletteOfMainActivity getDefaultInstance() {
@@ -132,15 +111,4 @@ public class SavedRouletteOfMainActivity {
         //ルーレットの項目別の当選確率のリスト
         this.itemProbabilities = itemProbabilitiesInfo;
     }
-
-    /*
-    // 状態保存メソッド
-    public void saveRoulette(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
-        // 現在のインスタンスの状態を保存
-        prefs.edit().putString(USER_SETTING_PREF_KEY, gson.toJson(this)).apply();
-    }
-
-     */
 }

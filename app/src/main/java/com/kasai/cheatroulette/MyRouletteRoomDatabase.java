@@ -31,12 +31,6 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * This is the backend. The database. This used to be done by the OpenHelper.
- * The fact that this has very few comments emphasizes its coolness.  In ic_cheat_roulette_launcher2_foreground real
- * app, consider exporting the schema to help you with migrations.
- */
-
 @Database(entities = {MyRoulette.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 abstract class MyRouletteRoomDatabase extends RoomDatabase {
@@ -45,7 +39,7 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
 
     // marking the instance as volatile to ensure atomic access to the variable
     private static volatile MyRouletteRoomDatabase INSTANCE;
-    //なんで４？
+
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -82,7 +76,6 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
 
                 String rouletteName = "今日のディナー";
                 String date = "xxxx/yy/zz";
-                //ArrayList<String> words = new ArrayList<String>(Arrays.asList("", "", "", "", "", ""));
                 ArrayList<Integer> colorsInfo =
                         new ArrayList<Integer>(Arrays.asList(Color.parseColor("#FFEA5555"),
                         Color.parseColor("#FFF39C3C"), Color.parseColor("#FFECD03F"),
@@ -97,7 +90,6 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
 
                 ArrayList<Integer> OnOffOfSwitch0Info = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0));
 
-                //ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>(Arrays.asList(16.66f, 16.66f, 16.66f, 16.66f, 16.66f, 16.66f));
                 ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
 
                 MyRoulette defaultMyRoulette1 =
@@ -108,7 +100,6 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
 
                 String rouletteName2 = "罰ゲーム誰がやる？";
                 String date2 = "xxxx/yy/zz";
-                //ArrayList<String> words = new ArrayList<String>(Arrays.asList("", "", "", "", "", ""));
                 ArrayList<Integer> colorsInfo2 =
                         new ArrayList<Integer>(Arrays.asList(Color.parseColor("#FF631C48"),
                                 Color.parseColor("#FF9F265C"), Color.parseColor("#FFCF2967"),
@@ -132,7 +123,6 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
 
                 String rouletteName3 = "今日のディナー";
                 String date3 = "xxxx/yy/zz";
-                //ArrayList<String> words = new ArrayList<String>(Arrays.asList("", "", "", "", "", ""));
                 ArrayList<Integer> colorsInfo3 =
                         new ArrayList<Integer>(Arrays.asList(Color.parseColor("#FFB30047"),
                                 Color.parseColor("#FFE34E29"), Color.parseColor("#FFF27A11"),

@@ -36,15 +36,12 @@ import androidx.recyclerview.widget.ListAdapter;
 
 public class MyRouletteListAdapter extends ListAdapter<MyRoulette, MyRouletteViewHolder> {
 
-    //private Context context;
-
     public MyRouletteListAdapter(@NonNull DiffUtil.ItemCallback<MyRoulette> diffCallback) {
         super(diffCallback);
     }
 
     @Override
     public MyRouletteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //parent = recyclerView
         return MyRouletteViewHolder.create(parent);
     }
 
@@ -104,7 +101,6 @@ public class MyRouletteListAdapter extends ListAdapter<MyRoulette, MyRouletteVie
         }
         );
     }
-
 
     static class MyRouletteDiff extends DiffUtil.ItemCallback<MyRoulette> {
 

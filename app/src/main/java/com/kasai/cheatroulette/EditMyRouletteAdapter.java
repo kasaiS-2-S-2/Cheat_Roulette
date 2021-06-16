@@ -1,7 +1,6 @@
 package com.kasai.cheatroulette;
 
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,10 +13,6 @@ public class EditMyRouletteAdapter extends RouletteItemListAdapter {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        Log.d("ああああああああああああああああああ", "onBindViewHolder");
-
         //visibleFlagがfalseの時は、switch100, switch0 を非表示にする
         //ここがEditMyRouletteActivityになっているのが、RouletteItemListAdapterとの違い
         if (!EditMyRouletteActivity.visibleFlag) {
@@ -48,31 +43,8 @@ public class EditMyRouletteAdapter extends RouletteItemListAdapter {
 
         viewHolder.switch100OnCheckedChangeListener.updatePosition(viewHolder.getAdapterPosition());
         viewHolder.getSwitch100().setChecked(getRouletteItemDataSet().getOnOffInfoOfSwitch100().get(viewHolder.getAdapterPosition()));
-        /*
-        viewHolder.getSwitch100().setOnCheckedChangeListener(null);
-        viewHolder.getSwitch100().setChecked(rouletteItemDataSet.getOnOffInfoOfSwitch100().get(position));
-        viewHolder.getSwitch100().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rouletteItemDataSet.setOnOffInfoOfSwitch100Partially(position, isChecked);
-            }
-        });
-
-         */
 
         viewHolder.switch0OnCheckedChangeListener.updatePosition(viewHolder.getAdapterPosition());
         viewHolder.getSwitch0().setChecked(getRouletteItemDataSet().getOnOffInfoOfSwitch0().get(viewHolder.getAdapterPosition()));
-        /*
-        viewHolder.getSwitch0().setOnCheckedChangeListener(null);
-        viewHolder.getSwitch0().setChecked(rouletteItemDataSet.getOnOffInfoOfSwitch0().get(position));
-
-        viewHolder.getSwitch0().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rouletteItemDataSet.setOnOffInfoOfSwitch0Partially(position, isChecked);
-            }
-        });
-
-         */
     }
 }

@@ -34,9 +34,7 @@ import java.util.ArrayList;
 import static android.content.Context.WINDOW_SERVICE;
 
 class MyRouletteViewHolder extends RecyclerView.ViewHolder {
-    //private final TextView wordItemView;
-    //private final TextView wordItemView2;
-    private final CardView cardView;/////////////////////////////////////
+    private final CardView cardView;
     private final TextView rouletteNameView;
     private final TextView dateView;
     private final LinearLayout dateLayout;
@@ -47,18 +45,6 @@ class MyRouletteViewHolder extends RecyclerView.ViewHolder {
 
     private MyRouletteViewHolder(View itemView) {
         super(itemView);
-        //wordItemView = itemView.findViewById(R.id.title);
-        //wordItemView2 = itemView.findViewById(R.id.sub);
-        /*
-        Log.d("あああああああああああああああああああ", "WordViewHolder");
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("ああああああああああああああああ","いいいいいいいいいいいいいいいいいい" );
-            }
-        });
-
-         */
 
         this.cardView = itemView.findViewById(R.id.cardView);////////////////////////////////////////
         this.rouletteNameView = itemView.findViewById(R.id.roulette_name);
@@ -82,16 +68,7 @@ class MyRouletteViewHolder extends RecyclerView.ViewHolder {
         this.rouletteView.setLayoutParams(rouletteMarginLayoutParams);
         this.rouletteView.getLayoutParams().width = (displayAre.x)/2;
 
-        //ViewGroup.LayoutParams rouletteNameLayoutParams = this.rouletteNameView.getLayoutParams();
-        //ViewGroup.MarginLayoutParams rouletteNameMarginLayoutParams = (ViewGroup.MarginLayoutParams) rouletteNameLayoutParams;
-        //rouletteNameMarginLayoutParams.setMarginStart(displayAre.x/2);
-        //this.rouletteNameView.setLayoutParams(rouletteNameMarginLayoutParams);
         this.rouletteNameView.setMaxWidth((displayAre.x * 9) / 20);
-
-        //ViewGroup.LayoutParams dateLayoutLayoutParams = this.dateLayout.getLayoutParams();
-        //ViewGroup.MarginLayoutParams dateLayoutMarginLayoutParams = (ViewGroup.MarginLayoutParams) dateLayoutLayoutParams;
-        //dateLayoutMarginLayoutParams.setMarginStart(displayAre.x/2);
-        //this.dateLayout.setLayoutParams(dateLayoutMarginLayoutParams);
 
         this.imageButtonLayout.getLayoutParams().width = displayAre.x/2;
 
@@ -108,8 +85,6 @@ class MyRouletteViewHolder extends RecyclerView.ViewHolder {
                      ArrayList<Integer> OnOffOfSwitch0Info,
                      ArrayList<Float> itemProbabilitiesInfo) {
 
-        //wordItemView.setText(words.get(0));
-        //wordItemView2.setText(words.get(1));
         if (rouletteName.equals("")) {
             rouletteNameView.setText("未設定");
         } else {

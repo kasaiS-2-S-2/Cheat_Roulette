@@ -2,6 +2,7 @@ package com.kasai.cheatroulette;
 
 import java.util.ArrayList;
 
+//recyclerViewで使うルーレット項目情報のクラス
 public class RouletteItemListInfo {
     //ルーレットの色のリスト
     private ArrayList<Integer> colors = new ArrayList<Integer>();
