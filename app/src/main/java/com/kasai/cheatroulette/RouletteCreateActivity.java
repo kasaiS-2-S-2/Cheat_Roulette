@@ -717,9 +717,6 @@ public class RouletteCreateActivity extends AppCompatActivity {
         }
 
         switch (item.getItemId()) {
-            case R.id.page_explain:
-                // ボタンをタップした際の処理を記述
-                return true;
             case R.id.tutorial:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(RouletteCreateActivity.this);

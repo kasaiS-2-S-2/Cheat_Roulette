@@ -6,15 +6,10 @@
     <item
         android:id="@+id/tutorialMenuButton"
         android:icon="@drawable/ic_baseline_more_vert_24"
-        android:title="チュートリアル"
+        android:title="@string/tutorial"
         app:showAsAction="always">
 
         <menu>
-            <item
-                android:id="@+id/page_explain"
-                android:title="@string/page_explain"
-                app:showAsAction="never"/>
-
             <item
                 android:id="@+id/tutorial"
                 android:title="@string/tutorial"

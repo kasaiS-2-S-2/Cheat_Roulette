@@ -487,9 +487,6 @@ public class EditRouletteActivity extends AppCompatActivity {
         }
 
         switch (item.getItemId()) {
-            case R.id.page_explain:
-                // ボタンをタップした際の処理を記述
-                return true;
             case R.id.tutorial:
                 // ボタンをタップした際の処理を記述
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditRouletteActivity.this);
