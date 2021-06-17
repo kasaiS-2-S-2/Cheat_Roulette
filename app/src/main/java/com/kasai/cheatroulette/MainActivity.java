@@ -42,17 +42,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.play.core.review.ReviewInfo;
-import com.google.android.play.core.review.ReviewManager;
-import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.tasks.OnCompleteListener;
-import com.google.android.play.core.tasks.Task;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -108,9 +104,6 @@ public class MainActivity extends AppCompatActivity {
     private SoundPool soundPool;
     private int drumRollStart, drumRollLoop, finishSound;
     private int drumRollLoopStreamID;
-
-    private ReviewManager reviewManager;
-    private ReviewInfo reviewInfo = null;
 
     @Override
     protected void onStart() {
@@ -256,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getReviewInfo();
         mMyRouletteViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(MyRouletteViewModel.class);
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.
@@ -416,7 +408,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
                         break;
                     case R.id.nav_review_app:
-                        startReviewFlow();
+                        //startReviewFlow();
+                        //startRatingNow();
+                        startRating(true);
                         break;
                     case R.id.nav_licenses:
                         Intent toLicensesIntent = new Intent(getApplicationContext(), OssLicensesMenuActivity.class);
@@ -533,6 +527,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
+                    //詳細設定の共有環境設定ファイル
+                    SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    //抽選時間を無くすかどうかの情報
+                    boolean withNoTime = defaultPref.getBoolean(getString(R.string.saved_with_no_time_key), false);
                     //情報保存用の共有環境設定ファイル
                     SharedPreferences pref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
                     //止まるまでの時間の情報を取得、適用
@@ -540,23 +538,29 @@ public class MainActivity extends AppCompatActivity {
                     boolean startTimeNormalState = pref.getBoolean(getString(R.string.saved_time_normal_state_key), true);
                     boolean startTimeLongState = pref.getBoolean(getString(R.string.saved_time_long_state_key), false);
 
-                    if (startTimeNormalState) {
-                        toDegree = 5400f;
-                        duration = 10000;
-                        interpolatorFactor = 2.3f;
-                    } else if (startTimeShortState) {
-                        toDegree = 1440f;
-                        duration = 5000;
-                        interpolatorFactor = 2.3f;
-                    } else if (startTimeLongState) {
-                        toDegree = 14400f;
-                        duration = 17000;
-                        interpolatorFactor = 2.0f;
+                    if (withNoTime) {
+                        toDegree = 2160;
+                        duration = 400;
+                        interpolatorFactor = 1f;
                     } else {
-                        //例外があった場合、デフォルトで抽選時間 普通の値を設定
-                        toDegree = 5400f;
-                        duration = 10000;
-                        interpolatorFactor = 2.3f;
+                        if (startTimeNormalState) {
+                            toDegree = 5400f;
+                            duration = 8000;
+                            interpolatorFactor = 2.6f;
+                        } else if (startTimeShortState) {
+                            toDegree = 1440f;
+                            duration = 4000;
+                            interpolatorFactor = 2.3f;
+                        } else if (startTimeLongState) {
+                            toDegree = 14400f;
+                            duration = 15000;
+                            interpolatorFactor = 2.0f;
+                        } else {
+                            //例外があった場合、デフォルトで抽選時間 普通の値を設定
+                            toDegree = 5400f;
+                            duration = 8000;
+                            interpolatorFactor = 2.6f;
+                        }
                     }
 
                     boolean soundState = pref.getBoolean(getString(R.string.saved_sound_state_key), true);
@@ -684,6 +688,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        boolean dialogNeverInvoke = sharedPref.getBoolean(getString(R.string.saved_dialog_never_invoke_key), false);
+        if (!dialogNeverInvoke) {
+            int countOfAppOpened = sharedPref.getInt(getString(R.string.saved_count_of_app_open_key), 0);
+            countOfAppOpened = countOfAppOpened + 1;
+            SharedPreferences.Editor editor = sharedPref.edit();
+            if (countOfAppOpened >= 2) {
+                startRating(false);
+                //評価画面がを出したら、アプリ開始回数を0に戻す
+                editor.putInt(getString(R.string.saved_count_of_app_open_key), 0);
+            } else {
+                editor.putInt(getString(R.string.saved_count_of_app_open_key), countOfAppOpened);
+            }
+            editor.apply();
+        }
+
     }
 
     private void tutorial() {
@@ -966,41 +986,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
-
     }
 
-    //ReviewInfo オブジェクトをリクエストする
-    private void getReviewInfo() {
-        reviewManager = ReviewManagerFactory.create(getApplicationContext());
-        Task<ReviewInfo> manager = reviewManager.requestReviewFlow();
-        manager.addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                reviewInfo = task.getResult();
-            } else {
-                if (mToast != null) mToast.cancel();
-                mToast = Toast.makeText(getApplicationContext(), "アプリのレビューを開始できませんでした。", Toast.LENGTH_LONG);
-                mToast.show();
-            }
-        });
-    }
-    //アプリ内レビューフローを開始する
-    private void startReviewFlow() {
-        if (reviewInfo != null) {
-            Task<Void> flow = reviewManager.launchReviewFlow(this, reviewInfo);
-            flow.addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(Task<Void> task) {
-                    if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), "レビューが完了しました。ありがとうございました。", Toast.LENGTH_LONG);
-                    mToast.show();
-                }
-            });
-        }
-        else {
-            if (mToast != null) mToast.cancel();
-            mToast = Toast.makeText(getApplicationContext(), "アプリのレビューに失敗しました。", Toast.LENGTH_LONG);
-            mToast.show();
-        }
+    private void startRating(boolean isInvokedManually) {
+        //評価画面を表示する
+        RatingDialogFragment ratingDialogFragment = new RatingDialogFragment(isInvokedManually);
+        ratingDialogFragment.show(getSupportFragmentManager(), "ratingDialog");
     }
 
     public void onSoundSwitchClicked(View view) {
@@ -1022,7 +1013,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.time_short:
                 if (checked) {
                     toDegree = 1440f;
-                    duration = 5000;
+                    duration = 4000;
                     interpolatorFactor = 2.3f;
 
                     //チェックがついたら、その情報を保存する
@@ -1038,8 +1029,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.time_normal:
                 if (checked) {
                     toDegree = 5400f;
-                    duration = 10000;
-                    interpolatorFactor = 2.3f;
+                    duration = 8000;
+                    interpolatorFactor = 2.6f;
 
                     //チェックがついたら、その情報を保存する
                     SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
@@ -1054,7 +1045,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.time_long:
                 if (checked) {
                     toDegree = 14400f;
-                    duration = 17000;
+                    duration = 15000;
                     interpolatorFactor = 2.0f;
 
                     //チェックがついたら、その情報を保存する
@@ -1070,8 +1061,8 @@ public class MainActivity extends AppCompatActivity {
             default:
                 //例外が合った場合、デフォルトで抽選時間 普通の値を設定
                 toDegree = 5400f;
-                duration = 10000;
-                interpolatorFactor = 2.3f;
+                duration = 8000;
+                interpolatorFactor = 2.6f;
 
                 //チェックがついたら、その情報を保存する
                 SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);

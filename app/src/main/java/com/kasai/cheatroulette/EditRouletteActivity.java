@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,8 +30,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.OnColorChangedListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -534,54 +530,8 @@ public class EditRouletteActivity extends AppCompatActivity {
 
     public void onClickColorButton(View colorButton) {
         //ColorPickDialogを開始する
-        AlertDialog.Builder colorPickAlert = new AlertDialog.Builder(EditRouletteActivity.this);
-
-        colorPickAlert.setTitle("色の選択");
-
-        LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.color_pick_dialog, null);
-        //アラートダイアログの中にある色ボタン（選択色確認のview）
-        ColorButton dialogColorButton = dialoglayout.findViewById(R.id.color_preview);
-        ((GradientDrawable) dialogColorButton.getBackground()).setColor(((ColorButton)colorButton).getButtonColor());
-        colorPickAlert.setView(dialoglayout);
-
-        ColorPickerView colorPickerView = (ColorPickerView) dialoglayout.findViewById(R.id.color_picker_view);
-        colorPickerView.setInitialColor(((ColorButton)colorButton).getButtonColor(), false);
-        colorPickerView.setShowBorder(true);
-        colorPickerView.addOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int selectedColor) {
-                ((GradientDrawable) dialogColorButton.getBackground()).setColor(selectedColor);
-            }
-        });
-
-        colorPickAlert
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //色情報の設定
-                        ((ColorButton)colorButton).setButtonColor(colorPickerView.getSelectedColor());
-                        //色の変更
-                        ((GradientDrawable)colorButton.getBackground()).setColor(colorPickerView.getSelectedColor());
-                        //色の変更があった部分のadapterPositionを取得
-                        int position = rouletteItemList.getLayoutManager().getPosition((View)colorButton.getParent().getParent().getParent());
-                        //色の変更を適応
-                        ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setColor(position, colorPickerView.getSelectedColor());
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        // ダイアログがキャンセルされた際の処理
-                    }
-                })
-                .create()
-                .show();
+        ColorPickDialogFragment colorPickDialogFragment = new ColorPickDialogFragment((ColorButton)colorButton, rouletteItemList);
+        colorPickDialogFragment.show(getSupportFragmentManager(), "colorPickDialog");
     }
 
     public void onSwitch100Clicked(View view ) {

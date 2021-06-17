@@ -75,4 +75,8 @@
     <string name="review_app">評価する</string>
     <string name="licenses">ライセンス</string>
     <string name="roulette_create_first_tutorial_id">roulette_create_first_tutorial</string>
+    <string name="saved_count_of_app_open_key">saved_count_of_app_open</string>
+    <string name="saved_dialog_never_invoke_key">saved_dialog_never_invoke</string>
+    <string name="saved_with_no_time_key">saved_with_no_time</string>
+    <string name="with_no_time">抽選時間を無くす</string>
 </resources>

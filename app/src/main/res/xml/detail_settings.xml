@@ -14,6 +14,11 @@
             android:defaultValue="true"
             app:singleLineTitle="false"/>
         <SwitchPreferenceCompat
+            android:key="@string/saved_with_no_time_key"
+            android:title="@string/with_no_time"
+            android:defaultValue="false"
+            app:singleLineTitle="false"/>
+        <SwitchPreferenceCompat
             android:key="@string/saved_appear_alert_delete_myRoulette_key"
             android:title="@string/appear_alert_delete_myRoulette"
             android:defaultValue="true"
