@@ -694,7 +694,7 @@ public class MainActivity extends AppCompatActivity {
             int countOfAppOpened = sharedPref.getInt(getString(R.string.saved_count_of_app_open_key), 0);
             countOfAppOpened = countOfAppOpened + 1;
             SharedPreferences.Editor editor = sharedPref.edit();
-            if (countOfAppOpened >= 2) {
+            if (countOfAppOpened >= 5) {
                 startRating(false);
                 //評価画面がを出したら、アプリ開始回数を0に戻す
                 editor.putInt(getString(R.string.saved_count_of_app_open_key), 0);
