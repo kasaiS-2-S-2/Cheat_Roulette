@@ -3,10 +3,10 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/with_no_time_switch_in_drawer_layout"
+        android:id="@+id/high_speed_mode_switch_in_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:checked="false"
-        android:onClick="onWithNoTimeSwitchClicked"/>
+        android:onClick="onHighSpeedModeSwitchClicked"/>
 </LinearLayout>

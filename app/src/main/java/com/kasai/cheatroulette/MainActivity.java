@@ -323,6 +323,11 @@ public class MainActivity extends AppCompatActivity {
         ((RadioButton)timeRadioGroup.findViewById(R.id.time_normal)).setChecked(startTimeNormalState);
         ((RadioButton)timeRadioGroup.findViewById(R.id.time_long)).setChecked(startTimeLongState);
 
+        //高速抽選モード
+        boolean highSpeedModeState = sharedPref.getBoolean(getString(R.string.saved_high_speed_mode_key), false);
+        SwitchCompat highSpeedModeSwitch = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_high_speed_mode).getActionView()).findViewById(R.id.high_speed_mode_switch_in_drawer_layout);
+        highSpeedModeSwitch.setChecked(highSpeedModeState);
+
         //テーマを保存するかの情報を取得、適用
         boolean startThemeSaveState = sharedPref.getBoolean(getString(R.string.saved_theme_save_state_key), false);
         SwitchCompat themeSaveSwitch = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_theme_save_option).getActionView()).findViewById(R.id.theme_save_switch_in_drawer_layout);
@@ -550,12 +555,12 @@ public class MainActivity extends AppCompatActivity {
                     //情報保存用の共有環境設定ファイル
                     SharedPreferences pref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
                     //止まるまでの時間の情報を取得、適用
-                    boolean withNoTime = pref.getBoolean(getString(R.string.saved_with_no_time_key), false);
+                    boolean highSpeedModeState = pref.getBoolean(getString(R.string.saved_high_speed_mode_key), false);
                     boolean startTimeShortState = pref.getBoolean(getString(R.string.saved_time_short_state_key), false);
                     boolean startTimeNormalState = pref.getBoolean(getString(R.string.saved_time_normal_state_key), true);
                     boolean startTimeLongState = pref.getBoolean(getString(R.string.saved_time_long_state_key), false);
 
-                    if (withNoTime) {
+                    if (highSpeedModeState) {
                         toDegree = 2160;
                         duration = 400;
                         interpolatorFactor = 1f;
@@ -563,7 +568,7 @@ public class MainActivity extends AppCompatActivity {
                         if (startTimeNormalState) {
                             toDegree = 5400f;
                             duration = 8000;
-                            interpolatorFactor = 2.6f;
+                            interpolatorFactor = 2.4f;
                         } else if (startTimeShortState) {
                             toDegree = 1440f;
                             duration = 4000;
@@ -576,7 +581,7 @@ public class MainActivity extends AppCompatActivity {
                             //例外があった場合、デフォルトで抽選時間 普通の値を設定
                             toDegree = 5400f;
                             duration = 8000;
-                            interpolatorFactor = 2.6f;
+                            interpolatorFactor = 2.4f;
                         }
                     }
 
@@ -1043,7 +1048,7 @@ public class MainActivity extends AppCompatActivity {
                 if (checked) {
                     toDegree = 5400f;
                     duration = 8000;
-                    interpolatorFactor = 2.6f;
+                    interpolatorFactor = 2.4f;
 
                     //チェックがついたら、その情報を保存する
                     SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
@@ -1075,7 +1080,7 @@ public class MainActivity extends AppCompatActivity {
                 //例外が合った場合、デフォルトで抽選時間 普通の値を設定
                 toDegree = 5400f;
                 duration = 8000;
-                interpolatorFactor = 2.6f;
+                interpolatorFactor = 2.4f;
 
                 //チェックがついたら、その情報を保存する
                 SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
@@ -1171,13 +1176,13 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public void onWithNoTimeSwitchClicked(View view) {
+    public void onHighSpeedModeSwitchClicked(View view) {
         //変更があった場合、その内容を保存する
-        SwitchCompat withNoTimeSwitch = (SwitchCompat)view;
-        boolean isChecked = withNoTimeSwitch.isChecked();
+        SwitchCompat highSpeedModeSwitch = (SwitchCompat)view;
+        boolean isChecked = highSpeedModeSwitch.isChecked();
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(getString(R.string.saved_with_no_time_key), isChecked);
+        editor.putBoolean(getString(R.string.saved_high_speed_mode_key), isChecked);
         editor.apply();
     }
 

@@ -26,9 +26,9 @@
                     app:actionLayout="@layout/roulette_time_radio_group"/>
 
                 <item
-                    android:id="@+id/nav_with_no_time"
-                    android:title="すぐに結果を表示"
-                    app:actionLayout="@layout/with_no_time_switch_in_drawer_layout"/>
+                    android:id="@+id/nav_high_speed_mode"
+                    android:title="@string/high_speed_mode"
+                    app:actionLayout="@layout/high_speed_mode_switch_in_drawer_layout"/>
 
                 <item
                     android:id="@+id/nav_change_theme"
