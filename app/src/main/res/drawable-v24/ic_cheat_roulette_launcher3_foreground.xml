@@ -8,48 +8,50 @@
       android:scaleY="0.77"
       android:translateX="12.42"
       android:translateY="12.42">
-            <!--<path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
-                <aapt:attr name="android:fillColor">
-                    <gradient
-                        android:endX="85.84757"
-                        android:endY="92.4963"
-                        android:startX="42.9492"
-                        android:startY="70.59793"
-                        android:type="linear">
-                        <item
-                            android:color="#44000000"
-                            android:offset="0.0" />
-                        <item
-                            android:color="#00000000"
-                            android:offset="1.0" />
-                    </gradient>
-                </aapt:attr>
-            </path>-->
-            <path
-                android:pathData="M0,0 L200,0 L200,200 L0,200 Z"
-                >
-                <aapt:attr name="android:fillColor">
-                    <gradient
-                        android:gradientRadius="30"
-                        android:centerX="53"
-                        android:centerY="53"
-                        android:type="radial">
-                        <item android:offset="0" android:color="#55000000"/>
-                        <item android:offset="1" android:color="#00000000"/>
-                    </gradient>
-                </aapt:attr>
-            </path>
 
-            <group
-                android:scaleX="3.20"
-                android:scaleY="3.20"
-                android:translateX="15.50"
-                android:translateY="15.50">
-                <path
-                    android:fillColor="#F0FFFFFF"
-                    android:pathData="M17.65,6.35C16.2,4.9 14.21,4 12,4c-4.42,0 -7.99,3.58 -7.99,8s3.57,8 7.99,8c3.73,0 6.84,-2.55 7.73,-6h-2.08c-0.82,2.33 -3.04,4 -5.65,4 -3.31,0 -6,-2.69 -6,-6s2.69,-6 6,-6c1.66,0 3.14,0.69 4.22,1.78L13,11h7V4l-2.35,2.35z"
-                    />
+              <!--<path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
+                  <aapt:attr name="android:fillColor">
+                      <gradient
+                          android:endX="85.84757"
+                          android:endY="92.4963"
+                          android:startX="42.9492"
+                          android:startY="70.59793"
+                          android:type="linear">
+                          <item
+                              android:color="#44000000"
+                              android:offset="0.0" />
+                          <item
+                              android:color="#00000000"
+                              android:offset="1.0" />
+                      </gradient>
+                  </aapt:attr>
+              </path>-->
+              <path
+                  android:pathData="M0,0 L200,0 L200,200 L0,200 Z"
+                  >
+                  <aapt:attr name="android:fillColor">
+                      <gradient
+                          android:gradientRadius="30"
+                          android:centerX="53"
+                          android:centerY="53"
+                          android:type="radial">
+                          <item android:offset="0" android:color="#55000000"/>
+                          <item android:offset="1" android:color="#00000000"/>
+                      </gradient>
+                  </aapt:attr>
+              </path>
 
-            </group>
+              <group
+                  android:scaleX="3.20"
+                  android:scaleY="3.20"
+                  android:translateX="15.50"
+                  android:translateY="15.50">
+                  <path
+                      android:fillColor="#F0FFFFFF"
+                      android:pathData="M17.65,6.35C16.2,4.9 14.21,4 12,4c-4.42,0 -7.99,3.58 -7.99,8s3.57,8 7.99,8c3.73,0 6.84,-2.55 7.73,-6h-2.08c-0.82,2.33 -3.04,4 -5.65,4 -3.31,0 -6,-2.69 -6,-6s2.69,-6 6,-6c1.66,0 3.14,0.69 4.22,1.78L13,11h7V4l-2.35,2.35z"
+                      />
+
+              </group>
+    
   </group>
 </vector>

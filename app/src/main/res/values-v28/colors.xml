@@ -34,4 +34,5 @@
     <color name="tutorial_overlay_color">#DD292929</color>
     <color name="tooltip_text_color">#007686</color>
     <color name="showcase_text_color">#FFFFFFFF</color>
+    <color name="popup_menu_background">#FFE0E0E0</color>
 </resources>

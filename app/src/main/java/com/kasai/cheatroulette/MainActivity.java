@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private TitleFAB myRouletteFab;
 
     private boolean rouletteExists = false;
+    private boolean ratingDialogAlreadyInvoked = false;
     static final int RESULT_ROULETTECREATE = 1;
     static final int RESULT_MYROULETTE = 2;
     static final int RESULT_EDITROULETTE = 3;
@@ -130,6 +131,21 @@ public class MainActivity extends AppCompatActivity {
 
         //情報保存用の共有環境設定ファイル
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        boolean dialogNeverInvoke = sharedPref.getBoolean(getString(R.string.saved_dialog_never_invoke_key), false);
+
+        if (!dialogNeverInvoke && !ratingDialogAlreadyInvoked) {
+            int countOfAppOpened = sharedPref.getInt(getString(R.string.saved_count_of_app_open_key), 0);
+            if (countOfAppOpened >= 5) {
+                startRating(false);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                //評価画面がを出したら、アプリ開始回数を0に戻す
+                editor.putInt(getString(R.string.saved_count_of_app_open_key), 0);
+                //評価画面がすでに出たことを記録する
+                ratingDialogAlreadyInvoked = true;
+
+                editor.apply();
+            }
+        }
 
         RadioGroup themeRadioGroup = ((LinearLayout)navigationView.getMenu().findItem(R.id.nav_theme_bar).getActionView()).findViewById(R.id.change_theme_radio_group);
         RadioButton lightThemeRadioButton = themeRadioGroup.findViewById(R.id.light_theme);
@@ -232,7 +248,11 @@ public class MainActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
             }
         } else {
+            int countOfAppOpened = sharedPref.getInt(getString(R.string.saved_count_of_app_open_key), 0);
+            //手動のテーマ変更による再起動は、アプリを開始したとみなさない
+            countOfAppOpened = countOfAppOpened - 1;
             SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt(getString(R.string.saved_count_of_app_open_key), countOfAppOpened);
             //手動でのテーマ変更後は、keyをfalse（初期化）にし、保存する
             editor.putBoolean(getString(R.string.saved_theme_changed_manually_key), false);
             editor.apply();
@@ -408,8 +428,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
                         break;
                     case R.id.nav_review_app:
-                        //startReviewFlow();
-                        //startRatingNow();
                         startRating(true);
                         break;
                     case R.id.nav_licenses:
@@ -529,11 +547,10 @@ public class MainActivity extends AppCompatActivity {
 
                     //詳細設定の共有環境設定ファイル
                     SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    //抽選時間を無くすかどうかの情報
-                    boolean withNoTime = defaultPref.getBoolean(getString(R.string.saved_with_no_time_key), false);
                     //情報保存用の共有環境設定ファイル
                     SharedPreferences pref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
                     //止まるまでの時間の情報を取得、適用
+                    boolean withNoTime = pref.getBoolean(getString(R.string.saved_with_no_time_key), false);
                     boolean startTimeShortState = pref.getBoolean(getString(R.string.saved_time_short_state_key), false);
                     boolean startTimeNormalState = pref.getBoolean(getString(R.string.saved_time_normal_state_key), true);
                     boolean startTimeLongState = pref.getBoolean(getString(R.string.saved_time_long_state_key), false);
@@ -692,18 +709,14 @@ public class MainActivity extends AppCompatActivity {
         boolean dialogNeverInvoke = sharedPref.getBoolean(getString(R.string.saved_dialog_never_invoke_key), false);
         if (!dialogNeverInvoke) {
             int countOfAppOpened = sharedPref.getInt(getString(R.string.saved_count_of_app_open_key), 0);
+
+            //アプリが開かれた回数を増やして記録
             countOfAppOpened = countOfAppOpened + 1;
             SharedPreferences.Editor editor = sharedPref.edit();
-            if (countOfAppOpened >= 5) {
-                startRating(false);
-                //評価画面がを出したら、アプリ開始回数を0に戻す
-                editor.putInt(getString(R.string.saved_count_of_app_open_key), 0);
-            } else {
-                editor.putInt(getString(R.string.saved_count_of_app_open_key), countOfAppOpened);
-            }
+            editor.putInt(getString(R.string.saved_count_of_app_open_key), countOfAppOpened);
+
             editor.apply();
         }
-
     }
 
     private void tutorial() {
@@ -1158,10 +1171,18 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    public void onWithNoTimeSwitchClicked(View view) {
+        //変更があった場合、その内容を保存する
+        SwitchCompat withNoTimeSwitch = (SwitchCompat)view;
+        boolean isChecked = withNoTimeSwitch.isChecked();
+        SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(getString(R.string.saved_with_no_time_key), isChecked);
+        editor.apply();
+    }
+
     @Override
     public void onBackPressed() {
-
-        //if (!isTutorialState) {
             if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                 drawerLayout.closeDrawer(Gravity.RIGHT);
             } else if (fabsMenu.isExpanded()) {

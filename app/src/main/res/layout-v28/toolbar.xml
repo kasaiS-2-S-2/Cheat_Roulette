@@ -16,7 +16,6 @@
         android:background="@color/appPrimaryColor"
         android:elevation="10dp"
         style="@style/BaseToolbar">
-
     </androidx.appcompat.widget.Toolbar>
 
 <!--</RelativeLayout>-->

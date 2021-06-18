@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:id="@+id/nav_view"
         app:headerLayout="@layout/header_drawer_menu_main"
+        android:fitsSystemWindows="false"
         app:menu="@menu/drawer_menu_main"
         app:itemIconTint="@color/vector_asset_color"
         android:layout_gravity="right"/>
@@ -125,7 +126,6 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
-                android:text="TextView"
                 app:layout_constraintBottom_toTopOf="@+id/rouletteStartButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

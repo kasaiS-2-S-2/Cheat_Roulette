@@ -30,7 +30,7 @@
     </style>
 
     <style name="PopupMenuStyle" parent="android:Widget.Holo.Light.PopupMenu">
-        <item name="android:background">@color/layout_background</item>
+        <item name="android:background">@color/popup_menu_background</item>
         <item name="android:textColor">@color/toolbar_text_color</item>
     </style>
 

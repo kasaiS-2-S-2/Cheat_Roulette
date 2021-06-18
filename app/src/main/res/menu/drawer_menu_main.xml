@@ -26,6 +26,11 @@
                     app:actionLayout="@layout/roulette_time_radio_group"/>
 
                 <item
+                    android:id="@+id/nav_with_no_time"
+                    android:title="すぐに結果を表示"
+                    app:actionLayout="@layout/with_no_time_switch_in_drawer_layout"/>
+
+                <item
                     android:id="@+id/nav_change_theme"
                     android:title="@string/theme"
                     android:icon="@drawable/ic_baseline_brightness_4_24" />

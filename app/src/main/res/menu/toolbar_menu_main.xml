@@ -10,10 +10,12 @@
         app:showAsAction="always">
 
         <menu>
-            <item
-                android:id="@+id/tutorial"
-                android:title="@string/tutorial"
-                app:showAsAction="never"/>
+            <group>
+                <item
+                    android:id="@+id/tutorial"
+                    android:title="@string/tutorial"
+                    app:showAsAction="never"/>
+            </group>
         </menu>
 
     </item>

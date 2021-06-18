@@ -130,7 +130,6 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
-                android:text="TextView"
                 app:layout_constraintBottom_toTopOf="@+id/rouletteStartButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

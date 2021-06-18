@@ -67,7 +67,7 @@ public class RatingDialogFragment extends DialogFragment {
                             startActivity(intent);
                         }
                     })
-                    .setNeutralButton("評価しない", new DialogInterface.OnClickListener() {
+                    .setNeutralButton("今後表示しない", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
