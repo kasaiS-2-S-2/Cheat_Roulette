@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "740831551509",
+    "project_id": "cheatrouletteadmob",
+    "storage_bucket": "cheatrouletteadmob.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740831551509:android:a373867d341eb408e72e1c",
+        "android_client_info": {
+          "package_name": "com.kasai.cheatroulette"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740831551509-o0ufg5svja290lmgsks9q7ene5fk7sji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpSRipGRCeY4bPvrXZ-usm_UdN-BIphko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740831551509-o0ufg5svja290lmgsks9q7ene5fk7sji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

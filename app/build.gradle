@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
     id 'com.google.android.gms.oss-licenses-plugin'
 }
 
@@ -37,7 +38,6 @@ dependencies {
     implementation "androidx.drawerlayout:drawerlayout:1.1.1"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.gms:play-services-ads:20.1.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -85,4 +85,8 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
 
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+
+    implementation platform('com.google.firebase:firebase-bom:28.1.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-ads:20.1.0'
 }
