@@ -106,43 +106,19 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
                                 Color.parseColor("#FFF15B67"), Color.parseColor("#FFFDB25F"),
                                 Color.parseColor("#FFFED883")));
 
-                ArrayList<String> itemNamesInfo2 = new ArrayList<String>(Arrays.asList("田中", "佐藤", "鈴木", "櫻井", "小池", "フィリップ"));
+                ArrayList<String> itemNamesInfo2 = new ArrayList<String>(Arrays.asList("田中", "佐藤", "フィリップ", "櫻井", "小池", "鈴木"));
 
                 ArrayList<Integer> itemRatiosInfo2 = new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1));
 
-                ArrayList<Integer> OnOffOfSwitch100Info2 = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 1));
+                ArrayList<Integer> OnOffOfSwitch100Info2 = new ArrayList<Integer>(Arrays.asList(0, 0, 1, 0, 0, 0));
 
                 ArrayList<Integer> OnOffOfSwitch0Info2 = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0));
 
-                ArrayList<Float> itemProbabilitiesInfo2 = new ArrayList<Float>(Arrays.asList(0f, 0f, 0f, 0f, 0f, 100f));
+                ArrayList<Float> itemProbabilitiesInfo2 = new ArrayList<Float>(Arrays.asList(0f, 0f, 100f, 0f, 0f, 0f));
 
                 MyRoulette defaultMyRoulette2 =
                         new MyRoulette(rouletteName2, date2, colorsInfo2, itemNamesInfo2, itemRatiosInfo2, OnOffOfSwitch100Info2, OnOffOfSwitch0Info2, itemProbabilitiesInfo2);
                 dao.insert(defaultMyRoulette2);
-
-
-                String rouletteName3 = "今日のディナー";
-                String date3 = "xxxx/yy/zz";
-                ArrayList<Integer> colorsInfo3 =
-                        new ArrayList<Integer>(Arrays.asList(Color.parseColor("#FFB30047"),
-                                Color.parseColor("#FFE34E29"), Color.parseColor("#FFF27A11"),
-                                Color.parseColor("#FFF7B211"), Color.parseColor("#FF48A19E"),
-                                Color.parseColor("#FF611ACA")));
-
-                ArrayList<String> itemNamesInfo3 = new ArrayList<String>(Arrays.asList("田中", "佐藤", "鈴木", "櫻井", "小池", "フィリップ"));
-
-                ArrayList<Integer> itemRatiosInfo3 = new ArrayList<Integer>(Arrays.asList(1, 1, 1, 1, 1, 1));
-
-                ArrayList<Integer> OnOffOfSwitch100Info3 = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 1));
-
-                ArrayList<Integer> OnOffOfSwitch0Info3 = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0, 0, 0));
-
-                ArrayList<Float> itemProbabilitiesInfo3 = new ArrayList<Float>(Arrays.asList(0f, 0f, 0f, 0f, 0f, 100f));
-
-
-                MyRoulette defaultMyRoulette3 =
-                        new MyRoulette(rouletteName3, date3, colorsInfo3, itemNamesInfo3, itemRatiosInfo3, OnOffOfSwitch100Info3, OnOffOfSwitch0Info3, itemProbabilitiesInfo3);
-                dao.insert(defaultMyRoulette3);
 
 
             });
