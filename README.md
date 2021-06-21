@@ -32,3 +32,4 @@
 
 # 各画面の役割
 ## メインアクティビティ(MainActibity)
+![image](https://raw.github.com/wiki/kasaiS-2-S-2/Cheat_Roulette/images/main.jpg)
