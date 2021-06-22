@@ -1,7 +1,10 @@
 # Name：イカサマできるルーレット
+
 イカサマ機能のついたルーレットを作成できるアプリです。
 
 このアプリを活用すると、レストラン決めや罰ゲーム決め等、様々な場面でバレずにイカサマを行うことができます。
+
+※審査中なので、まだGoogle Playには公開できていません。
 
 # Demo
 ![demo](https://raw.github.com/wiki/kasaiS-2-S-2/Cheat_Roulette/images/main2.gif)
