@@ -34,6 +34,9 @@
 
 ・ダークテーマ対応
 
+# 今後の展望
+MVVMを意識した実装をする
+
 # 各画面の役割
 ## メイン画面(MainActibity)
 ![image](https://raw.github.com/wiki/kasaiS-2-S-2/Cheat_Roulette/images/main.jpg)
