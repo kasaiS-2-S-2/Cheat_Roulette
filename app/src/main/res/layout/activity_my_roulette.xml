@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Copyright 2017 Google Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain ic_cheat_roulette_launcher2_foreground copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License. -->
-
-<!-- Uses the Empty Activity Template.
-Want to minimize unrelated busy work where students just remove code.
-So, we are leaving the template code in. -->
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -46,80 +28,6 @@ So, we are leaving the template code in. -->
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_myRoulette"
         tools:listitem="@layout/my_roulette_list_item" />
-
-    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/add_word"
-        app:srcCompat="@drawable/ic_add_black_24dp"/>-->
-
-    <!--<jahirfiquitiva.libs.fabsmenu.FABsMenuLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:fabs_menu_overlayColor="#99000000"
-        app:fabs_menu_clickableOverlay="true"
-        tools:layout_behavior="@string/fabs_menu_layout_behavior">
-
-
-        <jahirfiquitiva.libs.fabsmenu.FABsMenu
-            android:id="@+id/fabs_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:clipChildren="false"
-            app:fab_menuMargins="16dp"
-            app:fab_moreButtonPlusIcon="@drawable/ic_add_black_24dp"
-            app:fab_moreButtonBackgroundColor="#FFFF0040"
-            app:fab_moreButtonRippleColor="#FFFF0040"
-            app:fab_moreButtonSize="normal"
-            app:fab_labelsPosition="left"
-            app:fab_expandDirection="up">
-
-
-            <jahirfiquitiva.libs.fabsmenu.TitleFAB
-                android:id="@+id/to_remove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_build_24"
-                app:fabSize="mini"
-                app:backgroundTint="@color/colorAccent"
-                app:rippleColor="@color/colorAccent"
-                app:fab_title="ルーレット作成"
-                app:fab_title_backgroundColor="@color/colorAccent"
-                app:fab_title_textColor="@android:color/white"/>
-
-            <jahirfiquitiva.libs.fabsmenu.TitleFAB
-                android:id="@+id/clickable_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_edit_24"
-                app:fab_title="ルーレット編集"
-                app:fab_enableTitleClick="true"
-                app:fab_title_textColor="@color/colorAccent"
-                app:fabSize="mini"
-                app:backgroundTint="@color/colorAccent"
-                app:rippleColor="@color/colorAccent"/>
-
-
-
-            <jahirfiquitiva.libs.fabsmenu.TitleFAB
-                android:id="@+id/green_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_track_changes_24"
-                app:fab_title="Myルーレット"
-                app:fabSize="mini"
-                app:backgroundTint="#FF00FFBF"
-                app:rippleColor="#FF00FFBF"/>
-
-        </jahirfiquitiva.libs.fabsmenu.FABsMenu>
-
-    </jahirfiquitiva.libs.fabsmenu.FABsMenuLayout>
-    -->
 
     <!--今のadUnitIdはテストようだから、リリース時は置き換える-->
     <com.google.android.gms.ads.AdView

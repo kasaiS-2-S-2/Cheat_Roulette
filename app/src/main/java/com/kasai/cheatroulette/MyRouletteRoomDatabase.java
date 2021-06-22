@@ -1,21 +1,5 @@
 package com.kasai.cheatroulette;
 
-/*
- * Copyright (C) 2017 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain ic_cheat_roulette_launcher2_foreground copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import android.content.Context;
 import android.graphics.Color;
 
@@ -78,9 +62,9 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
                 String date = "xxxx/yy/zz";
                 ArrayList<Integer> colorsInfo =
                         new ArrayList<Integer>(Arrays.asList(Color.parseColor("#FFEA5555"),
-                        Color.parseColor("#FFF39C3C"), Color.parseColor("#FFECD03F"),
-                        Color.parseColor("#FF6EB35E"), Color.parseColor("#FF4996C8"),
-                        Color.parseColor("#FF774ED8")));
+                                Color.parseColor("#FFF39C3C"), Color.parseColor("#FFECD03F"),
+                                Color.parseColor("#FF6EB35E"), Color.parseColor("#FF4996C8"),
+                                Color.parseColor("#FF774ED8")));
 
                 ArrayList<String> itemNamesInfo = new ArrayList<String>(Arrays.asList("お寿司", "焼き肉", "ラーメン", "コンビニ", "串かつ", "中華"));
 

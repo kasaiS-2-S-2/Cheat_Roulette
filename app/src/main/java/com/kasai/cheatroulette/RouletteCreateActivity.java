@@ -133,13 +133,13 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
         rouletteName = findViewById(R.id.rouletteName);
 
-            rouletteItemListInfo.setColors(new ArrayList<Integer>(Arrays.asList(generateColor(), generateColor())));
-            rouletteItemListInfo.setItemNames(new ArrayList<String>(Arrays.asList("", "")));
-            rouletteItemListInfo.setItemRatios(new ArrayList<Integer>(Arrays.asList(1, 1)));
-            rouletteItemListInfo.setOnOffInfoOfSwitch100(new ArrayList<Boolean>(Arrays.asList(false, false)));
-            rouletteItemListInfo.setOnOffInfoOfSwitch0(new ArrayList<Boolean>(Arrays.asList(false, false)));
+        rouletteItemListInfo.setColors(new ArrayList<Integer>(Arrays.asList(generateColor(), generateColor())));
+        rouletteItemListInfo.setItemNames(new ArrayList<String>(Arrays.asList("", "")));
+        rouletteItemListInfo.setItemRatios(new ArrayList<Integer>(Arrays.asList(1, 1)));
+        rouletteItemListInfo.setOnOffInfoOfSwitch100(new ArrayList<Boolean>(Arrays.asList(false, false)));
+        rouletteItemListInfo.setOnOffInfoOfSwitch0(new ArrayList<Boolean>(Arrays.asList(false, false)));
 
-            rouletteItemListAdapter.notifyDataSetChanged();
+        rouletteItemListAdapter.notifyDataSetChanged();
 
         itemAddButton = findViewById(R.id.item_add_button);
         // リスナーをボタンに登録, lambda

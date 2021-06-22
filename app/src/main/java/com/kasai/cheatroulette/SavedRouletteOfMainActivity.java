@@ -85,13 +85,13 @@ public class SavedRouletteOfMainActivity {
 
 
     public void setSavedRouletteContents(int splitCount,
-                                    String rouletteNameInfo,
-                                    ArrayList<Integer> colorsInfo,
-                                    ArrayList<String> itemNamesInfo,
-                                    ArrayList<Integer> itemRatiosInfo,
-                                    ArrayList<Integer> OnOffOfSwitch100Info,
-                                    ArrayList<Integer> OnOffOfSwitch0Info,
-                                    ArrayList<Float> itemProbabilitiesInfo) {
+                                         String rouletteNameInfo,
+                                         ArrayList<Integer> colorsInfo,
+                                         ArrayList<String> itemNamesInfo,
+                                         ArrayList<Integer> itemRatiosInfo,
+                                         ArrayList<Integer> OnOffOfSwitch100Info,
+                                         ArrayList<Integer> OnOffOfSwitch0Info,
+                                         ArrayList<Float> itemProbabilitiesInfo) {
 
 
         //ルーレットの分割数

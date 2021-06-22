@@ -119,7 +119,7 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
     }
 
     //なんかstaticになってた。理由不明　5/26 →　公式ドキュメントでなんかstaticにしている。なんでだろ？
-        //→　https://stackoverflow.com/questions/31302341/what-difference-between-static-and-non-static-viewholder-in-recyclerview-adapter
+    //→　https://stackoverflow.com/questions/31302341/what-difference-between-static-and-non-static-viewholder-in-recyclerview-adapter
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final Button colorButton;
         private final EditText itemName;

@@ -23,12 +23,6 @@
         app:itemIconTint="@color/vector_asset_color"
         android:layout_gravity="right"/>
 
-
-
-    <!--<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -38,31 +32,6 @@
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
-            <!--<com.e.myroulette1.RouletteView
-                android:id="@+id/rouletteView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingClass" />-->
-
-            <!--
-            <com.e.myroulette1.RouletteView
-                android:id="@+id/roulette"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingClass" />
-                -->
-
-
 
             <include
                 android:id="@+id/toolbar_main"
@@ -100,21 +69,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <!--今のadUnitIdはテストようだから、リリース時は置き換える-->
-            <!--<com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_main"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-            </com.google.android.gms.ads.AdView>-->
 
             <TextView
                 android:id="@+id/resultTextView"
@@ -156,32 +110,6 @@
                     android:tint="@color/appPink"
                     app:srcCompat="@drawable/ic_baseline_remove_48" />
 
-                <!--<Button
-                    android:id="@+id/minus_button"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/split_button_design"
-                    android:text="−"
-                    android:textSize="48dp"/>-->
-
-                <!--<TextView
-                    android:id="@+id/roulette_split"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:text="@string/roulette_split"
-                    android:textSize="24dp"
-                    android:padding="6dp"
-                    android:background="@drawable/split_textview_border"
-                    android:gravity="center_vertical"/>-->
-
-                <!--<Button
-                    android:id="@+id/plus_button"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/split_button_design"
-                    android:text="＋"
-                    android:textSize="48dp"/>-->
-
                 <ImageButton
                     android:id="@+id/plus_button"
                     android:layout_width="72dp"
@@ -191,21 +119,6 @@
                     app:srcCompat="@drawable/ic_baseline_add_48" />
 
             </LinearLayout>
-
-
-            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabs_menu_button_dummy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/appPink"
-                app:rippleColor="@color/appPrimaryColor"
-                app:srcCompat="@drawable/ic_baseline_add_white_24"
-                android:tint="@color/button_content_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>-->
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1038,7 +1038,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putBoolean(getString(R.string.saved_time_long_state_key), false);
                     editor.apply();
                 }
-                    break;
+                break;
 
             case R.id.time_normal:
                 if (checked) {
@@ -1054,7 +1054,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putBoolean(getString(R.string.saved_time_long_state_key), false);
                     editor.apply();
                 }
-                    break;
+                break;
 
             case R.id.time_long:
                 if (checked) {
@@ -1070,7 +1070,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putBoolean(getString(R.string.saved_time_long_state_key), true);
                     editor.apply();
                 }
-                    break;
+                break;
 
             default:
                 //例外が合った場合、デフォルトで抽選時間 普通の値を設定
@@ -1184,13 +1184,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-            if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                drawerLayout.closeDrawer(Gravity.RIGHT);
-            } else if (fabsMenu.isExpanded()) {
-                fabsMenu.collapse();
-            } else {
-                super.onBackPressed();
-            }
+        if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+            drawerLayout.closeDrawer(Gravity.RIGHT);
+        } else if (fabsMenu.isExpanded()) {
+            fabsMenu.collapse();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private Integer getSector(float degrees, RouletteView roulette) {
@@ -1241,4 +1241,3 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
-
