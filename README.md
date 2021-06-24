@@ -37,10 +37,6 @@ Google Playリンク：https://play.google.com/store/apps/details?id=com.kasai.c
 
 ・ダークテーマ対応
 
-## 今後やりたいこと
-
-MVVM, Databindingの実装
-
 ## 各画面の役割
 ### メイン画面(MainActibity)
 ![image](https://raw.github.com/wiki/kasaiS-2-S-2/Cheat_Roulette/images/main.jpg)
