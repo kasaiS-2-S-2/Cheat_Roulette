@@ -25,7 +25,7 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal">
 
-            <com.kasai.cheatroulette.ColorButton
+            <com.kasai.cheatroulette.ui.ColorButton
                 android:id="@+id/colorButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -65,7 +65,7 @@
                 android:text="1"
                 android:textSize="16sp"/>
 
-            <com.kasai.cheatroulette.BarrageGuardImageButton
+            <com.kasai.cheatroulette.ui.BarrageGuardImageButton
                 android:id="@+id/deleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,7 +101,9 @@
                 android:layout_gravity="center_vertical"
                 android:theme="@style/Switch100Style"
                 android:onClick="onSwitch100Clicked"
-                android:checked="false" />
+                android:checked="false"
+                android:scaleX="1.3"
+                android:scaleY="1.3"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -120,7 +122,9 @@
                 android:layout_gravity="center_vertical"
                 android:theme="@style/Switch0Style"
                 android:onClick="onSwitch0Clicked"
-                android:checked="false" />
+                android:checked="false"
+                android:scaleX="1.3"
+                android:scaleY="1.3"/>
 
         </LinearLayout>
 

@@ -69,7 +69,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <com.kasai.cheatroulette.BarrageGuardImageButton
+            <com.kasai.cheatroulette.ui.BarrageGuardImageButton
                 android:id="@+id/edit_myRoulette"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:tint="@color/vector_asset_color"
                 android:onClick="onEditMyRoulette" />
 
-            <com.kasai.cheatroulette.BarrageGuardImageButton
+            <com.kasai.cheatroulette.ui.BarrageGuardImageButton
                 android:id="@+id/delete_myRoulette"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
 
         </LinearLayout>
 
-        <com.kasai.cheatroulette.RouletteView
+        <com.kasai.cheatroulette.ui.RouletteView
             android:id="@+id/myRoulette"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

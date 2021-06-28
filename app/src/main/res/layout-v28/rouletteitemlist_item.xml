@@ -24,7 +24,7 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal">
 
-            <com.kasai.cheatroulette.ColorButton
+            <com.kasai.cheatroulette.ui.ColorButton
                 android:id="@+id/colorButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -64,7 +64,7 @@
                 android:text="1"
                 android:textSize="16sp"/>
 
-            <com.kasai.cheatroulette.BarrageGuardImageButton
+            <com.kasai.cheatroulette.ui.BarrageGuardImageButton
                 android:id="@+id/deleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

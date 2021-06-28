@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.kasai.cheatroulette.MyApplication"
+        android:name="com.kasai.cheatroulette.common.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_cheat_roulette_launcher3"
         android:label="@string/app_name"
@@ -13,19 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.kasai.cheatroulette.DetailSettingsActivity"
+            android:name="com.kasai.cheatroulette.activity.detailSettingActivity.DetailSettingsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.kasai.cheatroulette.EditRouletteActivity"
+            android:name="com.kasai.cheatroulette.activity.EditRouletteActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.kasai.cheatroulette.EditMyRouletteActivity"
+            android:name="com.kasai.cheatroulette.activity.EditMyRouletteActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.kasai.cheatroulette.MyRouletteActivity"
+            android:name="com.kasai.cheatroulette.activity.MyRouletteActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.kasai.cheatroulette.MainActivity"
+            android:name="com.kasai.cheatroulette.activity.mainActivity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.strongShadow">
             <intent-filter>
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.kasai.cheatroulette.RouletteCreateActivity"
+            android:name="com.kasai.cheatroulette.activity.RouletteCreateActivity"
             android:screenOrientation="portrait" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
