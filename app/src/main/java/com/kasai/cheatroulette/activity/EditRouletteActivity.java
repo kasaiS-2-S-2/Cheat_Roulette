@@ -411,6 +411,7 @@ public class EditRouletteActivity extends AppCompatActivity {
             }
         });
 
+        /*
         SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_edit_roulette_first_tutorial_done_key), false);
         if (!isFirstTutorialDone) {
@@ -420,6 +421,7 @@ public class EditRouletteActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.saved_edit_roulette_first_tutorial_done_key), true);
             editor.apply();
         }
+        */
     }
 
     private void tutorial() {

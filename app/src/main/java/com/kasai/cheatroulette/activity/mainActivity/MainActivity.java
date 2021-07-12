@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_main_first_tutorial_done_key), false);
         if (!isFirstTutorialDone) {
-            tutorial();
+            firstTutorial();
             //最初のチュートリアルが終わったら、そのことを保存しておく
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(getString(R.string.saved_main_first_tutorial_done_key), true);
@@ -726,6 +726,58 @@ public class MainActivity extends AppCompatActivity {
 
             editor.apply();
         }
+    }
+
+    private void firstTutorial() {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100);
+        config.setRenderOverNavigationBar(true);
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, getString(R.string.main_tutorial_id));
+
+        sequence.setConfig(config);
+
+        sequence.singleUse(getString(R.string.main_first_tutorial_id));
+
+
+        ShowcaseTooltip drawerMenuToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとメニューが開き、各種設定を行うことができます。");
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(toolbar.findViewById(R.id.menuButton))
+                        .setToolTip(drawerMenuToolTip)
+                        .setDismissOnTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withCircleShape()
+                        .setShapePadding(30)
+                        .build()
+        );
+
+        ShowcaseTooltip fabsMenuToolTip = ShowcaseTooltip.build(this)
+                .corner(30)
+                .textColor(getResources().getColor(R.color.tooltip_text_color))
+                .color(getResources().getColor(R.color.appPrimaryColor))
+                .text("タップするとボタンメニューが出現します。<br><br> タップしてみましょう。");
+
+        FABsMenu faBsMenu = findViewById(R.id.fabs_menu);
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(faBsMenu.getMenuButton())
+                        .setToolTip(fabsMenuToolTip)
+                        .setTargetTouchable(true)
+                        .setDismissOnTargetTouch(true)
+                        .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
+                        .withCircleShape()
+                        .build()
+        );
+
+
+        sequence.start();
     }
 
     private void tutorial() {

@@ -202,7 +202,7 @@ public class RouletteView extends View {
         //16進数に変換
         String hexColor = Integer.toHexString(color);
 
-        Boolean isDarkFlag;
+        boolean isDarkFlag;
 
         int r = 0;
         int g = 0;

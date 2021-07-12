@@ -79,5 +79,6 @@
     <string name="saved_dialog_never_invoke_key">saved_dialog_never_invoke</string>
     <string name="saved_high_speed_mode_key">saved_high_speed_mode</string>
     <string name="high_speed_mode">高速抽選モード</string>
+    <string name="main_first_tutorial_id">main_first_tutorial</string>
 
 </resources>

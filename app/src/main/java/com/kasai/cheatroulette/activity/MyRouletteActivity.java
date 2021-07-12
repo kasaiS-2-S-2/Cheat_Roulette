@@ -129,6 +129,7 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         super.onWindowFocusChanged(hasFocus);
 
+        /*
         SharedPreferences sharedPref = MyRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), false);
         if (!isFirstTutorialDone) {
@@ -138,6 +139,7 @@ public class MyRouletteActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), true);
             editor.apply();
         }
+        */
     }
 
     private void deleteMyRoulette(RecyclerView.ViewHolder viewHolder) {

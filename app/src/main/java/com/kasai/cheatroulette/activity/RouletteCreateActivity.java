@@ -450,6 +450,9 @@ public class RouletteCreateActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), true);
             editor.apply();
 
+            MaterialShowcaseView.resetSingleUse(RouletteCreateActivity.this, getString(R.string.roulette_create_first_tutorial_id));
+            MaterialShowcaseView.resetSingleUse(RouletteCreateActivity.this, getString(R.string.roulette_create_continuation_tutorial_id));
+
             firstTutorial();
         }
     }
@@ -690,6 +693,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
                         .setShapePadding(50)
                         .build()
         );
+
         sequence.start();
     }
 
