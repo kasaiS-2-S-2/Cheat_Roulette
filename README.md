@@ -55,7 +55,7 @@ Google Playリンク：https://play.google.com/store/apps/details?id=com.kasai.c
 
 表示はRecyclerViewで行っています。
 
-追加ボタンでルーレット項目の追加、右下のFABでルーレットを作成を完了します。作成したルーレットはRoomに保存が可能です。
+追加ボタンでルーレット項目の追加、右下のFABでルーレットを作成を完了します。作成したルーレットはRoomを使って保存が可能です。
 ルーレット項目には、色、項目名、面積比を設定することができます。また、画面左上にある隠しボタンをタップすると、イカサマ設定が現れます。
 
 イカサマ設定は以下の2種類で、
@@ -80,14 +80,14 @@ Google Playリンク：https://play.google.com/store/apps/details?id=com.kasai.c
 
 表示はRecyclerViewで行っています。
 
-各CardViewには削除ボタンを押すと、そこに写っているルーレットがRoomから削除されます。編集ボタンを押すとMyルーレット編集画面へ遷移します。
+各CardViewには削除ボタンを押すと、そこに写っているルーレットがローカルデータベースから削除されます。編集ボタンを押すとMyルーレット編集画面へ遷移します。
 また、CardView自体を押すと、そのルーレットがメイン画面にセットされます
 
 ### Myルーレット編集画面（EditMyRouletteActivity）
 
 Myルーレットにて選択されたルーレットを編集する画面です。画面レイアウトはルーレット編集画面と同じです。
 
-機能はルーレット作成画面と同じです。右下のFABを押すと、編集されたルーレットがRoomに上書きされます。
+機能はルーレット作成画面と同じです。右下のFABを押すと、編集されたルーレットがRoomを使って上書き保存されます。
 
 ### 詳細設定画面（DetailSettingsActivity）
 ![image](https://raw.github.com/wiki/kasaiS-2-S-2/Cheat_Roulette/images/detail_setting.jpg)
