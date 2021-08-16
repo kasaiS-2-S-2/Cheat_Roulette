@@ -371,18 +371,6 @@ public class EditMyRouletteActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        SharedPreferences sharedPref = EditMyRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
-        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_edit_myRoulette_first_tutorial_done_key), false);
-        if (!isFirstTutorialDone) {
-            tutorial();
-            //最初のチュートリアルが終わったら、そのことを保存しておく
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.saved_edit_myRoulette_first_tutorial_done_key), true);
-            editor.apply();
-        }
-        */
-
     }
 
     private void tutorial() {

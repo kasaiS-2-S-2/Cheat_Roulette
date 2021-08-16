@@ -439,7 +439,7 @@ public class RouletteCreateActivity extends AppCompatActivity {
 
         super.onWindowFocusChanged(hasFocus);
 
-        Log.d("あああああああVVVVVVVVVV", "onWindowFocusChanged");
+        Log.d("RouletteCreateActivity", "onWindowFocusChanged");
 
         SharedPreferences sharedPref = RouletteCreateActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_roulette_create_first_tutorial_done_key), false);

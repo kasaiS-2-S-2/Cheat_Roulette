@@ -125,23 +125,6 @@ public class MyRouletteActivity extends AppCompatActivity {
         }).attachToRecyclerView(myRouletteList);
     }
 
-    public void onWindowFocusChanged(boolean hasFocus) {
-
-        super.onWindowFocusChanged(hasFocus);
-
-        /*
-        SharedPreferences sharedPref = MyRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
-        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), false);
-        if (!isFirstTutorialDone) {
-            tutorial();
-            //最初のチュートリアルが終わったら、そのことを保存しておく
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.saved_myRoulette_first_tutorial_done_key), true);
-            editor.apply();
-        }
-        */
-    }
-
     private void deleteMyRoulette(RecyclerView.ViewHolder viewHolder) {
         int position = viewHolder.getAdapterPosition();
         //スワイプされたList<word>の項目をList<word>から削除

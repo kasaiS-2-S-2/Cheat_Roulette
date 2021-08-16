@@ -410,18 +410,6 @@ public class EditRouletteActivity extends AppCompatActivity {
                 }
             }
         });
-
-        /*
-        SharedPreferences sharedPref = EditRouletteActivity.this.getPreferences(Context.MODE_PRIVATE);
-        boolean isFirstTutorialDone = sharedPref.getBoolean(getString(R.string.saved_edit_roulette_first_tutorial_done_key), false);
-        if (!isFirstTutorialDone) {
-            tutorial();
-            //最初のチュートリアルが終わったら、そのことを保存しておく
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.saved_edit_roulette_first_tutorial_done_key), true);
-            editor.apply();
-        }
-        */
     }
 
     private void tutorial() {
@@ -548,14 +536,8 @@ public class EditRouletteActivity extends AppCompatActivity {
 
         if (clickedSwitch.isChecked()) {
             // The toggle is enabled
-            //int itemCount = rouletteItemList.getChildCount();
             int itemCount = ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().getOnOffInfoOfSwitch100().size();
             for (int i = 0; i < itemCount; i++) {
-                //ViewGroup layout2 = rouletteItemList.getChildAt(i).findViewById(R.id.LinearLayout2);
-                //SwitchCompat switch0 = rouletteItemList.getChildAt(i).findViewById(R.id.LinearLayout2).findViewById(R.id.switch0);
-                //((SwitchCompat) layout2.findViewById(R.id.switch0)).setChecked(false);
-                //switch0.setChecked(false);
-                //((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setOnOffInfoOfSwitch0Partially(i, false);
                 RouletteItemListInfo itemDataSet = rouletteItemListAdapter.getRouletteItemDataSet();
                 itemDataSet.setOnOffInfoOfSwitch0Partially(i, false);
             }

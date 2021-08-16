@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("あああああああああああああああ", "onRestart");
+        Log.d("MainActivity", "onRestart");
 
         soundPool.autoResume();
 
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("あああああああああああああああ", "onPause");
+        Log.d("MainActivity", "onPause");
 
         soundPool.autoPause();
 
@@ -216,17 +216,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("あああああああああああああああ", "onStop");
-    }
-
-    @Override
     protected void onDestroy() {
         //通知を削除
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(1);
-        Log.d("あああああああああああああああ", "onDestroy");
+        Log.d("MainActivity", "onDestroy");
 
         super.onDestroy();
     }
@@ -269,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("あああああああああああああああ", "onCreate");
+        Log.d("MainActivity", "onCreate");
 
         MobileAds.initialize(this);
 

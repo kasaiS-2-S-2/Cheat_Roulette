@@ -7,8 +7,7 @@
     android:id="@+id/MyRouletteConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appPrimaryColor"
-    tools:context="com.kasai.cheatroulette.activity.MyRouletteActivity">
+    android:background="@color/appPrimaryColor">
 
     <include
         android:id="@+id/toolbar_myRoulette"
