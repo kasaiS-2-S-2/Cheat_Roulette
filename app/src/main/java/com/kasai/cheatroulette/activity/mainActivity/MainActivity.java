@@ -117,25 +117,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("あああああああああああああああ", "onStart");
+        Log.d("MainActivity", "onStart");
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        Log.d("あああああああああああああああ", "onPostCreate");
+        Log.d("MainActivity", "onPostCreate");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("あああああああああああああああ", "onResume");
+        Log.d("MainActivity", "onResume");
     }
 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        Log.d("あああああああああああああああああ", "onWindowFocusChanged");
+        Log.d("MainActivity", "onWindowFocusChanged");
 
         //情報保存用の共有環境設定ファイル
         SharedPreferences sharedPref = MainActivity.this.getPreferences(Context.MODE_PRIVATE);

@@ -39,11 +39,12 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Log.d("ああああああああああああああああああ", "onCreateViewHolder");
+        Log.d("RouletteItemListAdapter", "onCreateViewHolder");
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.rouletteitemlist_item, viewGroup, false);
 
-        return new ViewHolder(view ,new EditTextListenerForItemName(),new EditTextListenerForRatio(), new Switch100OnCheckedChangeListener(), new Switch0OnCheckedChangeListener(), new EditTextFocusChangeListener());
+        return new ViewHolder(view ,new EditTextListenerForItemName(),new EditTextListenerForRatio(),
+                new Switch100OnCheckedChangeListener(), new Switch0OnCheckedChangeListener(), new EditTextFocusChangeListener());
     }
 
     // Replace the contents of ic_cheat_roulette_launcher2_foreground view (invoked by the layout manager)
@@ -217,8 +218,6 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
                 }
             });
 
-
-
             this.deleteButton = itemView.findViewById(R.id.deleteButton);
 
             this.switch100 = itemView.findViewById(R.id.switch100);
@@ -228,7 +227,6 @@ public class RouletteItemListAdapter extends RecyclerView.Adapter<RouletteItemLi
             this.linearLayout1 = itemView.findViewById(R.id.LinearLayout1);
 
             this.linearLayout2 = itemView.findViewById(R.id.LinearLayout2);
-
 
             this.editTextListenerForItemName = editTextListenerForItemName;
             this.itemName.addTextChangedListener(editTextListenerForItemName);
