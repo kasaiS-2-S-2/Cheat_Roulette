@@ -144,9 +144,9 @@ public class PointerView extends View {
         Context context = getContext();
         String notificationContent;
         if (OnOrOff) {
-            notificationContent = "イカサマモードON";
+            notificationContent = getContext().getString(R.string.cheat_notification_msg_cheat_mode_is_on);
         } else {
-            notificationContent = "イカサマモードOFF";
+            notificationContent = getContext().getString(R.string.cheat_notification_msg_cheat_mode_is_off);
         }
 
         //システムから通知マネージャー取得
@@ -166,7 +166,7 @@ public class PointerView extends View {
 
             //通知の生成と設定とビルド
             notification = new Notification.Builder(context, chID)
-                    .setContentTitle("変更通知")  //通知タイトル
+                    .setContentTitle(getContext().getString(R.string.cheat_notification_title))  //通知タイトル
                     .setContentText(notificationContent)        //通知内容
                     .setSmallIcon(R.drawable.ic_baseline_notification_important_24) //通知用アイコン
                     .build();                                       //通知のビルド
@@ -175,7 +175,7 @@ public class PointerView extends View {
             //APIが「25」以下の場合
             //通知の生成と設定とビルド
             notification = new Notification.Builder(context)
-                    .setContentTitle("変更通知")
+                    .setContentTitle(getContext().getString(R.string.cheat_notification_title))
                     .setContentText(notificationContent)
                     //音とバイブレーションをデフォルトでOFF
                     .setPriority(Notification.PRIORITY_LOW)

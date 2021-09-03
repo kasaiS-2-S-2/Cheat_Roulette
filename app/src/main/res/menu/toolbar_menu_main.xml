@@ -2,28 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <item
-        android:id="@+id/tutorialMenuButton"
-        android:icon="@drawable/ic_baseline_more_vert_24"
-        android:title="@string/tutorial"
-        app:showAsAction="always">
-
-        <menu>
-            <group>
-                <item
-                    android:id="@+id/tutorial"
-                    android:title="@string/tutorial"
-                    app:showAsAction="never"/>
-            </group>
-        </menu>
-
-    </item>
-
     <item
         android:id="@+id/menuButton"
-        android:icon="@drawable/ic_baseline_menu_24"
-        android:title="メニュー"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/toolbar_menu_main_title"
         app:showAsAction="always">
     </item>
 

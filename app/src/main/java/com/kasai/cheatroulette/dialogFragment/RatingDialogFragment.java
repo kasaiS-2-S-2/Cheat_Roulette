@@ -34,17 +34,17 @@ public class RatingDialogFragment extends DialogFragment {
         if (this.isInvokedManually) {
             //メニューから呼ばれた場合の処理
             ratingDialog = ratingAlertDialogBuilder
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(
-                                    "https://play.google.com/store/apps/details?id=com.kasai.cheatroulette"));
-                            intent.setPackage("com.android.vending");
+                                    getString(R.string.url_this_app_google_play_page)));
+                            intent.setPackage(getString(R.string.package_com_android_vending));
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.alert_dialog_negative_choice, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
@@ -59,17 +59,17 @@ public class RatingDialogFragment extends DialogFragment {
         } else {
             //onCreateで呼ばれた場合の処理
             ratingDialog = ratingAlertDialogBuilder
-                    .setPositiveButton("評価する", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.rating_alert_dialog_positive_choice), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(
-                                    "https://play.google.com/store/apps/details?id=com.kasai.cheatroulette"));
-                            intent.setPackage("com.android.vending");
+                                    getString(R.string.url_this_app_google_play_page)));
+                            intent.setPackage(getString(R.string.package_com_android_vending));
                             startActivity(intent);
                         }
                     })
-                    .setNeutralButton("今後表示しない", new DialogInterface.OnClickListener() {
+                    .setNeutralButton(R.string.rating_alert_dialog_neutral_choice, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
@@ -78,7 +78,7 @@ public class RatingDialogFragment extends DialogFragment {
                             editor.apply();
                         }
                     })
-                    .setNegativeButton("あとでする", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.rating_alert_dialog_negative_choice, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
@@ -98,8 +98,8 @@ public class RatingDialogFragment extends DialogFragment {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(
-                        "https://play.google.com/store/apps/details?id=com.kasai.cheatroulette"));
-                intent.setPackage("com.android.vending");
+                        getString(R.string.url_this_app_google_play_page)));
+                intent.setPackage(getString(R.string.package_com_android_vending));
                 startActivity(intent);
                 ratingDialog.dismiss();
             }

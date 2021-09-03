@@ -50,7 +50,7 @@
                 android:textColor="#FF9D9D9D"
                 android:layout_marginLeft="6dp"
                 android:layout_marginStart="6dp"
-                android:text="面積比："
+                android:text="@string/prop_name_my_roulette_create_date"
                 android:textSize="14sp"/>
 
             <EditText
@@ -90,7 +90,7 @@
                 android:gravity="center_horizontal"
                 android:textColor="#FF9D9D9D"
                 android:layout_margin="12dp"
-                android:text="必中\nスイッチ" />
+                android:text="@string/prop_name_roulette_item_switch100" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch100"
@@ -111,7 +111,7 @@
                 android:gravity="center_horizontal"
                 android:textColor="#FF9D9D9D"
                 android:layout_margin="12dp"
-                android:text="絶対ハズレ\nスイッチ" />
+                android:text="@string/prop_name_roulette_item_switch0" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch0"

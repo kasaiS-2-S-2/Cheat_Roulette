@@ -49,6 +49,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.kasai.cheatroulette.R;
+import com.kasai.cheatroulette.activity.EditMyRouletteActivity;
 import com.kasai.cheatroulette.activity.detailSettingActivity.DetailSettingsActivity;
 import com.kasai.cheatroulette.activity.EditRouletteActivity;
 import com.kasai.cheatroulette.activity.MyRouletteActivity;
@@ -58,6 +59,8 @@ import com.kasai.cheatroulette.recyclerView.MyRouletteListAdapter;
 import com.kasai.cheatroulette.room.MyRouletteViewModel;
 import com.kasai.cheatroulette.ui.PushImageButton;
 import com.kasai.cheatroulette.ui.RouletteView;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private PushImageButton rouletteStartButton;
     private TextView resultTextView;
     private ImageButton plusButton;
+    private TextView splitItemCountTextView;
     private ImageButton minusButton;
     private LinearLayout splitButtonLayout;
     private ConstraintLayout constraintLayout;
@@ -96,13 +100,21 @@ public class MainActivity extends AppCompatActivity {
     static final int RESULT_MYROULETTE = 2;
     static final int RESULT_EDITROULETTE = 3;
 
+    public static final String INTENT_VAL_NAME_TO_MAIN_ISTUTORIALCONTINUE = "isTutorialContinue";
+    public static final String INTENT_VAL_NAME_TO_MAIN_ROULETTE_NAME = "rouletteName";
+    public static final String INTENT_VAL_NAME_TO_MAIN_COLORS = "colors";
+    public static final String INTENT_VAL_NAME_TO_MAIN_TEXT_STRINGS = "textStrings";
+    public static final String INTENT_VAL_NAME_TO_MAIN_ITEM_RATIOS = "itemRatios";
+    public static final String INTENT_VAL_NAME_TO_MAIN_SWITCH0_INFO = "OnOffInfoOfSwitch0";
+    public static final String INTENT_VAL_NAME_TO_MAIN_SWITCH100_INFO = "OnOffInfoOfSwitch100";
+    public static final String INTENT_VAL_NAME_TO_MAIN_ITEM_PROBABILITIES = "itemProbability";
+
     private static final Random RANDOM = new Random();
     private float degree = 0;
     private float sectorDegree = 0;
     private float toDegree = 5400f;
     private long duration = 10000;
     private float interpolatorFactor = 2.3f;
-    final String notRouletteExistsMessage = "ルーレットが作成されていません";
 
     public static MyRouletteViewModel mMyRouletteViewModel;
     public static final MyRouletteListAdapter adapter = new MyRouletteListAdapter(new MyRouletteListAdapter.MyRouletteDiff());
@@ -134,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-
         Log.d("MainActivity", "onWindowFocusChanged");
 
         //情報保存用の共有環境設定ファイル
@@ -332,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
         themeSaveSwitch.setChecked(startThemeSaveState);
 
         toolbar = findViewById(R.id.toolbar_main);
-        toolbar.setTitle("ルーレット");
+        toolbar.setTitle(R.string.toolbar_title_when_roulette_name_undefined);
         setSupportActionBar(toolbar);
 
         WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
@@ -355,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
         resultTextView = findViewById(R.id.resultTextView);
 
         plusButton = findViewById(R.id.plus_button);
+        splitItemCountTextView = findViewById(R.id.split_item_count_text_view);
         minusButton = findViewById(R.id.minus_button);
 
         rouletteViewInLayout = findViewById(R.id.roulette);
@@ -379,12 +391,13 @@ public class MainActivity extends AppCompatActivity {
                         savedRouletteOfMainActivity.getOnOffOfSwitch0(),
                         savedRouletteOfMainActivity.getItemProbabilities()
                 );
+                setSplitItemCount();
             }
             //背景色を初期化する
             constraintLayout.setBackgroundColor(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
 
             if (TextUtils.isEmpty(rouletteViewInLayout.getRouletteName())) {
-                toolbar.setTitle("ルーレット");
+                toolbar.setTitle(R.string.toolbar_title_when_roulette_name_undefined);
             } else {
                 toolbar.setTitle(rouletteViewInLayout.getRouletteName());
             }
@@ -405,6 +418,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, DetailSettingsActivity.class));
                         break;
 
+/*
                     case R.id.nav_roulette_create:
                         Intent toRouletteCreateIntent = new Intent(getApplicationContext(), RouletteCreateActivity.class);
                         startActivityForResult(toRouletteCreateIntent, RESULT_ROULETTECREATE);
@@ -412,23 +426,49 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_edit_roulette:
                         if (rouletteExists) {
                             Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
-                            rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
-                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
-                            rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getItemNames());
-                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
-                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
-                            rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
+                            rouletteEditIntent.putExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_ROULETTE_NAME, rouletteViewInLayout.getRouletteName());
+                            rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_COLORS, rouletteViewInLayout.getColors());
+                            rouletteEditIntent.putStringArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_ITEM_NAMES, rouletteViewInLayout.getItemNames());
+                            rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_ITEM_RATIOS, rouletteViewInLayout.getItemRatios());
+                            rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_SWITCH100_INFO, rouletteViewInLayout.getOnOffInfoOfSwitch100());
+                            rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_SWITCH0_INFO, rouletteViewInLayout.getOnOffInfoOfSwitch0());
 
                             startActivityForResult(rouletteEditIntent, RESULT_EDITROULETTE);
                         } else {
                             if (mToast != null) mToast.cancel();
-                            mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                            mToast = Toast.makeText(getApplicationContext(), getString(R.string.msg_not_roulette_exists), Toast.LENGTH_SHORT);
                             mToast.show();
                         }
                         break;
                     case R.id.nav_myRoulette:
                         Intent toMyRouletteIntent = new Intent(getApplicationContext(), MyRouletteActivity.class);
                         startActivityForResult(toMyRouletteIntent, RESULT_MYROULETTE);
+                        break;
+
+ */
+                    case R.id.nav_tutorial:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle(R.string.confirm_msg_start_tutorial)
+                                .setPositiveButton(R.string.alert_dialog_positive_choice, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        drawerLayout.closeDrawer(Gravity.RIGHT, false);
+                                        MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.main_tutorial_id));
+                                        tutorial();
+                                    }
+                                })
+                                .setNegativeButton(R.string.alert_dialog_negative_choice, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                })
+                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        // ダイアログがキャンセルされた際の処理
+                                    }
+                                })
+                                .create()
+                                .show();
                         break;
                     case R.id.nav_review_app:
                         startRating(true);
@@ -453,6 +493,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMenuCollapsed(FABsMenu fabsMenu) {
                 super.onMenuCollapsed(fabsMenu);
+                fabsMenu.setMenuButtonIcon(R.drawable.ic_baseline_format_list_bulleted_24);
                 rouletteCreateFab.setEnabled(false);
                 editRouletteFab.setEnabled(false);
                 myRouletteFab.setEnabled(false);
@@ -461,6 +502,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMenuExpanded(FABsMenu fabsMenu) {
                 super.onMenuExpanded(fabsMenu);
+                fabsMenu.setMenuButtonIcon(R.drawable.ic_baseline_close_24);
                 rouletteCreateFab.setEnabled(true);
                 editRouletteFab.setEnabled(true);
                 myRouletteFab.setEnabled(true);
@@ -483,17 +525,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (rouletteExists) {
                     Intent rouletteEditIntent = new Intent(MainActivity.this, EditRouletteActivity.class);
-                    rouletteEditIntent.putExtra("editInfoOfRouletteName", rouletteViewInLayout.getRouletteName());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfColors", rouletteViewInLayout.getColors());
-                    rouletteEditIntent.putStringArrayListExtra("editInfoOfTextStrings", rouletteViewInLayout.getItemNames());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfItemRatio", rouletteViewInLayout.getItemRatios());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch100", rouletteViewInLayout.getOnOffInfoOfSwitch100());
-                    rouletteEditIntent.putIntegerArrayListExtra("editInfoOfSwitch0", rouletteViewInLayout.getOnOffInfoOfSwitch0());
+                    rouletteEditIntent.putExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_ROULETTE_NAME, rouletteViewInLayout.getRouletteName());
+                    rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_COLORS, rouletteViewInLayout.getColors());
+                    rouletteEditIntent.putStringArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_ITEM_NAMES, rouletteViewInLayout.getItemNames());
+                    rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_ITEM_RATIOS, rouletteViewInLayout.getItemRatios());
+                    rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_SWITCH100_INFO, rouletteViewInLayout.getOnOffInfoOfSwitch100());
+                    rouletteEditIntent.putIntegerArrayListExtra(EditRouletteActivity.INTENT_VAL_NAME_TO_EDIT_ROULETTE_FROM_MAIN_SWITCH0_INFO, rouletteViewInLayout.getOnOffInfoOfSwitch0());
 
                     startActivityForResult(rouletteEditIntent, RESULT_EDITROULETTE);
                 } else {
                     if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                    mToast = Toast.makeText(getApplicationContext(), getString(R.string.msg_not_roulette_exists), Toast.LENGTH_SHORT);
                     mToast.show();
                 }
             }
@@ -604,7 +646,6 @@ public class MainActivity extends AppCompatActivity {
                             minusButton.setEnabled(false);
                             fabsMenu.setEnabled(false);
                             toolbar.findViewById(R.id.menuButton).setEnabled(false);
-                            toolbar.findViewById(R.id.tutorialMenuButton).setEnabled(false);
                             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
                             if (soundState) {
@@ -636,7 +677,6 @@ public class MainActivity extends AppCompatActivity {
                             minusButton.setEnabled(true);
                             fabsMenu.setEnabled(true);
                             toolbar.findViewById(R.id.menuButton).setEnabled(true);
-                            toolbar.findViewById(R.id.tutorialMenuButton).setEnabled(true);
                             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                         }
 
@@ -650,7 +690,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                    mToast = Toast.makeText(getApplicationContext(), getString(R.string.msg_not_roulette_exists), Toast.LENGTH_SHORT);
                     mToast.show();
                 }
             }
@@ -662,7 +702,7 @@ public class MainActivity extends AppCompatActivity {
                 int flag = 0;
                 if (!rouletteExists) {
                     if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                    mToast = Toast.makeText(getApplicationContext(), getString(R.string.msg_not_roulette_exists), Toast.LENGTH_SHORT);
                     mToast.show();
                 } else if (rouletteViewInLayout.getColors().size() * (rouletteViewInLayout.getSplitCount() + 1) > 300){
                     if (mToast != null) mToast.cancel();
@@ -672,8 +712,8 @@ public class MainActivity extends AppCompatActivity {
                     //背景色、resultTextViewをそれぞれ初期化する
                     changeBackgroundColorWithAnimation(Color.parseColor(getResources().getString(R.color.appPrimaryColor)));
                     resultTextView.setText("");
-
                     rouletteViewInLayout.setSplitCount(rouletteViewInLayout.getSplitCount() + 1);
+                    setSplitItemCount();
                     rouletteViewInLayout.invalidate();
 
                     if (rotate != null) {
@@ -691,6 +731,7 @@ public class MainActivity extends AppCompatActivity {
                     //背景色、resultTextViewをそれぞれ初期化する
                     if (rouletteViewInLayout.getSplitCount() >= 2) {
                         rouletteViewInLayout.setSplitCount(rouletteViewInLayout.getSplitCount() - 1);
+                        setSplitItemCount();
                         rouletteViewInLayout.invalidate();
 
                         if (rotate != null) {
@@ -703,7 +744,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     if (mToast != null) mToast.cancel();
-                    mToast = Toast.makeText(getApplicationContext(), notRouletteExistsMessage, Toast.LENGTH_SHORT);
+                    mToast = Toast.makeText(getApplicationContext(), getString(R.string.msg_not_roulette_exists), Toast.LENGTH_SHORT);
                     mToast.show();
                 }
             }
@@ -722,6 +763,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setSplitItemCount() {
+        int splitItemCount = rouletteViewInLayout.getSplitCount() * rouletteViewInLayout.getItemCount();
+        splitItemCountTextView.setText(String.valueOf(splitItemCount));
+    }
+
     private void firstTutorial() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(100);
@@ -738,7 +784,7 @@ public class MainActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップするとメニューが開き、各種設定を行うことができます。");
+                .text(getString(R.string.tutorial_msg_main_menu_button));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -755,7 +801,7 @@ public class MainActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップするとボタンメニューが出現します。<br><br> タップしてみましょう。");
+                .text(getString(R.string.tutorial_msg_main_activity_fab));
 
         FABsMenu faBsMenu = findViewById(R.id.fabs_menu);
 
@@ -789,7 +835,7 @@ public class MainActivity extends AppCompatActivity {
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
                         .setTarget(constraintLayout)
-                        .setContentText("チュートリアルを開始します。")
+                        .setContentText(getString(R.string.tutorial_msg_start_tutorial))
                         .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
                         .setGravity(16)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
@@ -802,7 +848,7 @@ public class MainActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップするとメニューが開き、各種設定を行うことができます。");
+                .text(getString(R.string.tutorial_msg_main_menu_button));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -819,7 +865,7 @@ public class MainActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップするとボタンメニューが出現します。<br><br> タップしてみましょう。");
+                .text(getString(R.string.tutorial_msg_main_activity_fab));
 
         FABsMenu faBsMenu = findViewById(R.id.fabs_menu);
 
@@ -838,7 +884,7 @@ public class MainActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("押すとルーレット作成画面に移動します。移動先ではルーレットの作成、保存をすることができます。");
+                .text(getString(R.string.tutorial_msg_to_roulette_create_fab));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -855,7 +901,7 @@ public class MainActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("押すとルーレット編集画面に移動します。現在セットしてあるルーレットの編集を行うことができます。");
+                .text(getString(R.string.tutorial_msg_to_edit_roulette));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -872,7 +918,7 @@ public class MainActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("押すと保存済みのルーレットを見ることができます。また、保存済みルーレットを編集することもできます。<br><br>以上でこの画面のチュートリアルを終了します。");
+                .text(getString(R.string.tutorial_msg_to_my_roulette));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -901,31 +947,6 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(Gravity.RIGHT);
 
                 return true;
-
-            case R.id.tutorial:
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("チュートリアルを開始しますか？")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.main_tutorial_id));
-                                tutorial();
-                            }
-                        })
-                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                            }
-                        })
-                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                // ダイアログがキャンセルされた際の処理
-                            }
-                        })
-                        .create()
-                        .show();
-
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -940,15 +961,15 @@ public class MainActivity extends AppCompatActivity {
             case RESULT_MYROULETTE:
             case RESULT_EDITROULETTE:
                 if (RESULT_OK == resultCode && intent != null) {
-                    boolean isTutorialContinue = intent.getBooleanExtra("isTutorialContinue", false);
-                    String rouletteNameInfo = intent.getStringExtra("rouletteName");
-                    ArrayList<Integer> colorsInfo = intent.getIntegerArrayListExtra("colors");
-                    ArrayList<String> textStringsInfo = intent.getStringArrayListExtra("textStrings");
-                    ArrayList<Integer> itemRatiosInfo = intent.getIntegerArrayListExtra("itemRatios");
-                    ArrayList<Integer> OnOffOfSwitch100Info = intent.getIntegerArrayListExtra("OnOffInfoOfSwitch100");
-                    ArrayList<Integer> OnOffOfSwitch0Info = intent.getIntegerArrayListExtra("OnOffInfoOfSwitch0");
+                    boolean isTutorialContinue = intent.getBooleanExtra(INTENT_VAL_NAME_TO_MAIN_ISTUTORIALCONTINUE, false);
+                    String rouletteNameInfo = intent.getStringExtra(INTENT_VAL_NAME_TO_MAIN_ROULETTE_NAME);
+                    ArrayList<Integer> colorsInfo = intent.getIntegerArrayListExtra(INTENT_VAL_NAME_TO_MAIN_COLORS);
+                    ArrayList<String> textStringsInfo = intent.getStringArrayListExtra(INTENT_VAL_NAME_TO_MAIN_TEXT_STRINGS);
+                    ArrayList<Integer> itemRatiosInfo = intent.getIntegerArrayListExtra(INTENT_VAL_NAME_TO_MAIN_ITEM_RATIOS);
+                    ArrayList<Integer> OnOffOfSwitch100Info = intent.getIntegerArrayListExtra(INTENT_VAL_NAME_TO_MAIN_SWITCH100_INFO);
+                    ArrayList<Integer> OnOffOfSwitch0Info = intent.getIntegerArrayListExtra(INTENT_VAL_NAME_TO_MAIN_SWITCH0_INFO);
                     ArrayList<Float> itemProbabilitiesInfo = new ArrayList<Float>();
-                    float itemProbabilityArray[] = intent.getFloatArrayExtra("itemProbability");
+                    float itemProbabilityArray[] = intent.getFloatArrayExtra(INTENT_VAL_NAME_TO_MAIN_ITEM_PROBABILITIES);
                     for (int i = 0; i < itemProbabilityArray.length; i++) {
                         itemProbabilitiesInfo.add(itemProbabilityArray[i]);
                     }
@@ -970,7 +991,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (TextUtils.isEmpty(rouletteNameInfo)) {
-                        toolbar.setTitle("ルーレット");
+                        toolbar.setTitle(R.string.toolbar_title_when_roulette_name_undefined);
                     } else {
                         toolbar.setTitle(rouletteNameInfo);
                     }
@@ -989,7 +1010,7 @@ public class MainActivity extends AppCompatActivity {
                                 .focusCircleAtPosition(pointerPosX, pointerPosY, constraintLayout.getWidth() / 12)
                                 .dismissListener(new DismissListener() {
                                     @Override
-                                    public void onDismiss(@org.jetbrains.annotations.Nullable String s) {
+                                    public void onDismiss(@Nullable String s) {
 
                                         MaterialShowcaseView.resetSingleUse(MainActivity.this, getString(R.string.roulette_create_latter_tutorial_id));
 
@@ -1007,7 +1028,7 @@ public class MainActivity extends AppCompatActivity {
                                                 .corner(30)
                                                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                                                 .color(getResources().getColor(R.color.appPrimaryColor))
-                                                .text("＋：押すとルーレットを分割します。<br><br>−：押すと分割前に戻します。");
+                                                .text(getString(R.string.tutorial_msg_split_button));
 
                                         sequence.addSequenceItem(
                                                 new MaterialShowcaseView.Builder(MainActivity.this)
@@ -1023,7 +1044,7 @@ public class MainActivity extends AppCompatActivity {
                                                 .corner(30)
                                                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                                                 .color(getResources().getColor(R.color.appPrimaryColor))
-                                                .text("タップするとセットしてあるルーレットが回転し始めます。回転はしばらくすると勝手に止まります。<br><br>以上でチュートリアルを終了します。");
+                                                .text(getString(R.string.tutorial_msg_roulette_start_button));
 
                                         sequence.addSequenceItem(
                                                 new MaterialShowcaseView.Builder(MainActivity.this)
@@ -1040,12 +1061,12 @@ public class MainActivity extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onSkipped(@org.jetbrains.annotations.Nullable String s) {
+                                    public void onSkipped(@Nullable String s) {
 
                                     }
 
                                 })
-                                .title("この部分をタップすることで、イカサマ設定のON、OFFを切り替えることができます。イカサマがバレそうになった時に使ってみましょう。\n\nイカサマ設定が切り替わるとそのことを端末に通知します。")
+                                .title(getString(R.string.tutorial_msg_switch_cheating_area))
                                 .titleGravity(16)
                                 .titleSize(18, 1)
                                 .build()
@@ -1059,7 +1080,7 @@ public class MainActivity extends AppCompatActivity {
     private void startRating(boolean isInvokedManually) {
         //評価画面を表示する
         RatingDialogFragment ratingDialogFragment = new RatingDialogFragment(isInvokedManually);
-        ratingDialogFragment.show(getSupportFragmentManager(), "ratingDialog");
+        ratingDialogFragment.show(getSupportFragmentManager(), getString(R.string.tag_rating_dialog_fragment));
     }
 
     public void onSoundSwitchClicked(View view) {

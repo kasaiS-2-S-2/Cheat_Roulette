@@ -63,7 +63,6 @@ public class MyRouletteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myRouletteList = findViewById(R.id.myRoulette_list);
-        //MainActivity mainActivity = new MainActivity();
         myRouletteList.setAdapter(MainActivity.adapter);
         myRouletteList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -94,13 +93,13 @@ public class MyRouletteActivity extends AppCompatActivity {
                     SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(MyRouletteActivity.this);
                     if (defaultPref.getBoolean(getString(R.string.saved_appear_alert_delete_myRoulette_key), true)) {
                         new AlertDialog.Builder(viewHolder.itemView.getContext())
-                                .setMessage("削除してもよろしいですか？")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                .setMessage(R.string.confirm_msg_delete_my_roulette)
+                                .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         deleteMyRoulette(viewHolder);
                                     }
                                 })
-                                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                .setNegativeButton(R.string.alert_dialog_negative_choice, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
 
                                         myRouletteList.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
@@ -155,7 +154,7 @@ public class MyRouletteActivity extends AppCompatActivity {
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
                         .setTarget(myRouletteConstrainLayout)
-                        .setContentText("ここでは保存したルーレットの一覧を見ることができます。\n\n作成したルーレットを保存するには、ルーレット作成完了時の「Myルーレットに保存しますか？」にて「YES」をタップしてください。")
+                        .setContentText(getString(R.string.tutorial_msg_role_of_my_roulette))
                         .setContentTextColor(getResources().getColor(R.color.showcase_text_color))
                         .setGravity(16)
                         .setMaskColour(getResources().getColor(R.color.tutorial_overlay_color))
@@ -168,7 +167,7 @@ public class MyRouletteActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("Myルーレットの名前が表示されます。");
+                .text(getString(R.string.tutorial_msg_position_of_my_roulette));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -184,7 +183,7 @@ public class MyRouletteActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップするとMyルーレットを編集をすることができます。");
+                .text(getString(R.string.tutorial_msg_edit_my_roulette_button));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -200,7 +199,7 @@ public class MyRouletteActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップするとMyルーレットを削除することができます。スワイプでも削除が可能です。");
+                .text(getString(R.string.tutorial_msg_delete_my_roulette_button));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -216,7 +215,7 @@ public class MyRouletteActivity extends AppCompatActivity {
                 .corner(30)
                 .textColor(getResources().getColor(R.color.tooltip_text_color))
                 .color(getResources().getColor(R.color.appPrimaryColor))
-                .text("タップすることで選択されたMyルーレットがセットされます。<br><br>以上でこの画面のチュートリアルを終了します。");
+                .text(getString(R.string.tutorial_msg_how_to_set_my_roulette));
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
@@ -242,14 +241,14 @@ public class MyRouletteActivity extends AppCompatActivity {
             case R.id.tutorial:
                 // ボタンをタップした際の処理を記述
                 AlertDialog.Builder builder = new AlertDialog.Builder(MyRouletteActivity.this);
-                builder.setTitle("チュートリアルを開始しますか？")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setTitle(getString(R.string.confirm_msg_start_tutorial))
+                        .setPositiveButton(R.string.alert_dialog_positive_choice, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 MaterialShowcaseView.resetSingleUse(MyRouletteActivity.this, getString(R.string.myRoulette_tutorial_id));
                                 tutorial();
                             }
                         })
-                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.alert_dialog_negative_choice, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
                             }
@@ -284,18 +283,18 @@ public class MyRouletteActivity extends AppCompatActivity {
 
         Intent fromMyRouletteToMain = new Intent();
 
-        fromMyRouletteToMain.putExtra("rouletteName", selectedRouletteView.getRouletteName());
-        fromMyRouletteToMain.putIntegerArrayListExtra("colors", selectedRouletteView.getColors());
-        fromMyRouletteToMain.putStringArrayListExtra("textStrings", selectedRouletteView.getItemNames());
-        fromMyRouletteToMain.putIntegerArrayListExtra("itemRatios", selectedRouletteView.getItemRatios());
-        fromMyRouletteToMain.putIntegerArrayListExtra("OnOffInfoOfSwitch100", selectedRouletteView.getOnOffInfoOfSwitch100());
-        fromMyRouletteToMain.putIntegerArrayListExtra("OnOffInfoOfSwitch0", selectedRouletteView.getOnOffInfoOfSwitch0());
+        fromMyRouletteToMain.putExtra(MainActivity.INTENT_VAL_NAME_TO_MAIN_ROULETTE_NAME, selectedRouletteView.getRouletteName());
+        fromMyRouletteToMain.putIntegerArrayListExtra(MainActivity.INTENT_VAL_NAME_TO_MAIN_COLORS, selectedRouletteView.getColors());
+        fromMyRouletteToMain.putStringArrayListExtra(MainActivity.INTENT_VAL_NAME_TO_MAIN_TEXT_STRINGS, selectedRouletteView.getItemNames());
+        fromMyRouletteToMain.putIntegerArrayListExtra(MainActivity.INTENT_VAL_NAME_TO_MAIN_ITEM_RATIOS, selectedRouletteView.getItemRatios());
+        fromMyRouletteToMain.putIntegerArrayListExtra(MainActivity.INTENT_VAL_NAME_TO_MAIN_SWITCH100_INFO, selectedRouletteView.getOnOffInfoOfSwitch100());
+        fromMyRouletteToMain.putIntegerArrayListExtra(MainActivity.INTENT_VAL_NAME_TO_MAIN_SWITCH0_INFO, selectedRouletteView.getOnOffInfoOfSwitch0());
         ArrayList<Float> itemProbabilities = selectedRouletteView.getItemProbabilities();
         float itemProbabilityArray[] = new float[itemProbabilities.size()];
         for (int i=0; i<itemProbabilities.size(); i++) {
             itemProbabilityArray[i] = itemProbabilities.get(i);
         }
-        fromMyRouletteToMain.putExtra("itemProbability", itemProbabilityArray);
+        fromMyRouletteToMain.putExtra(MainActivity.INTENT_VAL_NAME_TO_MAIN_ITEM_PROBABILITIES, itemProbabilityArray);
         setResult(RESULT_OK, fromMyRouletteToMain);
         finish();
     }
@@ -307,13 +306,13 @@ public class MyRouletteActivity extends AppCompatActivity {
         RouletteView selectedRouletteView = viewGroup.findViewById(R.id.myRoulette);
 
         Intent fromMyRouletteToEditMyRoulette = new Intent(getApplicationContext(), EditMyRouletteActivity.class);
-        fromMyRouletteToEditMyRoulette.putExtra("rouletteId", selectedRouletteView.getId());
-        fromMyRouletteToEditMyRoulette.putExtra("rouletteName", selectedRouletteView.getRouletteName());
-        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("colors", selectedRouletteView.getColors());
-        fromMyRouletteToEditMyRoulette.putStringArrayListExtra("itemNames", selectedRouletteView.getItemNames());
-        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("itemRatios", selectedRouletteView.getItemRatios());
-        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch100", selectedRouletteView.getOnOffInfoOfSwitch100());
-        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra("OnOffInfoOfSwitch0", selectedRouletteView.getOnOffInfoOfSwitch0());
+        fromMyRouletteToEditMyRoulette.putExtra(EditMyRouletteActivity.INTENT_VAL_NAME_TO_EDIT_MY_ROULETTE_ROULETTE_ID, selectedRouletteView.getId());
+        fromMyRouletteToEditMyRoulette.putExtra(EditMyRouletteActivity.INTENT_VAL_NAME_TO_EDIT_MY_ROULETTE_ROULETTE_NAME, selectedRouletteView.getRouletteName());
+        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra(EditMyRouletteActivity.INTENT_VAL_NAME_TO_EDIT_MY_ROULETTE_COLORS, selectedRouletteView.getColors());
+        fromMyRouletteToEditMyRoulette.putStringArrayListExtra(EditMyRouletteActivity.INTENT_VAL_NAME_TO_EDIT_MY_ROULETTE_ITEM_NAMES, selectedRouletteView.getItemNames());
+        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra(EditMyRouletteActivity.INTENT_VAL_NAME_TO_EDIT_MY_ROULETTE_ITEM_RATIOS, selectedRouletteView.getItemRatios());
+        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra(EditMyRouletteActivity.INTENT_VAL_NAME_TO_EDIT_MY_ROULETTE_SWITCH100_INFO, selectedRouletteView.getOnOffInfoOfSwitch100());
+        fromMyRouletteToEditMyRoulette.putIntegerArrayListExtra(EditMyRouletteActivity.INTENT_VAL_NAME_TO_EDIT_MY_ROULETTE_SWITCH0_INFO, selectedRouletteView.getOnOffInfoOfSwitch0());
 
         startActivity(fromMyRouletteToEditMyRoulette);
     }

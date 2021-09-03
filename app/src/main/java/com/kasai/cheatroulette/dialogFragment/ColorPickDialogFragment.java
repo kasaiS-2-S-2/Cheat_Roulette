@@ -30,7 +30,7 @@ public class ColorPickDialogFragment extends DialogFragment {
         //ColorPickDialogを開始する
         AlertDialog.Builder colorPickAlert = new AlertDialog.Builder(getActivity());
 
-        colorPickAlert.setTitle("色の選択");
+        colorPickAlert.setTitle(R.string.title_color_pick_dialog_fragment);
 
         LayoutInflater inflater = getLayoutInflater();
         View dialoglayout = inflater.inflate(R.layout.color_pick_dialog, null);
@@ -51,7 +51,7 @@ public class ColorPickDialogFragment extends DialogFragment {
         });
 
         colorPickAlert
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //色情報の設定
@@ -64,7 +64,7 @@ public class ColorPickDialogFragment extends DialogFragment {
                         ((RouletteItemListAdapter)rouletteItemList.getAdapter()).getRouletteItemDataSet().setColor(position, colorPickerView.getSelectedColor());
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.alert_dialog_negative_choice, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }

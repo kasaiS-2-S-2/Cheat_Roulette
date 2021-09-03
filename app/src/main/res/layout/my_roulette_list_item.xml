@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/layout_text_color"
 
             android:maxLines="3"
@@ -49,15 +49,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="作成日："
-                android:textSize="14dp"
+                android:text="@string/prop_name_my_roulette_create_date"
+                android:textSize="14sp"
                 android:textColor="#999999"/>
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textColor="#999999" />
         </LinearLayout>
 

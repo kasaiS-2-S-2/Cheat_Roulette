@@ -110,6 +110,13 @@
                     android:tint="@color/appPink"
                     app:srcCompat="@drawable/ic_baseline_remove_48" />
 
+                <TextView
+                    android:id="@+id/split_item_count_text_view"
+                    android:gravity="center"
+                    android:layout_width="64dp"
+                    android:layout_height="48dp"
+                    android:textSize="30sp" />
+
                 <ImageButton
                     android:id="@+id/plus_button"
                     android:layout_width="72dp"
@@ -141,7 +148,7 @@
                 app:fab_menuMargins="16dp"
                 app:fab_menuTopMargin="32dp"
                 app:fab_moreButtonBackgroundColor="@color/appPink"
-                app:fab_moreButtonPlusIcon="@drawable/ic_baseline_add_white_24"
+                app:fab_moreButtonPlusIcon="@drawable/ic_baseline_format_list_bulleted_24"
                 app:fab_moreButtonRippleColor="@color/appPrimaryColor"
                 app:fab_moreButtonSize="normal">
 

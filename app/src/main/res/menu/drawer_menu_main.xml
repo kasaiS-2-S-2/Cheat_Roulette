@@ -5,7 +5,7 @@
 
     <group>
         <item
-            android:title="設定">
+            android:title="@string/drawer_menu_title_setting">
 
             <menu>
 
@@ -55,9 +55,10 @@
         </item>
     </group>
 
+    <!--
     <group>
         <item
-            android:title="アクティビティ">
+            android:title="@string/drawer_menu_title_activities">
 
             <menu>
 
@@ -77,12 +78,17 @@
 
         </item>
     </group>
+    -->
 
     <group>
         <item
-            android:title="その他">
+            android:title="@string/drawer_menu_title_others">
 
             <menu>
+                <item
+                    android:id="@+id/nav_tutorial"
+                    android:title="@string/tutorial"
+                    android:icon="@drawable/ic_baseline_help_24"/>
                 <item
                     android:id="@+id/nav_review_app"
                     android:title="@string/review_app"

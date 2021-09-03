@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="詳細設定">
+    <PreferenceCategory android:title="@string/preference_fragment_title">
         <SwitchPreferenceCompat
             android:key="@string/saved_tutorial_appear_key"
             android:title="@string/tutorial_appear"

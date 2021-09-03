@@ -13,6 +13,8 @@ import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
+import com.kasai.cheatroulette.R;
+
 public class ResourceUtil {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -43,7 +45,7 @@ public class ResourceUtil {
         } else if (drawable instanceof VectorDrawable) {
             return getBitmap((VectorDrawable) drawable);
         } else {
-            throw new IllegalArgumentException("Unsupported drawable type");
+            throw new IllegalArgumentException(context.getString(R.string.exception_msg_unsupported_drawable_type));
         }
     }
 

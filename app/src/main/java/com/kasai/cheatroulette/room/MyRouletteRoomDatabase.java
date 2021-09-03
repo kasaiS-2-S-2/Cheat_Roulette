@@ -10,6 +10,8 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.kasai.cheatroulette.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +35,7 @@ abstract class MyRouletteRoomDatabase extends RoomDatabase {
             synchronized (MyRouletteRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            MyRouletteRoomDatabase.class, "myRoulette_database")
+                            MyRouletteRoomDatabase.class, context.getString(R.string.name_my_roulette_database))
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }

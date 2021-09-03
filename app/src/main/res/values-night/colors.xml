@@ -33,4 +33,8 @@
     <color name="tooltip_text_color">#FFFFFFFF</color>
     <color name="showcase_text_color">#FF000000</color>
     <color name="popup_menu_background">#FF444444</color>
+    <string name="color_roulette_view_edge_paint">#50FFFFFF</string>
+    <color name="item_add_button_text_color">#FFFFFFFF</color>
+    <color name="item_add_button_background_color">#FF2A2A2A</color>
+    <color name="roulette_create_finish_button_color">#FFFFFFFF</color>
 </resources>

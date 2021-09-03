@@ -56,8 +56,8 @@ public class MyRouletteListAdapter extends ListAdapter<MyRoulette, MyRouletteVie
                     SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(context);
                     if (defaultPref.getBoolean(context.getString(R.string.saved_appear_alert_delete_myRoulette_key), true)) {
                         new AlertDialog.Builder(holder.itemView.getContext())
-                                .setMessage("削除してもよろしいですか？")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                .setMessage(context.getString(R.string.confirm_msg_delete_my_roulette))
+                                .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         //ボタンの押された部分のList<word>の項目をList<word>から削除
                                         deleteItem(holder.getAdapterPosition());
@@ -67,7 +67,7 @@ public class MyRouletteListAdapter extends ListAdapter<MyRoulette, MyRouletteVie
                                         MainActivity.mMyRouletteViewModel.delete(primaryKey);
                                     }
                                 })
-                                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                .setNegativeButton(R.string.alert_dialog_negative_choice, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // User cancelled the dialog,
                                         // so we will refresh the adapter to prevent hiding the item from UI

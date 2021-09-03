@@ -82,7 +82,7 @@ public class RouletteView extends View {
 
         //枠線の描画
         edgePaint = new Paint();
-        edgePaint.setColor(Color.parseColor("#50FFFFFF"));
+        edgePaint.setColor(Color.parseColor(getContext().getString(R.string.color_roulette_view_edge_paint)));
         edgePaint.setAntiAlias(true);
         edgePaint.setStyle(Paint.Style.STROKE);
         setLayerType(LAYER_TYPE_HARDWARE, edgePaint);
@@ -272,6 +272,19 @@ public class RouletteView extends View {
         this.itemProbabilities = itemProbabilitiesInfo;
     }
 
+    public void makeRoulettePreview(ArrayList<Integer> colorsInfo,
+                                    ArrayList<String> itemNamesInfo,
+                                    ArrayList<Integer> itemRatiosInfo) {
+
+        this.isStateNoRoulette = false;
+        //ルーレットの色のリスト
+        this.colors = colorsInfo;
+        //ルーレットの文字列のリスト
+        this.itemNames = itemNamesInfo;
+        //ルーレットの項目比率のリスト
+        this.itemRatios = itemRatiosInfo;
+    }
+
     public float getxc() {
         return this.xc;
     }
@@ -310,6 +323,7 @@ public class RouletteView extends View {
     public ArrayList<Float> getItemProbabilities() {
         return itemProbabilities;
     }
+    public int getItemCount() { return colors.size(); }
 
     public void reDraw(float rotateDegree) {
         invalidate();

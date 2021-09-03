@@ -74,7 +74,7 @@ public class MyRouletteViewHolder extends RecyclerView.ViewHolder {
                      ArrayList<Float> itemProbabilitiesInfo) {
 
         if (rouletteName.equals("")) {
-            rouletteNameView.setText("未設定");
+            rouletteNameView.setText(R.string.string_of_my_roulette_name_not_be_Defined);
         } else {
             rouletteNameView.setText(rouletteName);
         }
