@@ -13,6 +13,9 @@ Google Playリンク：https://play.google.com/store/apps/details?id=com.kasai.c
 ![demo](https://raw.github.com/wiki/kasaiS-2-S-2/Cheat_Roulette/images/myRoulette.gif)
 ![demo](https://raw.github.com/wiki/kasaiS-2-S-2/Cheat_Roulette/images/dark_mode.gif)
 
+## 現在取り組んでいること
+コードの保守性を高めるため、リファクタリングを進めています。
+
 ## 主な使用技術
 ・ConstraintLayout
 
